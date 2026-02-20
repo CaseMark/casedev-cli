@@ -67,8 +67,8 @@ jobs:
       - name: Fetch base and head OpenAPI specs
         if: steps.urls.outputs.same_spec == 'false'
         run: |
-          curl -sSf -o /tmp/base-spec.yml "${{ steps.urls.outputs.base_url }}"
-          curl -sSf -o /tmp/head-spec.yml "${{ steps.urls.outputs.head_url }}"
+          curl -sSf -o "$GITHUB_WORKSPACE/base-spec.yml" "${{ steps.urls.outputs.base_url }}"
+          curl -sSf -o "$GITHUB_WORKSPACE/head-spec.yml" "${{ steps.urls.outputs.head_url }}"
 
       - name: Check for breaking changes
         if: steps.urls.outputs.same_spec == 'false'
@@ -76,8 +76,8 @@ jobs:
         # Pinned to v0.0.21 (1c611ffb1253a72924624aa4fb662e302b3565d3)
         uses: oasdiff/oasdiff-action/breaking@1c611ffb1253a72924624aa4fb662e302b3565d3
         with:
-          base: /tmp/base-spec.yml
-          revision: /tmp/head-spec.yml
+          base: base-spec.yml
+          revision: head-spec.yml
           fail-on: ERR
 
   admin-approval:
