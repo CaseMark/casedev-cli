@@ -9,7 +9,7 @@ import (
 )
 
 func TestTranslateV1Detect(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"translate:v1", "detect",
@@ -18,7 +18,7 @@ func TestTranslateV1Detect(t *testing.T) {
 }
 
 func TestTranslateV1ListLanguages(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"translate:v1", "list-languages",
@@ -28,7 +28,7 @@ func TestTranslateV1ListLanguages(t *testing.T) {
 }
 
 func TestTranslateV1Translate(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"translate:v1", "translate",

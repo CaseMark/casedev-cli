@@ -9,7 +9,7 @@ import (
 )
 
 func TestVaultGraphragGetStats(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:graphrag", "get-stats",
@@ -18,7 +18,7 @@ func TestVaultGraphragGetStats(t *testing.T) {
 }
 
 func TestVaultGraphragInit(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:graphrag", "init",
@@ -27,7 +27,7 @@ func TestVaultGraphragInit(t *testing.T) {
 }
 
 func TestVaultGraphragProcessObject(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:graphrag", "process-object",

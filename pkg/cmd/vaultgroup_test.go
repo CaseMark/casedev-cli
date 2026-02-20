@@ -9,7 +9,7 @@ import (
 )
 
 func TestVaultGroupsCreate(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:groups", "create",
@@ -17,7 +17,7 @@ func TestVaultGroupsCreate(t *testing.T) {
 }
 
 func TestVaultGroupsUpdate(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:groups", "update",
@@ -26,7 +26,7 @@ func TestVaultGroupsUpdate(t *testing.T) {
 }
 
 func TestVaultGroupsList(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:groups", "list",
@@ -34,7 +34,7 @@ func TestVaultGroupsList(t *testing.T) {
 }
 
 func TestVaultGroupsDelete(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:groups", "delete",
