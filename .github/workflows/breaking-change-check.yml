@@ -1,0 +1,97 @@
+name: Breaking Change Check
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.stats.yml'
+
+jobs:
+  breaking-change-check:
+    name: breaking-change-check
+    runs-on: ubuntu-latest
+    outputs:
+      breaking: ${{ steps.diff.outputs.breaking }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install yq
+        run: |
+          curl -sSfL -o /usr/local/bin/yq \
+            https://github.com/mikefarah/yq/releases/download/v4.44.3/yq_linux_amd64
+          echo "a2c097180dd884a8d50c956ee16a9cec070f30a7947cf4ebf87d5f36213e9ed7  /usr/local/bin/yq" \
+            | sha256sum --check --strict
+          chmod +x /usr/local/bin/yq
+
+      - name: Extract OpenAPI spec URLs
+        id: urls
+        run: |
+          EXPECTED_PREFIX="https://storage.googleapis.com/stainless-sdk-openapi-specs/"
+
+          BASE_URL=$(git show ${{ github.event.pull_request.base.sha }}:.stats.yml \
+            | yq '.openapi_spec_url')
+          HEAD_URL=$(yq '.openapi_spec_url' .stats.yml)
+
+          if [ -z "$BASE_URL" ] || [ "$BASE_URL" = "null" ]; then
+            echo "::error::Could not parse openapi_spec_url from base .stats.yml"
+            exit 1
+          fi
+          if [ -z "$HEAD_URL" ] || [ "$HEAD_URL" = "null" ]; then
+            echo "::error::Could not parse openapi_spec_url from head .stats.yml"
+            exit 1
+          fi
+
+          for URL in "$BASE_URL" "$HEAD_URL"; do
+            if [[ "$URL" != "$EXPECTED_PREFIX"* ]]; then
+              echo "::error::openapi_spec_url '$URL' does not match expected prefix — aborting."
+              exit 1
+            fi
+          done
+
+          echo "base_url=$BASE_URL" >> "$GITHUB_OUTPUT"
+          echo "head_url=$HEAD_URL" >> "$GITHUB_OUTPUT"
+
+          if [ "$BASE_URL" = "$HEAD_URL" ]; then
+            echo "same_spec=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "same_spec=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Skip if spec unchanged
+        if: steps.urls.outputs.same_spec == 'true'
+        run: echo "OpenAPI spec hash unchanged — skipping breaking change check."
+
+      - name: Fetch base and head OpenAPI specs
+        if: steps.urls.outputs.same_spec == 'false'
+        run: |
+          curl -sSf -o /tmp/base-spec.yml "${{ steps.urls.outputs.base_url }}"
+          curl -sSf -o /tmp/head-spec.yml "${{ steps.urls.outputs.head_url }}"
+
+      - name: Check for breaking changes
+        if: steps.urls.outputs.same_spec == 'false'
+        id: diff
+        # Pinned to v0.0.9 (108bca0df7095bee6480199e16c6e53066868a0e)
+        uses: oasdiff/oasdiff-action/breaking@108bca0df7095bee6480199e16c6e53066868a0e
+        with:
+          base: /tmp/base-spec.yml
+          revision: /tmp/head-spec.yml
+          fail-on: ERR
+          format: text
+
+  admin-approval:
+    name: admin-approval
+    needs: breaking-change-check
+    # Only runs when breaking changes were detected (oasdiff exited non-zero,
+    # causing breaking-change-check to fail). The environment gate pauses here
+    # and waits for a required reviewer to approve before the job proceeds.
+    if: failure()
+    environment: breaking-change-gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Breaking change approved
+        run: |
+          echo "Admin approval received. This breaking change has been acknowledged."
+          echo "::warning::This PR introduces a breaking change that has been approved by an admin."
