@@ -9,7 +9,6 @@ import (
 )
 
 func TestDatabaseV1ProjectsCreate(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"database:v1:projects", "create",
@@ -20,7 +19,6 @@ func TestDatabaseV1ProjectsCreate(t *testing.T) {
 }
 
 func TestDatabaseV1ProjectsRetrieve(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"database:v1:projects", "retrieve",
@@ -29,7 +27,6 @@ func TestDatabaseV1ProjectsRetrieve(t *testing.T) {
 }
 
 func TestDatabaseV1ProjectsList(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"database:v1:projects", "list",
@@ -37,7 +34,6 @@ func TestDatabaseV1ProjectsList(t *testing.T) {
 }
 
 func TestDatabaseV1ProjectsDelete(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"database:v1:projects", "delete",
@@ -46,7 +42,6 @@ func TestDatabaseV1ProjectsDelete(t *testing.T) {
 }
 
 func TestDatabaseV1ProjectsCreateBranch(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"database:v1:projects", "create-branch",
@@ -57,7 +52,6 @@ func TestDatabaseV1ProjectsCreateBranch(t *testing.T) {
 }
 
 func TestDatabaseV1ProjectsGetConnection(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"database:v1:projects", "get-connection",
@@ -68,7 +62,6 @@ func TestDatabaseV1ProjectsGetConnection(t *testing.T) {
 }
 
 func TestDatabaseV1ProjectsListBranches(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"database:v1:projects", "list-branches",

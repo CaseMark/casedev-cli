@@ -10,7 +10,6 @@ import (
 )
 
 func TestMemoryV1Create(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"memory:v1", "create",
@@ -62,7 +61,6 @@ func TestMemoryV1Create(t *testing.T) {
 }
 
 func TestMemoryV1Retrieve(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"memory:v1", "retrieve",
@@ -71,7 +69,6 @@ func TestMemoryV1Retrieve(t *testing.T) {
 }
 
 func TestMemoryV1List(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"memory:v1", "list",
@@ -94,7 +91,6 @@ func TestMemoryV1List(t *testing.T) {
 }
 
 func TestMemoryV1Delete(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"memory:v1", "delete",
@@ -103,7 +99,6 @@ func TestMemoryV1Delete(t *testing.T) {
 }
 
 func TestMemoryV1DeleteAll(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"memory:v1", "delete-all",
@@ -123,7 +118,6 @@ func TestMemoryV1DeleteAll(t *testing.T) {
 }
 
 func TestMemoryV1Search(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"memory:v1", "search",
