@@ -73,6 +73,31 @@ func init() {
 		},
 		Commands: []*cli.Command{
 			{
+				Name:     "agent:v1:agents",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&agentV1AgentsCreate,
+					&agentV1AgentsRetrieve,
+					&agentV1AgentsUpdate,
+					&agentV1AgentsList,
+					&agentV1AgentsDelete,
+				},
+			},
+			{
+				Name:     "agent:v1:run",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&agentV1RunCreate,
+					&agentV1RunCancel,
+					&agentV1RunExec,
+					&agentV1RunGetDetails,
+					&agentV1RunGetStatus,
+					&agentV1RunWatch,
+				},
+			},
+			{
 				Name:     "system",
 				Category: "API RESOURCE",
 				Suggest:  true,
