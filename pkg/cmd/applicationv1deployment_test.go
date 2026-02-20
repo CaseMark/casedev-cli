@@ -9,7 +9,7 @@ import (
 )
 
 func TestApplicationsV1DeploymentsCreate(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"applications:v1:deployments", "create",
@@ -20,7 +20,7 @@ func TestApplicationsV1DeploymentsCreate(t *testing.T) {
 }
 
 func TestApplicationsV1DeploymentsRetrieve(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"applications:v1:deployments", "retrieve",
@@ -31,7 +31,7 @@ func TestApplicationsV1DeploymentsRetrieve(t *testing.T) {
 }
 
 func TestApplicationsV1DeploymentsList(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"applications:v1:deployments", "list",
@@ -43,7 +43,7 @@ func TestApplicationsV1DeploymentsList(t *testing.T) {
 }
 
 func TestApplicationsV1DeploymentsCancel(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"applications:v1:deployments", "cancel",
@@ -53,7 +53,7 @@ func TestApplicationsV1DeploymentsCancel(t *testing.T) {
 }
 
 func TestApplicationsV1DeploymentsCreateFromFiles(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"applications:v1:deployments", "create-from-files",
@@ -61,7 +61,7 @@ func TestApplicationsV1DeploymentsCreateFromFiles(t *testing.T) {
 }
 
 func TestApplicationsV1DeploymentsGetLogs(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"applications:v1:deployments", "get-logs",
@@ -71,7 +71,7 @@ func TestApplicationsV1DeploymentsGetLogs(t *testing.T) {
 }
 
 func TestApplicationsV1DeploymentsGetStatus(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"applications:v1:deployments", "get-status",
@@ -80,7 +80,7 @@ func TestApplicationsV1DeploymentsGetStatus(t *testing.T) {
 }
 
 func TestApplicationsV1DeploymentsStream(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"applications:v1:deployments", "stream",

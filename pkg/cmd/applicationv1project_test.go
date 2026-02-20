@@ -10,7 +10,7 @@ import (
 )
 
 func TestApplicationsV1ProjectsCreate(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"applications:v1:projects", "create",
@@ -48,7 +48,7 @@ func TestApplicationsV1ProjectsCreate(t *testing.T) {
 }
 
 func TestApplicationsV1ProjectsRetrieve(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"applications:v1:projects", "retrieve",
@@ -57,7 +57,7 @@ func TestApplicationsV1ProjectsRetrieve(t *testing.T) {
 }
 
 func TestApplicationsV1ProjectsList(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"applications:v1:projects", "list",
@@ -65,7 +65,7 @@ func TestApplicationsV1ProjectsList(t *testing.T) {
 }
 
 func TestApplicationsV1ProjectsDelete(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"applications:v1:projects", "delete",
@@ -75,7 +75,7 @@ func TestApplicationsV1ProjectsDelete(t *testing.T) {
 }
 
 func TestApplicationsV1ProjectsCreateDeployment(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"applications:v1:projects", "create-deployment",
@@ -99,7 +99,7 @@ func TestApplicationsV1ProjectsCreateDeployment(t *testing.T) {
 }
 
 func TestApplicationsV1ProjectsCreateDomain(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"applications:v1:projects", "create-domain",
@@ -110,7 +110,7 @@ func TestApplicationsV1ProjectsCreateDomain(t *testing.T) {
 }
 
 func TestApplicationsV1ProjectsCreateEnv(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"applications:v1:projects", "create-env",
@@ -124,7 +124,7 @@ func TestApplicationsV1ProjectsCreateEnv(t *testing.T) {
 }
 
 func TestApplicationsV1ProjectsDeleteDomain(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"applications:v1:projects", "delete-domain",
@@ -134,7 +134,7 @@ func TestApplicationsV1ProjectsDeleteDomain(t *testing.T) {
 }
 
 func TestApplicationsV1ProjectsDeleteEnv(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"applications:v1:projects", "delete-env",
@@ -144,7 +144,7 @@ func TestApplicationsV1ProjectsDeleteEnv(t *testing.T) {
 }
 
 func TestApplicationsV1ProjectsGetRuntimeLogs(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"applications:v1:projects", "get-runtime-logs",
@@ -154,7 +154,7 @@ func TestApplicationsV1ProjectsGetRuntimeLogs(t *testing.T) {
 }
 
 func TestApplicationsV1ProjectsListDeployments(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"applications:v1:projects", "list-deployments",
@@ -166,7 +166,7 @@ func TestApplicationsV1ProjectsListDeployments(t *testing.T) {
 }
 
 func TestApplicationsV1ProjectsListDomains(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"applications:v1:projects", "list-domains",
@@ -175,7 +175,7 @@ func TestApplicationsV1ProjectsListDomains(t *testing.T) {
 }
 
 func TestApplicationsV1ProjectsListEnv(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"applications:v1:projects", "list-env",
