@@ -11,10 +11,6 @@ jobs:
   breaking-change-check:
     name: breaking-change-check
     runs-on: ubuntu-latest
-    # Stainless-generated PRs are always safe — they are produced from a
-    # controlled codegen pipeline and reviewed by the oasdiff check in the
-    # source (casedotdev-mono) repo before the spec is ever published.
-    if: github.event.pull_request.user.login != 'stainless-app[bot]'
     outputs:
       breaking: ${{ steps.diff.outputs.breaking }}
     steps:
@@ -91,8 +87,6 @@ jobs:
     # Only runs when breaking changes were detected (oasdiff exited non-zero,
     # causing breaking-change-check to fail). The environment gate pauses here
     # and waits for a required reviewer to approve before the job proceeds.
-    # Stainless PRs never reach this job because breaking-change-check is
-    # skipped for them entirely.
     if: failure()
     environment: breaking-change-gate
     runs-on: ubuntu-latest
