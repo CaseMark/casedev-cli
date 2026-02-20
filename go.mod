@@ -3,7 +3,7 @@ module github.com/CaseMark/casedev-cli
 go 1.25
 
 require (
-	github.com/CaseMark/casedev-go v0.1.0
+	github.com/CaseMark/casedev-go v0.2.1
 	github.com/charmbracelet/bubbles v0.21.0
 	github.com/charmbracelet/bubbletea v1.3.6
 	github.com/charmbracelet/lipgloss v1.1.0
