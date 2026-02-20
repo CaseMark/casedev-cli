@@ -9,7 +9,6 @@ import (
 )
 
 func TestFormatV1TemplatesCreate(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"format:v1:templates", "create",
@@ -24,7 +23,6 @@ func TestFormatV1TemplatesCreate(t *testing.T) {
 }
 
 func TestFormatV1TemplatesRetrieve(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"format:v1:templates", "retrieve",
@@ -33,7 +31,6 @@ func TestFormatV1TemplatesRetrieve(t *testing.T) {
 }
 
 func TestFormatV1TemplatesList(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"format:v1:templates", "list",

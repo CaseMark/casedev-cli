@@ -9,7 +9,6 @@ import (
 )
 
 func TestVoiceStreamingGetURL(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"voice:streaming", "get-url",

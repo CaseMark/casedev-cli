@@ -9,7 +9,6 @@ import (
 )
 
 func TestVaultEventsSubscriptionsCreate(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:events:subscriptions", "create",
@@ -22,7 +21,6 @@ func TestVaultEventsSubscriptionsCreate(t *testing.T) {
 }
 
 func TestVaultEventsSubscriptionsUpdate(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:events:subscriptions", "update",
@@ -38,7 +36,6 @@ func TestVaultEventsSubscriptionsUpdate(t *testing.T) {
 }
 
 func TestVaultEventsSubscriptionsList(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:events:subscriptions", "list",
@@ -47,7 +44,6 @@ func TestVaultEventsSubscriptionsList(t *testing.T) {
 }
 
 func TestVaultEventsSubscriptionsDelete(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:events:subscriptions", "delete",
@@ -57,7 +53,6 @@ func TestVaultEventsSubscriptionsDelete(t *testing.T) {
 }
 
 func TestVaultEventsSubscriptionsTest(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:events:subscriptions", "test",

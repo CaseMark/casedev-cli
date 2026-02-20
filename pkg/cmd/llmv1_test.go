@@ -9,7 +9,6 @@ import (
 )
 
 func TestLlmV1CreateEmbedding(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"llm:v1", "create-embedding",
@@ -22,7 +21,6 @@ func TestLlmV1CreateEmbedding(t *testing.T) {
 }
 
 func TestLlmV1ListModels(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"llm:v1", "list-models",

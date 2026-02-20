@@ -245,6 +245,7 @@ func init() {
 					&legalV1PatentSearch,
 					&legalV1Research,
 					&legalV1Similar,
+					&legalV1TrademarkSearch,
 					&legalV1Verify,
 				},
 			},

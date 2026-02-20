@@ -10,7 +10,6 @@ import (
 )
 
 func TestVaultMultipartAbort(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:multipart", "abort",
@@ -21,7 +20,6 @@ func TestVaultMultipartAbort(t *testing.T) {
 }
 
 func TestVaultMultipartGetPartURLs(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:multipart", "get-part-urls",

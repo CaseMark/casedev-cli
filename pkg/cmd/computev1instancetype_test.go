@@ -9,7 +9,6 @@ import (
 )
 
 func TestComputeV1InstanceTypesList(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"compute:v1:instance-types", "list",
