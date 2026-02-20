@@ -73,13 +73,12 @@ jobs:
       - name: Check for breaking changes
         if: steps.urls.outputs.same_spec == 'false'
         id: diff
-        # Pinned to v0.0.9 (108bca0df7095bee6480199e16c6e53066868a0e)
-        uses: oasdiff/oasdiff-action/breaking@108bca0df7095bee6480199e16c6e53066868a0e
+        # Pinned to v0.0.21 (1c611ffb1253a72924624aa4fb662e302b3565d3)
+        uses: oasdiff/oasdiff-action/breaking@1c611ffb1253a72924624aa4fb662e302b3565d3
         with:
           base: /tmp/base-spec.yml
           revision: /tmp/head-spec.yml
           fail-on: ERR
-          format: text
 
   admin-approval:
     name: admin-approval
