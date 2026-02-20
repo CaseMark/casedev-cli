@@ -9,7 +9,7 @@ import (
 )
 
 func TestVoiceTranscriptionCreate(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"voice:transcription", "create",
@@ -32,7 +32,7 @@ func TestVoiceTranscriptionCreate(t *testing.T) {
 }
 
 func TestVoiceTranscriptionRetrieve(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"voice:transcription", "retrieve",
@@ -41,7 +41,7 @@ func TestVoiceTranscriptionRetrieve(t *testing.T) {
 }
 
 func TestVoiceTranscriptionDelete(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"voice:transcription", "delete",

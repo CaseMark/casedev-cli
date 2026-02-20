@@ -9,7 +9,7 @@ import (
 )
 
 func TestComputeV1InstancesCreate(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"compute:v1:instances", "create",
@@ -22,7 +22,7 @@ func TestComputeV1InstancesCreate(t *testing.T) {
 }
 
 func TestComputeV1InstancesRetrieve(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"compute:v1:instances", "retrieve",
@@ -31,7 +31,7 @@ func TestComputeV1InstancesRetrieve(t *testing.T) {
 }
 
 func TestComputeV1InstancesList(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"compute:v1:instances", "list",
@@ -39,7 +39,7 @@ func TestComputeV1InstancesList(t *testing.T) {
 }
 
 func TestComputeV1InstancesDelete(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"compute:v1:instances", "delete",

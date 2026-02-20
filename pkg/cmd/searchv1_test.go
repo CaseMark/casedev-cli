@@ -9,7 +9,7 @@ import (
 )
 
 func TestSearchV1Answer(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"search:v1", "answer",
@@ -28,7 +28,7 @@ func TestSearchV1Answer(t *testing.T) {
 }
 
 func TestSearchV1Contents(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"search:v1", "contents",
@@ -46,7 +46,7 @@ func TestSearchV1Contents(t *testing.T) {
 }
 
 func TestSearchV1Research(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"search:v1", "research",
@@ -58,7 +58,7 @@ func TestSearchV1Research(t *testing.T) {
 }
 
 func TestSearchV1RetrieveResearch(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"search:v1", "retrieve-research",
@@ -69,7 +69,7 @@ func TestSearchV1RetrieveResearch(t *testing.T) {
 }
 
 func TestSearchV1Search(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"search:v1", "search",
@@ -91,7 +91,7 @@ func TestSearchV1Search(t *testing.T) {
 }
 
 func TestSearchV1Similar(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"search:v1", "similar",

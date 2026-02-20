@@ -10,7 +10,7 @@ import (
 )
 
 func TestVaultCreate(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault", "create",
@@ -24,7 +24,7 @@ func TestVaultCreate(t *testing.T) {
 }
 
 func TestVaultRetrieve(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault", "retrieve",
@@ -33,7 +33,7 @@ func TestVaultRetrieve(t *testing.T) {
 }
 
 func TestVaultUpdate(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault", "update",
@@ -46,7 +46,7 @@ func TestVaultUpdate(t *testing.T) {
 }
 
 func TestVaultList(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault", "list",
@@ -54,7 +54,7 @@ func TestVaultList(t *testing.T) {
 }
 
 func TestVaultDelete(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault", "delete",
@@ -64,7 +64,7 @@ func TestVaultDelete(t *testing.T) {
 }
 
 func TestVaultConfirmUpload(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault", "confirm-upload",
@@ -79,7 +79,7 @@ func TestVaultConfirmUpload(t *testing.T) {
 }
 
 func TestVaultIngest(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault", "ingest",
@@ -89,7 +89,7 @@ func TestVaultIngest(t *testing.T) {
 }
 
 func TestVaultSearch(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault", "search",
@@ -116,7 +116,7 @@ func TestVaultSearch(t *testing.T) {
 }
 
 func TestVaultUpload(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault", "upload",

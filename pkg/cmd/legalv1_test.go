@@ -9,7 +9,7 @@ import (
 )
 
 func TestLegalV1Find(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"legal:v1", "find",
@@ -20,7 +20,7 @@ func TestLegalV1Find(t *testing.T) {
 }
 
 func TestLegalV1GetCitations(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"legal:v1", "get-citations",
@@ -29,7 +29,7 @@ func TestLegalV1GetCitations(t *testing.T) {
 }
 
 func TestLegalV1GetCitationsFromURL(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"legal:v1", "get-citations-from-url",
@@ -38,7 +38,7 @@ func TestLegalV1GetCitationsFromURL(t *testing.T) {
 }
 
 func TestLegalV1GetFullText(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"legal:v1", "get-full-text",
@@ -50,7 +50,7 @@ func TestLegalV1GetFullText(t *testing.T) {
 }
 
 func TestLegalV1ListJurisdictions(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"legal:v1", "list-jurisdictions",
@@ -59,7 +59,7 @@ func TestLegalV1ListJurisdictions(t *testing.T) {
 }
 
 func TestLegalV1PatentSearch(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"legal:v1", "patent-search",
@@ -80,7 +80,7 @@ func TestLegalV1PatentSearch(t *testing.T) {
 }
 
 func TestLegalV1Research(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"legal:v1", "research",
@@ -92,7 +92,7 @@ func TestLegalV1Research(t *testing.T) {
 }
 
 func TestLegalV1Similar(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"legal:v1", "similar",
@@ -104,7 +104,7 @@ func TestLegalV1Similar(t *testing.T) {
 }
 
 func TestLegalV1Verify(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"legal:v1", "verify",

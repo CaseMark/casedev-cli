@@ -9,7 +9,7 @@ import (
 )
 
 func TestAgentV1RunCreate(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"agent:v1:run", "create",
@@ -21,7 +21,7 @@ func TestAgentV1RunCreate(t *testing.T) {
 }
 
 func TestAgentV1RunCancel(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"agent:v1:run", "cancel",
@@ -30,7 +30,7 @@ func TestAgentV1RunCancel(t *testing.T) {
 }
 
 func TestAgentV1RunExec(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"agent:v1:run", "exec",
@@ -39,7 +39,7 @@ func TestAgentV1RunExec(t *testing.T) {
 }
 
 func TestAgentV1RunGetDetails(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"agent:v1:run", "get-details",
@@ -48,7 +48,7 @@ func TestAgentV1RunGetDetails(t *testing.T) {
 }
 
 func TestAgentV1RunGetStatus(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"agent:v1:run", "get-status",
@@ -57,7 +57,7 @@ func TestAgentV1RunGetStatus(t *testing.T) {
 }
 
 func TestAgentV1RunWatch(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"agent:v1:run", "watch",
