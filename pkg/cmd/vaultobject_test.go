@@ -9,7 +9,6 @@ import (
 )
 
 func TestVaultObjectsRetrieve(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:objects", "retrieve",
@@ -19,7 +18,6 @@ func TestVaultObjectsRetrieve(t *testing.T) {
 }
 
 func TestVaultObjectsUpdate(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:objects", "update",
@@ -32,7 +30,6 @@ func TestVaultObjectsUpdate(t *testing.T) {
 }
 
 func TestVaultObjectsList(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:objects", "list",
@@ -41,7 +38,6 @@ func TestVaultObjectsList(t *testing.T) {
 }
 
 func TestVaultObjectsDelete(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:objects", "delete",
@@ -52,7 +48,6 @@ func TestVaultObjectsDelete(t *testing.T) {
 }
 
 func TestVaultObjectsCreatePresignedURL(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:objects", "create-presigned-url",
@@ -65,18 +60,7 @@ func TestVaultObjectsCreatePresignedURL(t *testing.T) {
 	)
 }
 
-func TestVaultObjectsDownload(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"vault:objects", "download",
-		"--id", "id",
-		"--object-id", "objectId",
-	)
-}
-
 func TestVaultObjectsGetOcrWords(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:objects", "get-ocr-words",
@@ -89,7 +73,6 @@ func TestVaultObjectsGetOcrWords(t *testing.T) {
 }
 
 func TestVaultObjectsGetSummarizeJob(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:objects", "get-summarize-job",
@@ -100,7 +83,6 @@ func TestVaultObjectsGetSummarizeJob(t *testing.T) {
 }
 
 func TestVaultObjectsGetText(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:objects", "get-text",

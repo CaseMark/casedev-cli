@@ -266,6 +266,26 @@ var legalV1Similar = cli.Command{
 	HideHelpCommand: true,
 }
 
+var legalV1TrademarkSearch = cli.Command{
+	Name:    "trademark-search",
+	Usage:   "Look up trademark status and details from the USPTO Trademark Status & Document\nRetrieval (TSDR) system. Supports lookup by serial number or registration\nnumber. Returns mark text, status, owner, goods/services, Nice classification,\nfiling/registration dates, and more.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:     "registration-number",
+			Usage:    `USPTO registration number (e.g. "6123456"). Provide either serialNumber or registrationNumber.`,
+			BodyPath: "registrationNumber",
+		},
+		&requestflag.Flag[string]{
+			Name:     "serial-number",
+			Usage:    `USPTO serial number (e.g. "97123456"). Provide either serialNumber or registrationNumber.`,
+			BodyPath: "serialNumber",
+		},
+	},
+	Action:          handleLegalV1TrademarkSearch,
+	HideHelpCommand: true,
+}
+
 var legalV1Verify = cli.Command{
 	Name:    "verify",
 	Usage:   "Validates legal citations against authoritative case law sources (CourtListener\ndatabase of ~10M cases). Returns verification status and case metadata for each\ncitation found in the input text. Accepts either a single citation or a full\ntext block containing multiple citations.",
@@ -552,6 +572,40 @@ func handleLegalV1Similar(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
 	return ShowJSON(os.Stdout, "legal:v1 similar", obj, format, transform)
+}
+
+func handleLegalV1TrademarkSearch(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	params := githubcomcasemarkcasedevgo.LegalV1TrademarkSearchParams{}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Legal.V1.TrademarkSearch(ctx, params, options...)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(os.Stdout, "legal:v1 trademark-search", obj, format, transform)
 }
 
 func handleLegalV1Verify(ctx context.Context, cmd *cli.Command) error {

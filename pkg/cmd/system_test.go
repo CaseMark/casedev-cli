@@ -9,7 +9,6 @@ import (
 )
 
 func TestSystemListServices(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"system", "list-services",

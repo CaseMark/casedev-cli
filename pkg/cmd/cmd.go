@@ -245,6 +245,7 @@ func init() {
 					&legalV1PatentSearch,
 					&legalV1Research,
 					&legalV1Similar,
+					&legalV1TrademarkSearch,
 					&legalV1Verify,
 				},
 			},
@@ -292,7 +293,6 @@ func init() {
 				Suggest:  true,
 				Commands: []*cli.Command{
 					&ocrV1Retrieve,
-					&ocrV1Download,
 					&ocrV1Process,
 				},
 			},
@@ -395,7 +395,6 @@ func init() {
 					&vaultObjectsList,
 					&vaultObjectsDelete,
 					&vaultObjectsCreatePresignedURL,
-					&vaultObjectsDownload,
 					&vaultObjectsGetOcrWords,
 					&vaultObjectsGetSummarizeJob,
 					&vaultObjectsGetText,

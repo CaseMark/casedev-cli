@@ -9,7 +9,6 @@ import (
 )
 
 func TestPrivilegeV1Detect(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"privilege:v1", "detect",

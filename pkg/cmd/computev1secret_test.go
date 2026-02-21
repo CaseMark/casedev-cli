@@ -9,7 +9,6 @@ import (
 )
 
 func TestComputeV1SecretsCreate(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"compute:v1:secrets", "create",
@@ -20,7 +19,6 @@ func TestComputeV1SecretsCreate(t *testing.T) {
 }
 
 func TestComputeV1SecretsList(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"compute:v1:secrets", "list",
@@ -29,7 +27,6 @@ func TestComputeV1SecretsList(t *testing.T) {
 }
 
 func TestComputeV1SecretsDeleteGroup(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"compute:v1:secrets", "delete-group",
@@ -40,7 +37,6 @@ func TestComputeV1SecretsDeleteGroup(t *testing.T) {
 }
 
 func TestComputeV1SecretsRetrieveGroup(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"compute:v1:secrets", "retrieve-group",
@@ -50,7 +46,6 @@ func TestComputeV1SecretsRetrieveGroup(t *testing.T) {
 }
 
 func TestComputeV1SecretsUpdateGroup(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"compute:v1:secrets", "update-group",

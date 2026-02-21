@@ -10,7 +10,6 @@ import (
 )
 
 func TestAgentV1AgentsCreate(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"agent:v1:agents", "create",
@@ -44,7 +43,6 @@ func TestAgentV1AgentsCreate(t *testing.T) {
 }
 
 func TestAgentV1AgentsRetrieve(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"agent:v1:agents", "retrieve",
@@ -53,7 +51,6 @@ func TestAgentV1AgentsRetrieve(t *testing.T) {
 }
 
 func TestAgentV1AgentsUpdate(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"agent:v1:agents", "update",
@@ -70,7 +67,6 @@ func TestAgentV1AgentsUpdate(t *testing.T) {
 }
 
 func TestAgentV1AgentsList(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"agent:v1:agents", "list",
@@ -78,7 +74,6 @@ func TestAgentV1AgentsList(t *testing.T) {
 }
 
 func TestAgentV1AgentsDelete(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"agent:v1:agents", "delete",
