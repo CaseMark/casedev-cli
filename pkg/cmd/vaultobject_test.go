@@ -60,15 +60,6 @@ func TestVaultObjectsCreatePresignedURL(t *testing.T) {
 	)
 }
 
-func TestVaultObjectsDownload(t *testing.T) {
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"vault:objects", "download",
-		"--id", "id",
-		"--object-id", "objectId",
-	)
-}
-
 func TestVaultObjectsGetOcrWords(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,

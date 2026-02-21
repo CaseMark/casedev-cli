@@ -17,15 +17,6 @@ func TestOcrV1Retrieve(t *testing.T) {
 	)
 }
 
-func TestOcrV1Download(t *testing.T) {
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"ocr:v1", "download",
-		"--id", "id",
-		"--type", "text",
-	)
-}
-
 func TestOcrV1Process(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
