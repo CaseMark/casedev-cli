@@ -143,24 +143,6 @@ var vaultObjectsCreatePresignedURL = cli.Command{
 	HideHelpCommand: true,
 }
 
-var vaultObjectsDownload = cli.Command{
-	Name:    "download",
-	Usage:   "Downloads a file from a vault. Returns the actual file content as a binary\nstream with appropriate headers for file download. Useful for retrieving\ncontracts, depositions, case files, and other legal documents stored in your\nvault.",
-	Suggest: true,
-	Flags: []cli.Flag{
-		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
-		},
-		&requestflag.Flag[string]{
-			Name:     "object-id",
-			Required: true,
-		},
-	},
-	Action:          handleVaultObjectsDownload,
-	HideHelpCommand: true,
-}
-
 var vaultObjectsGetOcrWords = cli.Command{
 	Name:    "get-ocr-words",
 	Usage:   "Retrieves word-level OCR bounding box data for a processed PDF document. Each\nword includes its text, normalized bounding box coordinates (0-1 range),\nconfidence score, and global word index. Use this data to highlight specific\ntext ranges in a PDF viewer based on word indices from search results.",
@@ -452,50 +434,6 @@ func handleVaultObjectsCreatePresignedURL(ctx context.Context, cmd *cli.Command)
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
 	return ShowJSON(os.Stdout, "vault:objects create-presigned-url", obj, format, transform)
-}
-
-func handleVaultObjectsDownload(ctx context.Context, cmd *cli.Command) error {
-	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
-	unusedArgs := cmd.Args().Slice()
-	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
-		cmd.Set("id", unusedArgs[0])
-		unusedArgs = unusedArgs[1:]
-	}
-	if !cmd.IsSet("object-id") && len(unusedArgs) > 0 {
-		cmd.Set("object-id", unusedArgs[0])
-		unusedArgs = unusedArgs[1:]
-	}
-	if len(unusedArgs) > 0 {
-		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
-	}
-
-	options, err := flagOptions(
-		cmd,
-		apiquery.NestedQueryFormatBrackets,
-		apiquery.ArrayQueryFormatComma,
-		EmptyBody,
-		false,
-	)
-	if err != nil {
-		return err
-	}
-
-	var res []byte
-	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Vault.Objects.Download(
-		ctx,
-		cmd.Value("id").(string),
-		cmd.Value("object-id").(string),
-		options...,
-	)
-	if err != nil {
-		return err
-	}
-
-	obj := gjson.ParseBytes(res)
-	format := cmd.Root().String("format")
-	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "vault:objects download", obj, format, transform)
 }
 
 func handleVaultObjectsGetOcrWords(ctx context.Context, cmd *cli.Command) error {

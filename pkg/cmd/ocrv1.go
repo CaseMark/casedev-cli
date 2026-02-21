@@ -29,24 +29,6 @@ var ocrV1Retrieve = cli.Command{
 	HideHelpCommand: true,
 }
 
-var ocrV1Download = cli.Command{
-	Name:    "download",
-	Usage:   "Download OCR processing results in various formats. Returns the processed\ndocument as text extraction, structured JSON with coordinates, searchable PDF\nwith text layer, or the original uploaded document.",
-	Suggest: true,
-	Flags: []cli.Flag{
-		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
-		},
-		&requestflag.Flag[string]{
-			Name:     "type",
-			Required: true,
-		},
-	},
-	Action:          handleOcrV1Download,
-	HideHelpCommand: true,
-}
-
 var ocrV1Process = requestflag.WithInnerFlags(cli.Command{
 	Name:    "process",
 	Usage:   "Submit a document for OCR processing to extract text, detect tables, forms, and\nother features. Supports PDFs, images, and scanned documents. Returns a job ID\nthat can be used to track processing status.",
@@ -145,50 +127,6 @@ func handleOcrV1Retrieve(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
 	return ShowJSON(os.Stdout, "ocr:v1 retrieve", obj, format, transform)
-}
-
-func handleOcrV1Download(ctx context.Context, cmd *cli.Command) error {
-	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
-	unusedArgs := cmd.Args().Slice()
-	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
-		cmd.Set("id", unusedArgs[0])
-		unusedArgs = unusedArgs[1:]
-	}
-	if !cmd.IsSet("type") && len(unusedArgs) > 0 {
-		cmd.Set("type", unusedArgs[0])
-		unusedArgs = unusedArgs[1:]
-	}
-	if len(unusedArgs) > 0 {
-		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
-	}
-
-	options, err := flagOptions(
-		cmd,
-		apiquery.NestedQueryFormatBrackets,
-		apiquery.ArrayQueryFormatComma,
-		EmptyBody,
-		false,
-	)
-	if err != nil {
-		return err
-	}
-
-	var res []byte
-	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Ocr.V1.Download(
-		ctx,
-		cmd.Value("id").(string),
-		githubcomcasemarkcasedevgo.OcrV1DownloadParamsType(cmd.Value("type").(string)),
-		options...,
-	)
-	if err != nil {
-		return err
-	}
-
-	obj := gjson.ParseBytes(res)
-	format := cmd.Root().String("format")
-	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "ocr:v1 download", obj, format, transform)
 }
 
 func handleOcrV1Process(ctx context.Context, cmd *cli.Command) error {

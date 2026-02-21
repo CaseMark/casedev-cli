@@ -293,7 +293,6 @@ func init() {
 				Suggest:  true,
 				Commands: []*cli.Command{
 					&ocrV1Retrieve,
-					&ocrV1Download,
 					&ocrV1Process,
 				},
 			},
@@ -396,7 +395,6 @@ func init() {
 					&vaultObjectsList,
 					&vaultObjectsDelete,
 					&vaultObjectsCreatePresignedURL,
-					&vaultObjectsDownload,
 					&vaultObjectsGetOcrWords,
 					&vaultObjectsGetSummarizeJob,
 					&vaultObjectsGetText,
