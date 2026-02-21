@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.3.0 (2026-02-21)
+
+Full Changelog: [v0.2.1...v0.3.0](https://github.com/CaseMark/casedev-cli/compare/v0.2.1...v0.3.0)
+
+### Features
+
+* **api:** api update ([25967a9](https://github.com/CaseMark/casedev-cli/commit/25967a98543354995c77341905c1d05f8eca53cb))
+* **api:** api update ([822ccc7](https://github.com/CaseMark/casedev-cli/commit/822ccc73492432fe86d11e7f8b2ed704d91a8d6d))
+
+
+### Bug Fixes
+
+* bump casedev-go to v0.3.0 for TrademarkSearch support ([f39a0e3](https://github.com/CaseMark/casedev-cli/commit/f39a0e3179e469c416e273d28dade87146c8bbff))
+* set dummy CASEDEV_API_KEY for mock server tests ([9701a85](https://github.com/CaseMark/casedev-cli/commit/9701a85649f1d6c215a2caec5983b7c94d7089f6))
+
 ## 0.2.1 (2026-02-20)
 
 Full Changelog: [v0.2.0...v0.2.1](https://github.com/CaseMark/casedev-cli/compare/v0.2.0...v0.2.1)
