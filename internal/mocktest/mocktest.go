@@ -80,6 +80,12 @@ func TestRunMockTestWithFlags(t *testing.T, flags ...string) {
 
 	cliCmd := exec.Command("go", args...)
 
+	// Ensure a dummy API key is set so the SDK sends an Authorization header,
+	// which Prism requires per the OpenAPI spec's security scheme.
+	if os.Getenv("CASEDEV_API_KEY") == "" {
+		cliCmd.Env = append(os.Environ(), "CASEDEV_API_KEY=test-mock-api-key")
+	}
+
 	// Pipe the CLI tool's output into `head` so it doesn't hang when simulating
 	// paginated or streamed endpoints. 100 lines of output should be enough to
 	// test that the API endpoint worked, or report back a meaningful amount of
