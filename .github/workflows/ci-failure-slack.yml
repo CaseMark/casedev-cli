@@ -5,14 +5,34 @@ on:
     workflows: ["CI"]
     types:
       - completed
-    branches: [main]
 
 jobs:
   notify:
     if: github.event.workflow_run.conclusion == 'failure'
     runs-on: ubuntu-latest
     steps:
+      - name: Check for PR targeting main
+        id: pr_check
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pulls = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              commit_sha: context.payload.workflow_run.head_sha,
+            });
+            const prToMain = pulls.data.find(pr => pr.base.ref === 'main' && pr.state === 'open');
+            if (prToMain) {
+              core.setOutput('found', 'true');
+              core.setOutput('pr_url', prToMain.html_url);
+              core.setOutput('pr_title', prToMain.title);
+              core.setOutput('pr_number', prToMain.number);
+            } else {
+              core.setOutput('found', 'false');
+            }
+
       - name: Post to Slack
+        if: steps.pr_check.outputs.found == 'true'
         uses: slackapi/slack-github-action@v2.0.0
         with:
           method: chat.postMessage
@@ -20,7 +40,7 @@ jobs:
           payload: |
             {
               "channel": "C0AE0B1A874",
-              "text": "CI failed on ${{ github.repository }}",
+              "text": "CI failed on ${{ github.repository }} PR #${{ steps.pr_check.outputs.pr_number }}",
               "blocks": [
                 {
                   "type": "section",
@@ -33,7 +53,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*Repo:* ${{ github.repository }}\n*Branch:* ${{ github.event.workflow_run.head_branch }}\n*Commit:* `${{ github.event.workflow_run.head_sha }}`\n*Author:* ${{ github.event.workflow_run.actor.login }}\n<${{ github.event.workflow_run.html_url }}|View Failed Run>"
+                    "text": "*Repo:* ${{ github.repository }}\n*PR:* <${{ steps.pr_check.outputs.pr_url }}|#${{ steps.pr_check.outputs.pr_number }} — ${{ steps.pr_check.outputs.pr_title }}>\n*Branch:* ${{ github.event.workflow_run.head_branch }}\n*Commit:* `${{ github.event.workflow_run.head_sha }}`\n*Author:* ${{ github.event.workflow_run.actor.login }}\n<${{ github.event.workflow_run.html_url }}|View Failed Run>"
                   }
                 }
               ]
