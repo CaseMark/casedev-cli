@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.3 (2026-02-23)
+
+Full Changelog: [v0.3.2...v0.3.3](https://github.com/CaseMark/casedev-cli/compare/v0.3.2...v0.3.3)
+
+### Chores
+
+* update SDK settings ([b0396d5](https://github.com/CaseMark/casedev-cli/commit/b0396d5e5f6d4525e1d8bb0969543616b9b5be92))
+
 ## 0.3.2 (2026-02-23)
 
 Full Changelog: [v0.3.1...v0.3.2](https://github.com/CaseMark/casedev-cli/compare/v0.3.1...v0.3.2)
