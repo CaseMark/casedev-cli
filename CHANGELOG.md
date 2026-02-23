@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.1 (2026-02-23)
+
+Full Changelog: [v0.3.0...v0.3.1](https://github.com/CaseMark/casedev-cli/compare/v0.3.0...v0.3.1)
+
+### Chores
+
+* replace PR open Slack alert with CI failure alert ([b414a29](https://github.com/CaseMark/casedev-cli/commit/b414a29ba634fe75e5fdf2b8c33b4e32f9d55f23))
+
 ## 0.3.0 (2026-02-21)
 
 Full Changelog: [v0.2.1...v0.3.0](https://github.com/CaseMark/casedev-cli/compare/v0.2.1...v0.3.0)
