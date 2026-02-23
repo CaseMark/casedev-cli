@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.2 (2026-02-23)
+
+Full Changelog: [v0.3.1...v0.3.2](https://github.com/CaseMark/casedev-cli/compare/v0.3.1...v0.3.2)
+
+### Bug Fixes
+
+* only alert on CI failure for PRs targeting main ([d342c99](https://github.com/CaseMark/casedev-cli/commit/d342c997e9a2c7671c45cda992286d105106a86e))
+* only alert Slack on CI failure for main branch ([435b6d5](https://github.com/CaseMark/casedev-cli/commit/435b6d59171c04c26e8be50ab9842c4d86886b40))
+
 ## 0.3.1 (2026-02-23)
 
 Full Changelog: [v0.3.0...v0.3.1](https://github.com/CaseMark/casedev-cli/compare/v0.3.0...v0.3.1)
