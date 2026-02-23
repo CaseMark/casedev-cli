@@ -1,13 +1,14 @@
-name: PR Review Slack
+name: CI Failure Slack
 
 on:
-  pull_request:
-    types: [opened, reopened, ready_for_review]
-  workflow_dispatch:
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
 
 jobs:
   notify:
-    if: github.event.pull_request.draft == false
+    if: github.event.workflow_run.conclusion == 'failure'
     runs-on: ubuntu-latest
     steps:
       - name: Post to Slack
@@ -18,20 +19,20 @@ jobs:
           payload: |
             {
               "channel": "C0AE0B1A874",
-              "text": "A new PR needs your review",
+              "text": "CI failed on ${{ github.repository }}",
               "blocks": [
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*A new PR needs your review*"
+                    "text": ":red_circle: *CI Failed*"
                   }
                 },
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*Repo:* ${{ github.repository }}\n*Title:* ${{ github.event.pull_request.title }}\n*Author:* ${{ github.event.pull_request.user.login }}\n<${{ github.event.pull_request.html_url }}|View PR>"
+                    "text": "*Repo:* ${{ github.repository }}\n*Branch:* ${{ github.event.workflow_run.head_branch }}\n*Commit:* `${{ github.event.workflow_run.head_sha }}`\n*Author:* ${{ github.event.workflow_run.actor.login }}\n<${{ github.event.workflow_run.html_url }}|View Failed Run>"
                   }
                 }
               ]
