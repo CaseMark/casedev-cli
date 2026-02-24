@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.4 (2026-02-24)
+
+Full Changelog: [v0.3.3...v0.3.4](https://github.com/CaseMark/casedev-cli/compare/v0.3.3...v0.3.4)
+
+### Bug Fixes
+
+* prevent duplicate Slack alerts from release-please branches ([e72bd51](https://github.com/CaseMark/casedev-cli/commit/e72bd5166ad6d84573be5f76cabaffcb707da72d))
+
 ## 0.3.3 (2026-02-23)
 
 Full Changelog: [v0.3.2...v0.3.3](https://github.com/CaseMark/casedev-cli/compare/v0.3.2...v0.3.3)
