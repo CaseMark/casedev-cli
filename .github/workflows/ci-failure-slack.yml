@@ -21,7 +21,11 @@ jobs:
               repo: context.repo.repo,
               commit_sha: context.payload.workflow_run.head_sha,
             });
-            const prToMain = pulls.data.find(pr => pr.base.ref === 'main' && pr.state === 'open');
+            const prToMain = pulls.data.find(pr =>
+              pr.base.ref === 'main' &&
+              pr.state === 'open' &&
+              !pr.head.ref.startsWith('release-please-')
+            );
             if (prToMain) {
               core.setOutput('found', 'true');
               core.setOutput('pr_url', prToMain.html_url);
