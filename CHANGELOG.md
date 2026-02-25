@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.3.6 (2026-02-25)
+
+Full Changelog: [v0.3.5...v0.3.6](https://github.com/CaseMark/casedev-cli/compare/v0.3.5...v0.3.6)
+
+### Bug Fixes
+
+* pin formatting for headers to always use repeat/dot formats ([a33f7f4](https://github.com/CaseMark/casedev-cli/commit/a33f7f4d269575b54b159c24ee0689b3f4ce134b))
+
+
+### Chores
+
+* **internal:** codegen related update ([2e8f723](https://github.com/CaseMark/casedev-cli/commit/2e8f72335f3fc89aa3821fcb826af32eb88bd974))
+* update readme with better instructions for installing with homebrew ([90b772a](https://github.com/CaseMark/casedev-cli/commit/90b772a0393b3eba09af6e85334462f831990006))
+
 ## 0.3.5 (2026-02-24)
 
 Full Changelog: [v0.3.4...v0.3.5](https://github.com/CaseMark/casedev-cli/compare/v0.3.4...v0.3.5)
