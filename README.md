@@ -11,8 +11,7 @@ It is generated with [Stainless](https://www.stainless.com/).
 ### Installing with Homebrew
 
 ```sh
-brew tap CaseMark/casedev
-brew install casedev
+brew install CaseMark/casedev/casedev
 ```
 
 ### Installing with Go
