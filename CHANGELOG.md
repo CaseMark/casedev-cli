@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.4.0 (2026-02-26)
+
+Full Changelog: [v0.3.6...v0.4.0](https://github.com/CaseMark/casedev-cli/compare/v0.3.6...v0.4.0)
+
+### Features
+
+* **api:** api update ([7c7c979](https://github.com/CaseMark/casedev-cli/commit/7c7c9795e927b6d31077647494c4f9f11db86357))
+
+
+### Bug Fixes
+
+* bump casedev-go to v0.4.0 to fix CI build failures ([fafab21](https://github.com/CaseMark/casedev-cli/commit/fafab211a854923b7e041d6838d89332bbd352eb))
+
 ## 0.3.6 (2026-02-25)
 
 Full Changelog: [v0.3.5...v0.3.6](https://github.com/CaseMark/casedev-cli/compare/v0.3.5...v0.3.6)
