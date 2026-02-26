@@ -58,6 +58,11 @@ var agentV1AgentsCreate = requestflag.WithInnerFlags(cli.Command{
 			BodyPath: "sandbox",
 		},
 		&requestflag.Flag[any]{
+			Name:     "vault-group",
+			Usage:    "Restrict agent to vaults within specific vault group IDs",
+			BodyPath: "vaultGroups",
+		},
+		&requestflag.Flag[any]{
 			Name:     "vault-id",
 			Usage:    "Restrict agent to specific vault IDs",
 			BodyPath: "vaultIds",
@@ -130,6 +135,10 @@ var agentV1AgentsUpdate = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "sandbox",
 			BodyPath: "sandbox",
+		},
+		&requestflag.Flag[any]{
+			Name:     "vault-group",
+			BodyPath: "vaultGroups",
 		},
 		&requestflag.Flag[any]{
 			Name:     "vault-id",

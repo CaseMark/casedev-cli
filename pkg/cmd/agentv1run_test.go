@@ -16,6 +16,7 @@ func TestAgentV1RunCreate(t *testing.T) {
 		"--prompt", "prompt",
 		"--guidance", "guidance",
 		"--model", "model",
+		"--object-id", "[string]",
 	)
 }
 

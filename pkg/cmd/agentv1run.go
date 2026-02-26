@@ -42,6 +42,11 @@ var agentV1RunCreate = cli.Command{
 			Usage:    "Override the agent default model for this run",
 			BodyPath: "model",
 		},
+		&requestflag.Flag[any]{
+			Name:     "object-id",
+			Usage:    "Scope this run to specific vault object IDs. The agent will only be able to access these objects during execution.",
+			BodyPath: "objectIds",
+		},
 	},
 	Action:          handleAgentV1RunCreate,
 	HideHelpCommand: true,

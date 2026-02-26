@@ -20,6 +20,7 @@ func TestAgentV1AgentsCreate(t *testing.T) {
 		"--enabled-tool", "[string]",
 		"--model", "model",
 		"--sandbox", "{cpu: 0, memoryMiB: 0}",
+		"--vault-group", "[string]",
 		"--vault-id", "[string]",
 	)
 
@@ -38,6 +39,7 @@ func TestAgentV1AgentsCreate(t *testing.T) {
 		"--model", "model",
 		"--sandbox.cpu", "0",
 		"--sandbox.memory-mi-b", "0",
+		"--vault-group", "[string]",
 		"--vault-id", "[string]",
 	)
 }
@@ -62,6 +64,7 @@ func TestAgentV1AgentsUpdate(t *testing.T) {
 		"--model", "model",
 		"--name", "name",
 		"--sandbox", "{}",
+		"--vault-group", "[string]",
 		"--vault-id", "[string]",
 	)
 }

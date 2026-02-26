@@ -98,6 +98,14 @@ func init() {
 				},
 			},
 			{
+				Name:     "agent:v1:execute",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&agentV1ExecuteCreate,
+				},
+			},
+			{
 				Name:     "system",
 				Category: "API RESOURCE",
 				Suggest:  true,
