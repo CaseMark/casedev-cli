@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.2 (2026-02-27)
+
+Full Changelog: [v0.4.1...v0.4.2](https://github.com/CaseMark/casedev-cli/compare/v0.4.1...v0.4.2)
+
+### Bug Fixes
+
+* more gracefully handle empty stdin input ([53c41d4](https://github.com/CaseMark/casedev-cli/commit/53c41d4fbaf3f47c90eb4b0e43c2aadc621c0801))
+
 ## 0.4.1 (2026-02-27)
 
 Full Changelog: [v0.4.0...v0.4.1](https://github.com/CaseMark/casedev-cli/compare/v0.4.0...v0.4.1)
