@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.1 (2026-02-27)
+
+Full Changelog: [v0.4.0...v0.4.1](https://github.com/CaseMark/casedev-cli/compare/v0.4.0...v0.4.1)
+
+### Chores
+
+* zip READMEs as part of build artifact ([e825863](https://github.com/CaseMark/casedev-cli/commit/e825863966a1910c8761141fe7bfc82ed95ba0e7))
+
 ## 0.4.0 (2026-02-26)
 
 Full Changelog: [v0.3.6...v0.4.0](https://github.com/CaseMark/casedev-cli/compare/v0.3.6...v0.4.0)
