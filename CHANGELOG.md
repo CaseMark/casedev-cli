@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.1 (2026-03-03)
+
+Full Changelog: [v0.5.0...v0.5.1](https://github.com/CaseMark/casedev-cli/compare/v0.5.0...v0.5.1)
+
+### Bug Fixes
+
+* deduplicate CI Slack alerts at workflow level, not PR level ([#26](https://github.com/CaseMark/casedev-cli/issues/26)) ([686a825](https://github.com/CaseMark/casedev-cli/commit/686a825f6a39455c31763430203519bd1a9e42f3))
+
 ## 0.5.0 (2026-03-03)
 
 Full Changelog: [v0.4.2...v0.5.0](https://github.com/CaseMark/casedev-cli/compare/v0.4.2...v0.5.0)
