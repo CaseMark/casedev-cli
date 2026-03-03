@@ -8,7 +8,9 @@ on:
 
 jobs:
   notify:
-    if: github.event.workflow_run.conclusion == 'failure'
+    if: >-
+      github.event.workflow_run.conclusion == 'failure' &&
+      !startsWith(github.event.workflow_run.head_branch, 'release-please-')
     runs-on: ubuntu-latest
     steps:
       - name: Check for PR targeting main
@@ -23,8 +25,7 @@ jobs:
             });
             const prToMain = pulls.data.find(pr =>
               pr.base.ref === 'main' &&
-              pr.state === 'open' &&
-              !pr.head.ref.startsWith('release-please-')
+              pr.state === 'open'
             );
             if (prToMain) {
               core.setOutput('found', 'true');
