@@ -15,6 +15,71 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
+var legalV1Docket = cli.Command{
+	Name:    "docket",
+	Usage:   "Search federal court dockets or retrieve a specific docket with optional filing\nentries via CourtListener RECAP data.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:     "type",
+			Usage:    "Search dockets or look up a docket by ID",
+			Required: true,
+			BodyPath: "type",
+		},
+		&requestflag.Flag[string]{
+			Name:     "court",
+			Usage:    `Optional CourtListener court slug (e.g. "nysd", "ca9", "cafc")`,
+			BodyPath: "court",
+		},
+		&requestflag.Flag[any]{
+			Name:     "date-filed-after",
+			Usage:    "Optional lower bound for filing date (YYYY-MM-DD)",
+			BodyPath: "dateFiledAfter",
+		},
+		&requestflag.Flag[any]{
+			Name:     "date-filed-before",
+			Usage:    "Optional upper bound for filing date (YYYY-MM-DD)",
+			BodyPath: "dateFiledBefore",
+		},
+		&requestflag.Flag[string]{
+			Name:     "docket-id",
+			Usage:    "CourtListener docket ID (required for lookup)",
+			BodyPath: "docketId",
+		},
+		&requestflag.Flag[bool]{
+			Name:     "include-entries",
+			Usage:    "Include docket entries/filings in lookup responses",
+			Default:  false,
+			BodyPath: "includeEntries",
+		},
+		&requestflag.Flag[int64]{
+			Name:     "limit",
+			Usage:    "Page size for search results or entry list (default 25 for search, 50 for lookup)",
+			Default:  25,
+			BodyPath: "limit",
+		},
+		&requestflag.Flag[bool]{
+			Name:     "live",
+			Usage:    "Reserved for future PACER live fetch support. Setting true currently returns 400.",
+			Default:  false,
+			BodyPath: "live",
+		},
+		&requestflag.Flag[int64]{
+			Name:     "offset",
+			Usage:    "Offset for search results or entry list",
+			Default:  0,
+			BodyPath: "offset",
+		},
+		&requestflag.Flag[string]{
+			Name:     "query",
+			Usage:    "Case name or party name search query (required for search)",
+			BodyPath: "query",
+		},
+	},
+	Action:          handleLegalV1Docket,
+	HideHelpCommand: true,
+}
+
 var legalV1Find = cli.Command{
 	Name:    "find",
 	Usage:   "Search for legal sources including cases, statutes, and regulations from\nauthoritative legal databases. Returns ranked candidates. Always verify with\nlegal.verify() before citing.",
@@ -103,6 +168,42 @@ var legalV1GetFullText = cli.Command{
 		},
 	},
 	Action:          handleLegalV1GetFullText,
+	HideHelpCommand: true,
+}
+
+var legalV1ListCourts = cli.Command{
+	Name:    "list-courts",
+	Usage:   "Returns CourtListener court IDs and names for docket filtering. Use these IDs in\nlegal.docket() as the court parameter.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[bool]{
+			Name:     "in-use-only",
+			Usage:    "Only return courts currently in use by CourtListener",
+			Default:  true,
+			BodyPath: "inUseOnly",
+		},
+		&requestflag.Flag[string]{
+			Name:     "jurisdiction",
+			Usage:    "Optional CourtListener jurisdiction code filter (e.g. FD, F, S)",
+			BodyPath: "jurisdiction",
+		},
+		&requestflag.Flag[int64]{
+			Name:     "limit",
+			Default:  25,
+			BodyPath: "limit",
+		},
+		&requestflag.Flag[int64]{
+			Name:     "offset",
+			Default:  0,
+			BodyPath: "offset",
+		},
+		&requestflag.Flag[string]{
+			Name:     "query",
+			Usage:    `Search by court name or slug (e.g. "Northern District", "nysd", "ca9")`,
+			BodyPath: "query",
+		},
+	},
+	Action:          handleLegalV1ListCourts,
 	HideHelpCommand: true,
 }
 
@@ -302,6 +403,40 @@ var legalV1Verify = cli.Command{
 	HideHelpCommand: true,
 }
 
+func handleLegalV1Docket(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	params := githubcomcasemarkcasedevgo.LegalV1DocketParams{}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Legal.V1.Docket(ctx, params, options...)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(os.Stdout, "legal:v1 docket", obj, format, transform)
+}
+
 func handleLegalV1Find(ctx context.Context, cmd *cli.Command) error {
 	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
@@ -436,6 +571,40 @@ func handleLegalV1GetFullText(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
 	return ShowJSON(os.Stdout, "legal:v1 get-full-text", obj, format, transform)
+}
+
+func handleLegalV1ListCourts(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	params := githubcomcasemarkcasedevgo.LegalV1ListCourtsParams{}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Legal.V1.ListCourts(ctx, params, options...)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(os.Stdout, "legal:v1 list-courts", obj, format, transform)
 }
 
 func handleLegalV1ListJurisdictions(ctx context.Context, cmd *cli.Command) error {
