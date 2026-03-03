@@ -8,6 +8,23 @@ import (
 	"github.com/CaseMark/casedev-cli/internal/mocktest"
 )
 
+func TestLegalV1Docket(t *testing.T) {
+	mocktest.TestRunMockTestWithFlags(
+		t,
+		"legal:v1", "docket",
+		"--type", "search",
+		"--court", "court",
+		"--date-filed-after", "2019-12-27",
+		"--date-filed-before", "2019-12-27",
+		"--docket-id", "docketId",
+		"--include-entries=true",
+		"--limit", "1",
+		"--live=true",
+		"--offset", "0",
+		"--query", "xx",
+	)
+}
+
 func TestLegalV1Find(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
@@ -42,6 +59,18 @@ func TestLegalV1GetFullText(t *testing.T) {
 		"--highlight-query", "highlightQuery",
 		"--max-characters", "1000",
 		"--summary-query", "summaryQuery",
+	)
+}
+
+func TestLegalV1ListCourts(t *testing.T) {
+	mocktest.TestRunMockTestWithFlags(
+		t,
+		"legal:v1", "list-courts",
+		"--in-use-only=true",
+		"--jurisdiction", "jurisdiction",
+		"--limit", "1",
+		"--offset", "0",
+		"--query", "xx",
 	)
 }
 

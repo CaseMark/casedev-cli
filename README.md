@@ -59,7 +59,7 @@ casedev llm:v1:chat create-completion \
   --casemark-show-reasoning \
   --frequency-penalty 0 \
   --max-tokens 1000 \
-  --model casemark/casemark-core-3 \
+  --model casemark/casemark-core-6 \
   --presence-penalty 0 \
   --stream \
   --temperature 0.7 \

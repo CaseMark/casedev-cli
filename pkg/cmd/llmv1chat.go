@@ -43,7 +43,7 @@ var llmV1ChatCreateCompletion = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "model",
-			Usage:    "Model to use for completion. Defaults to casemark/casemark-core-3 if not specified",
+			Usage:    "Model to use for completion. Defaults to casemark/casemark-core-6 if not specified",
 			BodyPath: "model",
 		},
 		&requestflag.Flag[float64]{
