@@ -245,10 +245,12 @@ func init() {
 				Category: "API RESOURCE",
 				Suggest:  true,
 				Commands: []*cli.Command{
+					&legalV1Docket,
 					&legalV1Find,
 					&legalV1GetCitations,
 					&legalV1GetCitationsFromURL,
 					&legalV1GetFullText,
+					&legalV1ListCourts,
 					&legalV1ListJurisdictions,
 					&legalV1PatentSearch,
 					&legalV1Research,
@@ -310,6 +312,15 @@ func init() {
 				Suggest:  true,
 				Commands: []*cli.Command{
 					&privilegeV1Detect,
+				},
+			},
+			{
+				Name:     "skills",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&skillsRead,
+					&skillsResolve,
 				},
 			},
 			{
