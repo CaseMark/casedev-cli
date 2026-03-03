@@ -106,6 +106,18 @@ func init() {
 				},
 			},
 			{
+				Name:     "agent:v1:chat",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&agentV1ChatCreate,
+					&agentV1ChatDelete,
+					&agentV1ChatCancel,
+					&agentV1ChatSendMessage,
+					&agentV1ChatStream,
+				},
+			},
+			{
 				Name:     "system",
 				Category: "API RESOURCE",
 				Suggest:  true,
