@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.6.0 (2026-03-03)
+
+Full Changelog: [v0.5.2...v0.6.0](https://github.com/CaseMark/casedev-cli/compare/v0.5.2...v0.6.0)
+
+### Features
+
+* **api:** api update ([9c3c3ca](https://github.com/CaseMark/casedev-cli/commit/9c3c3ca2cc84fed8d734ac8b876332b8c94c2b58))
+
 ## 0.5.2 (2026-03-03)
 
 Full Changelog: [v0.5.1...v0.5.2](https://github.com/CaseMark/casedev-cli/compare/v0.5.1...v0.5.2)
