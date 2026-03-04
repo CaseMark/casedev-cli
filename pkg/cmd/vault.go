@@ -184,7 +184,7 @@ var vaultConfirmUpload = cli.Command{
 
 var vaultIngest = cli.Command{
 	Name:    "ingest",
-	Usage:   "Triggers ingestion workflow for a vault object to extract text, generate chunks,\nand create embeddings. For supported file types (PDF, DOCX, TXT, RTF, XML,\naudio, video), processing happens asynchronously. For unsupported types (images,\narchives, etc.), the file is marked as completed immediately without text\nextraction. GraphRAG indexing must be triggered separately via POST\n/vault/:id/graphrag/:objectId.",
+	Usage:   "Triggers ingestion workflow for a vault object to extract text, generate chunks,\nand create embeddings. For supported file types (PDF, DOCX, TXT, RTF, XML, ZIP,\naudio, video), processing happens asynchronously. ZIP archives are unpacked\nrecursively up to 5 levels, and each extracted file is created as an independent\nvault object and ingested via the normal pipeline. For unsupported types\n(images, etc.), the file is marked as completed immediately without text\nextraction. GraphRAG indexing must be triggered separately via POST\n/vault/:id/graphrag/:objectId.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
