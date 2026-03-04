@@ -65,6 +65,18 @@ func TestVaultObjectsCreatePresignedURL(t *testing.T) {
 	)
 }
 
+func TestVaultObjectsDownload(t *testing.T) {
+	t.Skip("Mock server doesn't support application/octet-stream responses")
+	mocktest.TestRunMockTestWithFlags(
+		t,
+		"vault:objects", "download",
+		"--api-key", "string",
+		"--id", "id",
+		"--object-id", "objectId",
+		"--output", "/dev/null",
+	)
+}
+
 func TestVaultObjectsGetOcrWords(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
