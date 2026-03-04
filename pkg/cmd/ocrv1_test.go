@@ -18,6 +18,18 @@ func TestOcrV1Retrieve(t *testing.T) {
 	)
 }
 
+func TestOcrV1Download(t *testing.T) {
+	t.Skip("Mock server doesn't support application/octet-stream responses")
+	mocktest.TestRunMockTestWithFlags(
+		t,
+		"ocr:v1", "download",
+		"--api-key", "string",
+		"--id", "id",
+		"--type", "text",
+		"--output", "/dev/null",
+	)
+}
+
 func TestOcrV1Process(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
