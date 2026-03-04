@@ -12,6 +12,7 @@ func TestSearchV1Answer(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"search:v1", "answer",
+		"--api-key", "string",
 		"--query", "query",
 		"--exclude-domain", "string",
 		"--include-domain", "string",
@@ -30,6 +31,7 @@ func TestSearchV1Contents(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"search:v1", "contents",
+		"--api-key", "string",
 		"--url", "https://example.com",
 		"--context", "context",
 		"--extras", "{}",
@@ -47,6 +49,7 @@ func TestSearchV1Research(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"search:v1", "research",
+		"--api-key", "string",
 		"--instructions", "instructions",
 		"--model", "fast",
 		"--output-schema", "{}",
@@ -58,6 +61,7 @@ func TestSearchV1RetrieveResearch(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"search:v1", "retrieve-research",
+		"--api-key", "string",
 		"--id", "id",
 		"--events", "events",
 		"--stream=true",
@@ -68,18 +72,19 @@ func TestSearchV1Search(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"search:v1", "search",
+		"--api-key", "string",
 		"--query", "query",
 		"--additional-query", "string",
 		"--category", "category",
 		"--contents", "contents",
-		"--end-crawl-date", "2019-12-27",
-		"--end-published-date", "2019-12-27",
+		"--end-crawl-date", "'2019-12-27'",
+		"--end-published-date", "'2019-12-27'",
 		"--exclude-domain", "string",
 		"--include-domain", "string",
 		"--include-text=true",
 		"--num-results", "1",
-		"--start-crawl-date", "2019-12-27",
-		"--start-published-date", "2019-12-27",
+		"--start-crawl-date", "'2019-12-27'",
+		"--start-published-date", "'2019-12-27'",
 		"--type", "auto",
 		"--user-location", "userLocation",
 	)
@@ -89,15 +94,16 @@ func TestSearchV1Similar(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"search:v1", "similar",
+		"--api-key", "string",
 		"--url", "https://example.com",
 		"--contents", "contents",
-		"--end-crawl-date", "2019-12-27",
-		"--end-published-date", "2019-12-27",
+		"--end-crawl-date", "'2019-12-27'",
+		"--end-published-date", "'2019-12-27'",
 		"--exclude-domain", "string",
 		"--include-domain", "string",
 		"--include-text=true",
 		"--num-results", "1",
-		"--start-crawl-date", "2019-12-27",
-		"--start-published-date", "2019-12-27",
+		"--start-crawl-date", "'2019-12-27'",
+		"--start-published-date", "'2019-12-27'",
 	)
 }

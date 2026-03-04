@@ -12,6 +12,7 @@ func TestVaultGroupsCreate(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:groups", "create",
+		"--api-key", "string",
 	)
 }
 
@@ -19,6 +20,7 @@ func TestVaultGroupsUpdate(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:groups", "update",
+		"--api-key", "string",
 		"--group-id", "groupId",
 	)
 }
@@ -27,6 +29,7 @@ func TestVaultGroupsList(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:groups", "list",
+		"--api-key", "string",
 	)
 }
 
@@ -34,6 +37,7 @@ func TestVaultGroupsDelete(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:groups", "delete",
+		"--api-key", "string",
 		"--group-id", "groupId",
 	)
 }

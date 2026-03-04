@@ -55,21 +55,21 @@ casedev [resource] <command> [flags...]
 
 ```sh
 casedev llm:v1:chat create-completion \
-  --message '{content: Hello!, role: user}' \
-  --casemark-show-reasoning \
-  --frequency-penalty 0 \
-  --max-tokens 1000 \
-  --model casemark/casemark-core-6 \
-  --presence-penalty 0 \
-  --stream \
-  --temperature 0.7 \
-  --top-p 0
+  --api-key 'My API Key' \
+  --message '{}'
 ```
 
 For details about specific commands, use the `--help` flag.
 
-### Global Flags
+### Environment variables
 
+| Environment variable | Description                                                                         | Required |
+| -------------------- | ----------------------------------------------------------------------------------- | -------- |
+| `CASEDEV_API_KEY`    | API key authentication. Use your case.dev API key (e.g., sk_case_your_api_key_here) | yes      |
+
+### Global flags
+
+- `--api-key` - API key authentication. Use your case.dev API key (e.g., sk_case_your_api_key_here) (can also be set with `CASEDEV_API_KEY` env var)
 - `--help` - Show command line usage
 - `--debug` - Enable debug logging (includes HTTP request/response details)
 - `--version`, `-v` - Show the CLI version

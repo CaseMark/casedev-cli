@@ -12,6 +12,7 @@ func TestPrivilegeV1Detect(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"privilege:v1", "detect",
+		"--api-key", "string",
 		"--category", "attorney_client",
 		"--content", "content",
 		"--document-id", "document_id",

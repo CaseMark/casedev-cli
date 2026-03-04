@@ -13,6 +13,7 @@ func TestVaultMultipartAbort(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:multipart", "abort",
+		"--api-key", "string",
 		"--id", "id",
 		"--object-id", "objectId",
 		"--upload-id", "uploadId",
@@ -23,6 +24,7 @@ func TestVaultMultipartGetPartURLs(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:multipart", "get-part-urls",
+		"--api-key", "string",
 		"--id", "id",
 		"--object-id", "objectId",
 		"--part", "{partNumber: 1, sizeBytes: 1}",

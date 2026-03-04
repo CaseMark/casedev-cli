@@ -13,6 +13,7 @@ func TestLlmV1ChatCreateCompletion(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"llm:v1:chat", "create-completion",
+		"--api-key", "string",
 		"--message", "{content: content, role: system}",
 		"--casemark-show-reasoning=false",
 		"--frequency-penalty", "0",
