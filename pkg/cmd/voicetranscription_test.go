@@ -12,6 +12,7 @@ func TestVoiceTranscriptionCreate(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"voice:transcription", "create",
+		"--api-key", "string",
 		"--audio-url", "audio_url",
 		"--auto-highlights=true",
 		"--boost-param", "low",
@@ -34,6 +35,7 @@ func TestVoiceTranscriptionRetrieve(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"voice:transcription", "retrieve",
+		"--api-key", "string",
 		"--id", "tr_abc123def456",
 	)
 }
@@ -42,6 +44,7 @@ func TestVoiceTranscriptionDelete(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"voice:transcription", "delete",
+		"--api-key", "string",
 		"--id", "id",
 	)
 }

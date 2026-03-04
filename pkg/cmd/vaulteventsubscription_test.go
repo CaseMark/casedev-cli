@@ -12,6 +12,7 @@ func TestVaultEventsSubscriptionsCreate(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:events:subscriptions", "create",
+		"--api-key", "string",
 		"--id", "id",
 		"--callback-url", "https://example.com",
 		"--event-type", "string",
@@ -24,6 +25,7 @@ func TestVaultEventsSubscriptionsUpdate(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:events:subscriptions", "update",
+		"--api-key", "string",
 		"--id", "id",
 		"--subscription-id", "subscriptionId",
 		"--callback-url", "https://example.com",
@@ -39,6 +41,7 @@ func TestVaultEventsSubscriptionsList(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:events:subscriptions", "list",
+		"--api-key", "string",
 		"--id", "id",
 	)
 }
@@ -47,6 +50,7 @@ func TestVaultEventsSubscriptionsDelete(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:events:subscriptions", "delete",
+		"--api-key", "string",
 		"--id", "id",
 		"--subscription-id", "subscriptionId",
 	)
@@ -56,6 +60,7 @@ func TestVaultEventsSubscriptionsTest(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:events:subscriptions", "test",
+		"--api-key", "string",
 		"--id", "id",
 		"--subscription-id", "subscriptionId",
 		"--event-type", "eventType",

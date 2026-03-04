@@ -13,6 +13,7 @@ func TestOcrV1Retrieve(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"ocr:v1", "retrieve",
+		"--api-key", "string",
 		"--id", "id",
 	)
 }
@@ -21,6 +22,7 @@ func TestOcrV1Process(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"ocr:v1", "process",
+		"--api-key", "string",
 		"--document-url", "https://example.com/contract.pdf",
 		"--callback-url", "https://your-app.com/webhooks/ocr-complete",
 		"--document-id", "contract-2024-001",

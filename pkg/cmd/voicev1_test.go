@@ -12,6 +12,7 @@ func TestVoiceV1ListVoices(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"voice:v1", "list-voices",
+		"--api-key", "string",
 		"--category", "category",
 		"--collection-id", "collection_id",
 		"--include-total-count=true",

@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.7.0 (2026-03-04)
+
+Full Changelog: [v0.6.0...v0.7.0](https://github.com/CaseMark/casedev-cli/compare/v0.6.0...v0.7.0)
+
+### Features
+
+* improved documentation and flags for client options ([94e1cb9](https://github.com/CaseMark/casedev-cli/commit/94e1cb9ba8b19d54e2729ed89b9869659ff1e62f))
+
+
+### Chores
+
+* **internal:** codegen related update ([d7dee7d](https://github.com/CaseMark/casedev-cli/commit/d7dee7d7e67a99d072e82b4a2745e13c53e2de7f))
+* **internal:** codegen related update ([cb9f807](https://github.com/CaseMark/casedev-cli/commit/cb9f807ae0e253dabefbf7dc659d2354eee6b6f4))
+
 ## 0.6.0 (2026-03-03)
 
 Full Changelog: [v0.5.2...v0.6.0](https://github.com/CaseMark/casedev-cli/compare/v0.5.2...v0.6.0)

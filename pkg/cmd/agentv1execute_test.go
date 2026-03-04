@@ -13,6 +13,7 @@ func TestAgentV1ExecuteCreate(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"agent:v1:execute", "create",
+		"--api-key", "string",
 		"--prompt", "prompt",
 		"--disabled-tool", "[string]",
 		"--enabled-tool", "[string]",

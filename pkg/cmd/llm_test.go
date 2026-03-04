@@ -12,5 +12,6 @@ func TestLlmGetConfig(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"llm", "get-config",
+		"--api-key", "string",
 	)
 }

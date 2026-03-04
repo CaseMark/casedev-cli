@@ -12,6 +12,7 @@ func TestComputeV1EnvironmentsCreate(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"compute:v1:environments", "create",
+		"--api-key", "string",
 		"--name", "document-review-prod",
 	)
 }
@@ -20,6 +21,7 @@ func TestComputeV1EnvironmentsRetrieve(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"compute:v1:environments", "retrieve",
+		"--api-key", "string",
 		"--name", "name",
 	)
 }
@@ -28,6 +30,7 @@ func TestComputeV1EnvironmentsList(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"compute:v1:environments", "list",
+		"--api-key", "string",
 	)
 }
 
@@ -35,6 +38,7 @@ func TestComputeV1EnvironmentsDelete(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"compute:v1:environments", "delete",
+		"--api-key", "string",
 		"--name", "litigation-processing",
 	)
 }
@@ -43,6 +47,7 @@ func TestComputeV1EnvironmentsSetDefault(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"compute:v1:environments", "set-default",
+		"--api-key", "string",
 		"--name", "prod-legal-docs",
 	)
 }

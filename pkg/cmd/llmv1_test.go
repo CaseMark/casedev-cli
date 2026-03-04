@@ -12,6 +12,7 @@ func TestLlmV1CreateEmbedding(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"llm:v1", "create-embedding",
+		"--api-key", "string",
 		"--input", "string",
 		"--model", "model",
 		"--dimensions", "0",
@@ -24,5 +25,6 @@ func TestLlmV1ListModels(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"llm:v1", "list-models",
+		"--api-key", "string",
 	)
 }
