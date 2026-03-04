@@ -12,5 +12,6 @@ func TestDatabaseV1GetUsage(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"database:v1", "get-usage",
+		"--api-key", "string",
 	)
 }

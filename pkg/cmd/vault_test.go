@@ -13,6 +13,7 @@ func TestVaultCreate(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault", "create",
+		"--api-key", "string",
 		"--name", "Contract Review Archive",
 		"--description", "Repository for all client contract reviews and analysis",
 		"--enable-graph=true",
@@ -26,6 +27,7 @@ func TestVaultRetrieve(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault", "retrieve",
+		"--api-key", "string",
 		"--id", "vault_abc123",
 	)
 }
@@ -34,6 +36,7 @@ func TestVaultUpdate(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault", "update",
+		"--api-key", "string",
 		"--id", "id",
 		"--description", "description",
 		"--enable-graph=false",
@@ -46,6 +49,7 @@ func TestVaultList(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault", "list",
+		"--api-key", "string",
 	)
 }
 
@@ -53,6 +57,7 @@ func TestVaultDelete(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault", "delete",
+		"--api-key", "string",
 		"--id", "id",
 		"--async=true",
 	)
@@ -62,6 +67,7 @@ func TestVaultConfirmUpload(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault", "confirm-upload",
+		"--api-key", "string",
 		"--id", "id",
 		"--object-id", "objectId",
 		"--size-bytes", "1",
@@ -76,6 +82,7 @@ func TestVaultIngest(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault", "ingest",
+		"--api-key", "string",
 		"--id", "id",
 		"--object-id", "objectId",
 	)
@@ -85,6 +92,7 @@ func TestVaultSearch(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault", "search",
+		"--api-key", "string",
 		"--id", "id",
 		"--query", "query",
 		"--filters", "{object_id: string}",
@@ -111,6 +119,7 @@ func TestVaultUpload(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault", "upload",
+		"--api-key", "string",
 		"--id", "id",
 		"--content-type", "contentType",
 		"--filename", "filename",

@@ -13,6 +13,7 @@ func TestMemoryV1Create(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"memory:v1", "create",
+		"--api-key", "string",
 		"--message", "{content: content, role: user}",
 		"--category", "category",
 		"--extraction-prompt", "extraction_prompt",
@@ -64,6 +65,7 @@ func TestMemoryV1Retrieve(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"memory:v1", "retrieve",
+		"--api-key", "string",
 		"--id", "id",
 	)
 }
@@ -72,6 +74,7 @@ func TestMemoryV1List(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"memory:v1", "list",
+		"--api-key", "string",
 		"--category", "category",
 		"--limit", "0",
 		"--offset", "0",
@@ -94,6 +97,7 @@ func TestMemoryV1Delete(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"memory:v1", "delete",
+		"--api-key", "string",
 		"--id", "id",
 	)
 }
@@ -102,6 +106,7 @@ func TestMemoryV1DeleteAll(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"memory:v1", "delete-all",
+		"--api-key", "string",
 		"--tag-1", "tag_1",
 		"--tag-10", "tag_10",
 		"--tag-11", "tag_11",
@@ -121,6 +126,7 @@ func TestMemoryV1Search(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"memory:v1", "search",
+		"--api-key", "string",
 		"--query", "query",
 		"--category", "category",
 		"--tag-1", "tag_1",

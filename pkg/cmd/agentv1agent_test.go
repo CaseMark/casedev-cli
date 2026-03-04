@@ -13,6 +13,7 @@ func TestAgentV1AgentsCreate(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"agent:v1:agents", "create",
+		"--api-key", "string",
 		"--instructions", "instructions",
 		"--name", "name",
 		"--description", "description",
@@ -48,6 +49,7 @@ func TestAgentV1AgentsRetrieve(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"agent:v1:agents", "retrieve",
+		"--api-key", "string",
 		"--id", "id",
 	)
 }
@@ -56,6 +58,7 @@ func TestAgentV1AgentsUpdate(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"agent:v1:agents", "update",
+		"--api-key", "string",
 		"--id", "id",
 		"--description", "description",
 		"--disabled-tool", "[string]",
@@ -73,6 +76,7 @@ func TestAgentV1AgentsList(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"agent:v1:agents", "list",
+		"--api-key", "string",
 	)
 }
 
@@ -80,6 +84,7 @@ func TestAgentV1AgentsDelete(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"agent:v1:agents", "delete",
+		"--api-key", "string",
 		"--id", "id",
 	)
 }

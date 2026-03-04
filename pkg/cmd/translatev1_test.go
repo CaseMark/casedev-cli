@@ -12,6 +12,7 @@ func TestTranslateV1Detect(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"translate:v1", "detect",
+		"--api-key", "string",
 		"--q", "string",
 	)
 }
@@ -20,6 +21,7 @@ func TestTranslateV1ListLanguages(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"translate:v1", "list-languages",
+		"--api-key", "string",
 		"--model", "nmt",
 		"--target", "target",
 	)
@@ -29,6 +31,7 @@ func TestTranslateV1Translate(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"translate:v1", "translate",
+		"--api-key", "string",
 		"--q", "string",
 		"--target", "es",
 		"--format", "text",

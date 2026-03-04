@@ -12,6 +12,7 @@ func TestFormatV1TemplatesCreate(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"format:v1:templates", "create",
+		"--api-key", "string",
 		"--content", "content",
 		"--name", "name",
 		"--type", "caption",
@@ -26,6 +27,7 @@ func TestFormatV1TemplatesRetrieve(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"format:v1:templates", "retrieve",
+		"--api-key", "string",
 		"--id", "id",
 	)
 }
@@ -34,6 +36,7 @@ func TestFormatV1TemplatesList(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"format:v1:templates", "list",
+		"--api-key", "string",
 		"--type", "type",
 	)
 }

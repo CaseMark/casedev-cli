@@ -12,6 +12,7 @@ import (
 	"strings"
 
 	"github.com/CaseMark/casedev-cli/internal/autocomplete"
+	"github.com/CaseMark/casedev-cli/internal/requestflag"
 	docs "github.com/urfave/cli-docs/v3"
 	"github.com/urfave/cli/v3"
 )
@@ -65,6 +66,11 @@ func init() {
 			&cli.StringFlag{
 				Name:  "transform-error",
 				Usage: "The GJSON transformation for errors.",
+			},
+			&requestflag.Flag[string]{
+				Name:    "api-key",
+				Usage:   "API key authentication. Use your case.dev API key (e.g., sk_case_your_api_key_here)",
+				Sources: cli.EnvVars("CASEDEV_API_KEY"),
 			},
 			&cli.StringFlag{
 				Name:  "environment",

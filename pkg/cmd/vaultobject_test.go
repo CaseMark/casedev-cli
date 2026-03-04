@@ -12,6 +12,7 @@ func TestVaultObjectsRetrieve(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:objects", "retrieve",
+		"--api-key", "string",
 		"--id", "id",
 		"--object-id", "objectId",
 	)
@@ -21,6 +22,7 @@ func TestVaultObjectsUpdate(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:objects", "update",
+		"--api-key", "string",
 		"--id", "id",
 		"--object-id", "objectId",
 		"--filename", "deposition-smith-2024.pdf",
@@ -33,6 +35,7 @@ func TestVaultObjectsList(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:objects", "list",
+		"--api-key", "string",
 		"--id", "id",
 	)
 }
@@ -41,6 +44,7 @@ func TestVaultObjectsDelete(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:objects", "delete",
+		"--api-key", "string",
 		"--id", "id",
 		"--object-id", "objectId",
 		"--force", "true",
@@ -51,6 +55,7 @@ func TestVaultObjectsCreatePresignedURL(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:objects", "create-presigned-url",
+		"--api-key", "string",
 		"--id", "id",
 		"--object-id", "objectId",
 		"--content-type", "contentType",
@@ -64,6 +69,7 @@ func TestVaultObjectsGetOcrWords(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:objects", "get-ocr-words",
+		"--api-key", "string",
 		"--id", "id",
 		"--object-id", "objectId",
 		"--page", "0",
@@ -76,6 +82,7 @@ func TestVaultObjectsGetSummarizeJob(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:objects", "get-summarize-job",
+		"--api-key", "string",
 		"--id", "id",
 		"--object-id", "objectId",
 		"--job-id", "jobId",
@@ -86,6 +93,7 @@ func TestVaultObjectsGetText(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:objects", "get-text",
+		"--api-key", "string",
 		"--id", "id",
 		"--object-id", "objectId",
 	)

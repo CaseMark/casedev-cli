@@ -12,5 +12,6 @@ func TestComputeV1InstanceTypesList(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"compute:v1:instance-types", "list",
+		"--api-key", "string",
 	)
 }
