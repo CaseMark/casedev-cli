@@ -37,6 +37,17 @@ func TestAgentV1ChatCancel(t *testing.T) {
 	)
 }
 
+func TestAgentV1ChatRespond(t *testing.T) {
+	t.Skip("Mock server doesn't support text/event-stream responses")
+	mocktest.TestRunMockTestWithFlags(
+		t,
+		"agent:v1:chat", "respond",
+		"--api-key", "string",
+		"--id", "id",
+		"--body", "{}",
+	)
+}
+
 func TestAgentV1ChatSendMessage(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,

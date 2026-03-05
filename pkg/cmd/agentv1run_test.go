@@ -30,6 +30,17 @@ func TestAgentV1RunCancel(t *testing.T) {
 	)
 }
 
+func TestAgentV1RunEvents(t *testing.T) {
+	t.Skip("Mock server doesn't support text/event-stream responses")
+	mocktest.TestRunMockTestWithFlags(
+		t,
+		"agent:v1:run", "events",
+		"--api-key", "string",
+		"--id", "id",
+		"--last-event-id", "0",
+	)
+}
+
 func TestAgentV1RunExec(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
