@@ -100,6 +100,7 @@ func init() {
 				Commands: []*cli.Command{
 					&agentV1RunCreate,
 					&agentV1RunCancel,
+					&agentV1RunEvents,
 					&agentV1RunExec,
 					&agentV1RunGetDetails,
 					&agentV1RunGetStatus,
@@ -122,6 +123,7 @@ func init() {
 					&agentV1ChatCreate,
 					&agentV1ChatDelete,
 					&agentV1ChatCancel,
+					&agentV1ChatRespond,
 					&agentV1ChatSendMessage,
 					&agentV1ChatStream,
 				},
