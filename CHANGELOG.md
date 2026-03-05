@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.11.0 (2026-03-05)
+
+Full Changelog: [v0.10.0...v0.11.0](https://github.com/CaseMark/casedev-cli/compare/v0.10.0...v0.11.0)
+
+### Features
+
+* **api:** api update ([c3b8f51](https://github.com/CaseMark/casedev-cli/commit/c3b8f5128945bc7eaff19e42659eeea0f84f7e5a))
+
+
+### Bug Fixes
+
+* bump casedev-go from v0.8.0 to v0.9.0 ([#36](https://github.com/CaseMark/casedev-cli/issues/36)) ([e370249](https://github.com/CaseMark/casedev-cli/commit/e37024979013b8479d16ed24e36fdfad27bbd60f))
+
 ## 0.10.0 (2026-03-05)
 
 Full Changelog: [v0.9.0...v0.10.0](https://github.com/CaseMark/casedev-cli/compare/v0.9.0...v0.10.0)
