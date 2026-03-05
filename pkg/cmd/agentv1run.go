@@ -66,6 +66,25 @@ var agentV1RunCancel = cli.Command{
 	HideHelpCommand: true,
 }
 
+var agentV1RunEvents = cli.Command{
+	Name:    "events",
+	Usage:   "Streams real-time run events over SSE. Supports replay using Last-Event-ID.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:     "id",
+			Required: true,
+		},
+		&requestflag.Flag[int64]{
+			Name:      "last-event-id",
+			Usage:     "Replay events after this sequence number",
+			QueryPath: "lastEventId",
+		},
+	},
+	Action:          handleAgentV1RunEvents,
+	HideHelpCommand: true,
+}
+
 var agentV1RunExec = cli.Command{
 	Name:    "exec",
 	Usage:   "Starts execution of a queued run. The agent runs in a durable workflow — poll\n/run/:id/status for progress.",
@@ -195,6 +214,41 @@ func handleAgentV1RunCancel(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
 	return ShowJSON(os.Stdout, "agent:v1:run cancel", obj, format, transform)
+}
+
+func handleAgentV1RunEvents(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
+		cmd.Set("id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	params := githubcomcasemarkcasedevgo.AgentV1RunEventsParams{}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		EmptyBody,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	format := cmd.Root().String("format")
+	transform := cmd.Root().String("transform")
+	stream := client.Agent.V1.Run.EventsStreaming(
+		ctx,
+		cmd.Value("id").(string),
+		params,
+		options...,
+	)
+	return ShowJSONIterator(os.Stdout, "agent:v1:run events", stream, format, transform)
 }
 
 func handleAgentV1RunExec(ctx context.Context, cmd *cli.Command) error {

@@ -68,6 +68,26 @@ var agentV1ChatCancel = cli.Command{
 	HideHelpCommand: true,
 }
 
+var agentV1ChatRespond = cli.Command{
+	Name:    "respond",
+	Usage:   "Streams a single assistant turn as normalized state events with stable turn,\nmessage, and part ids.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:     "id",
+			Required: true,
+		},
+		&requestflag.Flag[any]{
+			Name:     "body",
+			Usage:    "OpenCode message payload. Passed through 1:1.",
+			Required: true,
+			BodyRoot: true,
+		},
+	},
+	Action:          handleAgentV1ChatRespond,
+	HideHelpCommand: true,
+}
+
 var agentV1ChatSendMessage = cli.Command{
 	Name:    "send-message",
 	Usage:   "Proxies a message to the OpenCode session bound to this chat.",
@@ -209,6 +229,41 @@ func handleAgentV1ChatCancel(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
 	return ShowJSON(os.Stdout, "agent:v1:chat cancel", obj, format, transform)
+}
+
+func handleAgentV1ChatRespond(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
+		cmd.Set("id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	params := githubcomcasemarkcasedevgo.AgentV1ChatRespondParams{}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	format := cmd.Root().String("format")
+	transform := cmd.Root().String("transform")
+	stream := client.Agent.V1.Chat.RespondStreaming(
+		ctx,
+		cmd.Value("id").(string),
+		params,
+		options...,
+	)
+	return ShowJSONIterator(os.Stdout, "agent:v1:chat respond", stream, format, transform)
 }
 
 func handleAgentV1ChatSendMessage(ctx context.Context, cmd *cli.Command) error {
