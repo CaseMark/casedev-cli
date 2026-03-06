@@ -16,6 +16,7 @@ func TestAgentV1ChatCreate(t *testing.T) {
 		"--idle-timeout-ms", "0",
 		"--model", "model",
 		"--title", "title",
+		"--vault-id", "[string]",
 	)
 }
 

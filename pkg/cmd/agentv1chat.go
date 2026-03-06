@@ -35,6 +35,11 @@ var agentV1ChatCreate = cli.Command{
 			Usage:    "Optional human-readable session title",
 			BodyPath: "title",
 		},
+		&requestflag.Flag[any]{
+			Name:     "vault-id",
+			Usage:    "Restrict the chat session to specific vault IDs",
+			BodyPath: "vaultIds",
+		},
 	},
 	Action:          handleAgentV1ChatCreate,
 	HideHelpCommand: true,
