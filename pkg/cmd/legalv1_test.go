@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/CaseMark/casedev-cli/internal/mocktest"
+	"github.com/CaseMark/casedev-cli/internal/requestflag"
 )
 
 func TestLegalV1Docket(t *testing.T) {
@@ -23,6 +24,44 @@ func TestLegalV1Docket(t *testing.T) {
 		"--live=true",
 		"--offset", "0",
 		"--query", "xx",
+	)
+}
+
+func TestLegalV1Draft(t *testing.T) {
+	mocktest.TestRunMockTestWithFlags(
+		t,
+		"legal:v1", "draft",
+		"--api-key", "string",
+		"--instructions", "xxxxxxxxxx",
+		"--vault-id", "vault_id",
+		"--citations=true",
+		"--format", "format",
+		"--length", "{target: 0, unit: words}",
+		"--model", "model",
+		"--object-id", "[string]",
+		"--output-name", "output_name",
+		"--output-type", "pdf",
+		"--verified=true",
+	)
+
+	// Check that inner flags have been set up correctly
+	requestflag.CheckInnerFlags(legalV1Draft)
+
+	// Alternative argument passing style using inner flags
+	mocktest.TestRunMockTestWithFlags(
+		t,
+		"legal:v1", "draft",
+		"--instructions", "xxxxxxxxxx",
+		"--vault-id", "vault_id",
+		"--citations=true",
+		"--format", "format",
+		"--length.target", "0",
+		"--length.unit", "words",
+		"--model", "model",
+		"--object-id", "[string]",
+		"--output-name", "output_name",
+		"--output-type", "pdf",
+		"--verified=true",
 	)
 }
 
