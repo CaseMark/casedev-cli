@@ -269,6 +269,7 @@ func init() {
 				Suggest:  true,
 				Commands: []*cli.Command{
 					&legalV1Docket,
+					&legalV1Draft,
 					&legalV1Find,
 					&legalV1GetCitations,
 					&legalV1GetCitationsFromURL,
