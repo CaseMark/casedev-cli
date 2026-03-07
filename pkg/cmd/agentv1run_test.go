@@ -53,6 +53,7 @@ func TestAgentV1RunEvents(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
 			t, "agent:v1:run", "events",
 			"--api-key", "string",
+			"--max-items", "10",
 			"--id", "id",
 			"--last-event-id", "0",
 		)

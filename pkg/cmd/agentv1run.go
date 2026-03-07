@@ -80,6 +80,10 @@ var agentV1RunEvents = cli.Command{
 			Usage:     "Replay events after this sequence number",
 			QueryPath: "lastEventId",
 		},
+		&requestflag.Flag[int64]{
+			Name:  "max-items",
+			Usage: "The maximum number of items to return (use -1 for unlimited).",
+		},
 	},
 	Action:          handleAgentV1RunEvents,
 	HideHelpCommand: true,
@@ -248,7 +252,11 @@ func handleAgentV1RunEvents(ctx context.Context, cmd *cli.Command) error {
 		params,
 		options...,
 	)
-	return ShowJSONIterator(os.Stdout, "agent:v1:run events", stream, format, transform)
+	maxItems := int64(-1)
+	if cmd.IsSet("max-items") {
+		maxItems = cmd.Value("max-items").(int64)
+	}
+	return ShowJSONIterator(os.Stdout, "agent:v1:run events", stream, format, transform, maxItems)
 }
 
 func handleAgentV1RunExec(ctx context.Context, cmd *cli.Command) error {
