@@ -10,56 +10,81 @@ import (
 )
 
 func TestOcrV1Retrieve(t *testing.T) {
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"ocr:v1", "retrieve",
-		"--api-key", "string",
-		"--id", "id",
-	)
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t, "ocr:v1", "retrieve",
+			"--api-key", "string",
+			"--id", "id",
+		)
+	})
 }
 
 func TestOcrV1Download(t *testing.T) {
 	t.Skip("Mock server doesn't support application/octet-stream responses")
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"ocr:v1", "download",
-		"--api-key", "string",
-		"--id", "id",
-		"--type", "text",
-		"--output", "/dev/null",
-	)
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t, "ocr:v1", "download",
+			"--api-key", "string",
+			"--id", "id",
+			"--type", "text",
+			"--output", "/dev/null",
+		)
+	})
 }
 
 func TestOcrV1Process(t *testing.T) {
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"ocr:v1", "process",
-		"--api-key", "string",
-		"--document-url", "https://example.com/contract.pdf",
-		"--callback-url", "https://your-app.com/webhooks/ocr-complete",
-		"--document-id", "contract-2024-001",
-		"--engine", "doctr",
-		"--features", "{embed: {}, forms: {foo: bar}, tables: {format: csv}}",
-		"--result-bucket", "my-ocr-results",
-		"--result-prefix", "ocr/2024/",
-	)
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t, "ocr:v1", "process",
+			"--api-key", "string",
+			"--document-url", "https://example.com/contract.pdf",
+			"--callback-url", "https://your-app.com/webhooks/ocr-complete",
+			"--document-id", "contract-2024-001",
+			"--engine", "doctr",
+			"--features", "{embed: {}, forms: {foo: bar}, tables: {format: csv}}",
+			"--result-bucket", "my-ocr-results",
+			"--result-prefix", "ocr/2024/",
+		)
+	})
 
-	// Check that inner flags have been set up correctly
-	requestflag.CheckInnerFlags(ocrV1Process)
+	t.Run("inner flags", func(t *testing.T) {
+		// Check that inner flags have been set up correctly
+		requestflag.CheckInnerFlags(ocrV1Process)
 
-	// Alternative argument passing style using inner flags
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"ocr:v1", "process",
-		"--api-key", "string",
-		"--document-url", "https://example.com/contract.pdf",
-		"--callback-url", "https://your-app.com/webhooks/ocr-complete",
-		"--document-id", "contract-2024-001",
-		"--engine", "doctr",
-		"--features.embed", "{}",
-		"--features.forms", "{foo: bar}",
-		"--features.tables", "{format: csv}",
-		"--result-bucket", "my-ocr-results",
-		"--result-prefix", "ocr/2024/",
-	)
+		// Alternative argument passing style using inner flags
+		mocktest.TestRunMockTestWithFlags(
+			t, "ocr:v1", "process",
+			"--api-key", "string",
+			"--document-url", "https://example.com/contract.pdf",
+			"--callback-url", "https://your-app.com/webhooks/ocr-complete",
+			"--document-id", "contract-2024-001",
+			"--engine", "doctr",
+			"--features.embed", "{}",
+			"--features.forms", "{foo: bar}",
+			"--features.tables", "{format: csv}",
+			"--result-bucket", "my-ocr-results",
+			"--result-prefix", "ocr/2024/",
+		)
+	})
+
+	t.Run("piping data", func(t *testing.T) {
+		// Test piping YAML data over stdin
+		pipeData := []byte("" +
+			"document_url: https://example.com/contract.pdf\n" +
+			"callback_url: https://your-app.com/webhooks/ocr-complete\n" +
+			"document_id: contract-2024-001\n" +
+			"engine: doctr\n" +
+			"features:\n" +
+			"  embed: {}\n" +
+			"  forms:\n" +
+			"    foo: bar\n" +
+			"  tables:\n" +
+			"    format: csv\n" +
+			"result_bucket: my-ocr-results\n" +
+			"result_prefix: ocr/2024/\n")
+		mocktest.TestRunMockTestWithPipeAndFlags(
+			t, pipeData, "ocr:v1", "process",
+			"--api-key", "string",
+		)
+	})
 }

@@ -9,42 +9,71 @@ import (
 )
 
 func TestVoiceTranscriptionCreate(t *testing.T) {
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"voice:transcription", "create",
-		"--api-key", "string",
-		"--audio-url", "audio_url",
-		"--auto-highlights=true",
-		"--boost-param", "low",
-		"--content-safety-labels=true",
-		"--format", "json",
-		"--format-text=true",
-		"--language-code", "language_code",
-		"--language-detection=true",
-		"--object-id", "object_id",
-		"--punctuate=true",
-		"--speaker-labels=true",
-		"--speakers-expected", "0",
-		"--speech-model", "string",
-		"--vault-id", "vault_id",
-		"--word-boost", "string",
-	)
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t, "voice:transcription", "create",
+			"--api-key", "string",
+			"--audio-url", "audio_url",
+			"--auto-highlights=true",
+			"--boost-param", "low",
+			"--content-safety-labels=true",
+			"--format", "json",
+			"--format-text=true",
+			"--language-code", "language_code",
+			"--language-detection=true",
+			"--object-id", "object_id",
+			"--punctuate=true",
+			"--speaker-labels=true",
+			"--speakers-expected", "0",
+			"--speech-model", "string",
+			"--vault-id", "vault_id",
+			"--word-boost", "string",
+		)
+	})
+
+	t.Run("piping data", func(t *testing.T) {
+		// Test piping YAML data over stdin
+		pipeData := []byte("" +
+			"audio_url: audio_url\n" +
+			"auto_highlights: true\n" +
+			"boost_param: low\n" +
+			"content_safety_labels: true\n" +
+			"format: json\n" +
+			"format_text: true\n" +
+			"language_code: language_code\n" +
+			"language_detection: true\n" +
+			"object_id: object_id\n" +
+			"punctuate: true\n" +
+			"speaker_labels: true\n" +
+			"speakers_expected: 0\n" +
+			"speech_models:\n" +
+			"  - string\n" +
+			"vault_id: vault_id\n" +
+			"word_boost:\n" +
+			"  - string\n")
+		mocktest.TestRunMockTestWithPipeAndFlags(
+			t, pipeData, "voice:transcription", "create",
+			"--api-key", "string",
+		)
+	})
 }
 
 func TestVoiceTranscriptionRetrieve(t *testing.T) {
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"voice:transcription", "retrieve",
-		"--api-key", "string",
-		"--id", "tr_abc123def456",
-	)
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t, "voice:transcription", "retrieve",
+			"--api-key", "string",
+			"--id", "tr_abc123def456",
+		)
+	})
 }
 
 func TestVoiceTranscriptionDelete(t *testing.T) {
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"voice:transcription", "delete",
-		"--api-key", "string",
-		"--id", "id",
-	)
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t, "voice:transcription", "delete",
+			"--api-key", "string",
+			"--id", "id",
+		)
+	})
 }
