@@ -40,6 +40,7 @@ func TestMemoryV1Create(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"memory:v1", "create",
+		"--api-key", "string",
 		"--message.content", "content",
 		"--message.role", "user",
 		"--category", "category",
