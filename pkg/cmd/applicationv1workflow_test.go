@@ -9,11 +9,12 @@ import (
 )
 
 func TestApplicationsV1WorkflowsGetStatus(t *testing.T) {
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"applications:v1:workflows", "get-status",
-		"--api-key", "string",
-		"--id", "id",
-		"--project-id", "projectId",
-	)
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t, "applications:v1:workflows", "get-status",
+			"--api-key", "string",
+			"--id", "id",
+			"--project-id", "projectId",
+		)
+	})
 }

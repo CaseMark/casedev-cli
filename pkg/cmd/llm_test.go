@@ -9,9 +9,10 @@ import (
 )
 
 func TestLlmGetConfig(t *testing.T) {
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"llm", "get-config",
-		"--api-key", "string",
-	)
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t, "llm", "get-config",
+			"--api-key", "string",
+		)
+	})
 }
