@@ -9,20 +9,22 @@ import (
 )
 
 func TestSkillsRead(t *testing.T) {
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"skills", "read",
-		"--api-key", "string",
-		"--slug", "slug",
-	)
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t, "skills", "read",
+			"--api-key", "string",
+			"--slug", "slug",
+		)
+	})
 }
 
 func TestSkillsResolve(t *testing.T) {
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"skills", "resolve",
-		"--api-key", "string",
-		"--q", "q",
-		"--limit", "1",
-	)
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t, "skills", "resolve",
+			"--api-key", "string",
+			"--q", "q",
+			"--limit", "1",
+		)
+	})
 }

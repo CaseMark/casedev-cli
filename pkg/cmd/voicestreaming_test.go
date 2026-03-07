@@ -9,9 +9,10 @@ import (
 )
 
 func TestVoiceStreamingGetURL(t *testing.T) {
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"voice:streaming", "get-url",
-		"--api-key", "string",
-	)
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t, "voice:streaming", "get-url",
+			"--api-key", "string",
+		)
+	})
 }
