@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.13.0 (2026-03-07)
+
+Full Changelog: [v0.12.1...v0.13.0](https://github.com/CaseMark/casedev-cli/compare/v0.12.1...v0.13.0)
+
+### Features
+
+* support passing required body params through pipes ([e61b278](https://github.com/CaseMark/casedev-cli/commit/e61b27882931978ef068b50f759b2c22c0fa965d))
+
 ## 0.12.1 (2026-03-07)
 
 Full Changelog: [v0.12.0...v0.12.1](https://github.com/CaseMark/casedev-cli/compare/v0.12.0...v0.12.1)
