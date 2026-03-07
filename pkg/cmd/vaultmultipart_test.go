@@ -38,6 +38,7 @@ func TestVaultMultipartGetPartURLs(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault:multipart", "get-part-urls",
+		"--api-key", "string",
 		"--id", "id",
 		"--object-id", "objectId",
 		"--part.part-number", "1",
