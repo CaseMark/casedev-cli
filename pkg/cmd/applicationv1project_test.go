@@ -32,6 +32,7 @@ func TestApplicationsV1ProjectsCreate(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"applications:v1:projects", "create",
+		"--api-key", "string",
 		"--git-repo", "gitRepo",
 		"--name", "name",
 		"--build-command", "buildCommand",
@@ -90,6 +91,7 @@ func TestApplicationsV1ProjectsCreateDeployment(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"applications:v1:projects", "create-deployment",
+		"--api-key", "string",
 		"--id", "id",
 		"--environment-variable.key", "key",
 		"--environment-variable.target", "[production]",

@@ -107,6 +107,7 @@ func TestVaultSearch(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"vault", "search",
+		"--api-key", "string",
 		"--id", "id",
 		"--query", "query",
 		"--filters.object-id", "string",

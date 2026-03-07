@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.12.1 (2026-03-07)
+
+Full Changelog: [v0.12.0...v0.12.1](https://github.com/CaseMark/casedev-cli/compare/v0.12.0...v0.12.1)
+
+### Chores
+
+* **internal:** codegen related update ([f991970](https://github.com/CaseMark/casedev-cli/commit/f991970d49115232651c9785d02e590cd366bdda))
+
 ## 0.12.0 (2026-03-06)
 
 Full Changelog: [v0.11.0...v0.12.0](https://github.com/CaseMark/casedev-cli/compare/v0.11.0...v0.12.0)

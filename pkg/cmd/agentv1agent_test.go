@@ -32,6 +32,7 @@ func TestAgentV1AgentsCreate(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"agent:v1:agents", "create",
+		"--api-key", "string",
 		"--instructions", "instructions",
 		"--name", "name",
 		"--description", "description",

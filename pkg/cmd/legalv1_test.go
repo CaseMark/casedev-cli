@@ -51,6 +51,7 @@ func TestLegalV1Draft(t *testing.T) {
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"legal:v1", "draft",
+		"--api-key", "string",
 		"--instructions", "xxxxxxxxxx",
 		"--vault-id", "vault_id",
 		"--citations=true",
