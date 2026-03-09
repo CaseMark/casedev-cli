@@ -1,5 +1,5 @@
-github.com/CaseMark/casedev-go v0.11.2 h1:KbKaooQaWvOHkoW5R6D5WI4eCGSYLvSp6Tz0gVN8Smc=
-github.com/CaseMark/casedev-go v0.11.2/go.mod h1:4ti/wtx8lQPRzHk7mTSbES4MqvSxUufGHrwPSAPJ0A8=
+github.com/CaseMark/casedev-go v0.11.3 h1:FiZK50qUTJL/xJ7EtXQ8GQuVEyLAh65EV6D9yqywCTI=
+github.com/CaseMark/casedev-go v0.11.3/go.mod h1:4ti/wtx8lQPRzHk7mTSbES4MqvSxUufGHrwPSAPJ0A8=
 github.com/aymanbagabas/go-osc52/v2 v2.0.1 h1:HwpRHbFMcZLEVr42D4p7XBqjyuxQH5SMiErDT4WkJ2k=
 github.com/aymanbagabas/go-osc52/v2 v2.0.1/go.mod h1:uYgXzlJ7ZpABp8OJ+exZzJJhRNQ2ASbcXHWsFqH8hp8=
 github.com/aymanbagabas/go-udiff v0.2.0 h1:TK0fH4MteXUDspT88n8CKzvK0X9O2xu9yQjWpi6yML8=
