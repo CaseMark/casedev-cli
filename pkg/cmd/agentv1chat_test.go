@@ -55,6 +55,31 @@ func TestAgentV1ChatCancel(t *testing.T) {
 	})
 }
 
+func TestAgentV1ChatReplyToQuestion(t *testing.T) {
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t, "agent:v1:chat", "reply-to-question",
+			"--api-key", "string",
+			"--id", "id",
+			"--request-id", "requestID",
+			"--answer", "[string]",
+		)
+	})
+
+	t.Run("piping data", func(t *testing.T) {
+		// Test piping YAML data over stdin
+		pipeData := []byte("" +
+			"answers:\n" +
+			"  - - string\n")
+		mocktest.TestRunMockTestWithPipeAndFlags(
+			t, pipeData, "agent:v1:chat", "reply-to-question",
+			"--api-key", "string",
+			"--id", "id",
+			"--request-id", "requestID",
+		)
+	})
+}
+
 func TestAgentV1ChatRespond(t *testing.T) {
 	t.Skip("Mock server doesn't support text/event-stream responses")
 	t.Run("regular flags", func(t *testing.T) {
@@ -109,6 +134,30 @@ func TestAgentV1ChatStream(t *testing.T) {
 			"--max-items", "10",
 			"--id", "id",
 			"--last-event-id", "0",
+		)
+	})
+}
+
+func TestAgentV1ChatUiStream(t *testing.T) {
+	t.Skip("Mock server doesn't support text/event-stream responses")
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t, "agent:v1:chat", "ui-stream",
+			"--api-key", "string",
+			"--max-items", "10",
+			"--id", "id",
+			"--body", "{}",
+		)
+	})
+
+	t.Run("piping data", func(t *testing.T) {
+		// Test piping YAML data over stdin
+		pipeData := []byte("{}")
+		mocktest.TestRunMockTestWithPipeAndFlags(
+			t, pipeData, "agent:v1:chat", "ui-stream",
+			"--api-key", "string",
+			"--max-items", "10",
+			"--id", "id",
 		)
 	})
 }

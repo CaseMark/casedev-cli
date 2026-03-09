@@ -73,9 +73,32 @@ var agentV1ChatCancel = cli.Command{
 	HideHelpCommand: true,
 }
 
+var agentV1ChatReplyToQuestion = cli.Command{
+	Name:    "reply-to-question",
+	Usage:   "Answers a pending OpenCode question for the chat session bound to this agent\nchat.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:     "id",
+			Required: true,
+		},
+		&requestflag.Flag[string]{
+			Name:     "request-id",
+			Required: true,
+		},
+		&requestflag.Flag[[]any]{
+			Name:     "answer",
+			Required: true,
+			BodyPath: "answers",
+		},
+	},
+	Action:          handleAgentV1ChatReplyToQuestion,
+	HideHelpCommand: true,
+}
+
 var agentV1ChatRespond = cli.Command{
 	Name:    "respond",
-	Usage:   "Streams a single assistant turn as normalized state events with stable turn,\nmessage, and part ids.",
+	Usage:   "Streams a single assistant turn as normalized state events with stable turn,\nmessage, and part ids. Emits session.usage before turn.completed when token data\nis available.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -137,6 +160,30 @@ var agentV1ChatStream = cli.Command{
 		},
 	},
 	Action:          handleAgentV1ChatStream,
+	HideHelpCommand: true,
+}
+
+var agentV1ChatUiStream = cli.Command{
+	Name:    "ui-stream",
+	Usage:   "Streams a single assistant turn as AI SDK UIMessageChunk SSE events for direct\nclient rendering.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:     "id",
+			Required: true,
+		},
+		&requestflag.Flag[any]{
+			Name:     "body",
+			Usage:    "OpenCode message payload. Passed through 1:1.",
+			Required: true,
+			BodyRoot: true,
+		},
+		&requestflag.Flag[int64]{
+			Name:  "max-items",
+			Usage: "The maximum number of items to return (use -1 for unlimited).",
+		},
+	},
+	Action:          handleAgentV1ChatUiStream,
 	HideHelpCommand: true,
 }
 
@@ -242,6 +289,43 @@ func handleAgentV1ChatCancel(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
 	return ShowJSON(os.Stdout, "agent:v1:chat cancel", obj, format, transform)
+}
+
+func handleAgentV1ChatReplyToQuestion(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
+		cmd.Set("id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if !cmd.IsSet("request-id") && len(unusedArgs) > 0 {
+		cmd.Set("request-id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	params := githubcomcasemarkcasedevgo.AgentV1ChatReplyToQuestionParams{}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	return client.Agent.V1.Chat.ReplyToQuestion(
+		ctx,
+		cmd.Value("id").(string),
+		cmd.Value("request-id").(string),
+		params,
+		options...,
+	)
 }
 
 func handleAgentV1ChatRespond(ctx context.Context, cmd *cli.Command) error {
@@ -352,4 +436,43 @@ func handleAgentV1ChatStream(ctx context.Context, cmd *cli.Command) error {
 		maxItems = cmd.Value("max-items").(int64)
 	}
 	return ShowJSONIterator(os.Stdout, "agent:v1:chat stream", stream, format, transform, maxItems)
+}
+
+func handleAgentV1ChatUiStream(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
+		cmd.Set("id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	params := githubcomcasemarkcasedevgo.AgentV1ChatUiStreamParams{}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	format := cmd.Root().String("format")
+	transform := cmd.Root().String("transform")
+	stream := client.Agent.V1.Chat.UiStreamStreaming(
+		ctx,
+		cmd.Value("id").(string),
+		params,
+		options...,
+	)
+	maxItems := int64(-1)
+	if cmd.IsSet("max-items") {
+		maxItems = cmd.Value("max-items").(int64)
+	}
+	return ShowJSONIterator(os.Stdout, "agent:v1:chat ui-stream", stream, format, transform, maxItems)
 }
