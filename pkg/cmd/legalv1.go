@@ -152,6 +152,7 @@ var legalV1Draft = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "length.unit",
+			Usage:      "Whether the target length is measured in words or pages",
 			InnerField: "unit",
 		},
 	},
@@ -266,11 +267,13 @@ var legalV1ListCourts = cli.Command{
 		},
 		&requestflag.Flag[int64]{
 			Name:     "limit",
+			Usage:    "Maximum number of courts to return",
 			Default:  25,
 			BodyPath: "limit",
 		},
 		&requestflag.Flag[int64]{
 			Name:     "offset",
+			Usage:    "Number of courts to skip before returning results",
 			Default:  0,
 			BodyPath: "offset",
 		},

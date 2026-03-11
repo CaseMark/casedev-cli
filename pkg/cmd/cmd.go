@@ -456,6 +456,15 @@ func init() {
 				},
 			},
 			{
+				Name:     "voice:boost-list",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&voiceBoostListExtract,
+					&voiceBoostListGenerate,
+				},
+			},
+			{
 				Name:     "voice:transcription",
 				Category: "API RESOURCE",
 				Suggest:  true,

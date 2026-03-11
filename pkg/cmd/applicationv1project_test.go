@@ -88,6 +88,8 @@ func TestApplicationsV1ProjectsList(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
 			t, "applications:v1:projects", "list",
 			"--api-key", "string",
+			"--enrich=true",
+			"--limit", "0",
 		)
 	})
 }

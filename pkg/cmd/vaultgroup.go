@@ -13,22 +13,44 @@ import (
 )
 
 var vaultGroupsCreate = cli.Command{
-	Name:            "create",
-	Usage:           "Create vault group",
-	Suggest:         true,
-	Flags:           []cli.Flag{},
+	Name:    "create",
+	Usage:   "Creates a vault group for organizing vaults and applying group-scoped access\ncontrols. Group-scoped API keys cannot create or manage vault groups.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:     "name",
+			Usage:    "Human-readable name for the vault group",
+			Required: true,
+			BodyPath: "name",
+		},
+		&requestflag.Flag[string]{
+			Name:     "description",
+			Usage:    "Optional description of the vault group purpose",
+			BodyPath: "description",
+		},
+	},
 	Action:          handleVaultGroupsCreate,
 	HideHelpCommand: true,
 }
 
 var vaultGroupsUpdate = cli.Command{
 	Name:    "update",
-	Usage:   "Update vault group",
+	Usage:   "Updates a vault group for the authenticated organization. Only provided fields\nare changed, and setting description to null removes the current description.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "group-id",
 			Required: true,
+		},
+		&requestflag.Flag[any]{
+			Name:     "description",
+			Usage:    "Updated vault group description. Pass null to remove the current description.",
+			BodyPath: "description",
+		},
+		&requestflag.Flag[string]{
+			Name:     "name",
+			Usage:    "New human-readable name for the vault group",
+			BodyPath: "name",
 		},
 	},
 	Action:          handleVaultGroupsUpdate,
@@ -37,7 +59,7 @@ var vaultGroupsUpdate = cli.Command{
 
 var vaultGroupsList = cli.Command{
 	Name:            "list",
-	Usage:           "List vault groups",
+	Usage:           "Lists vault groups visible to the authenticated organization. Group-scoped API\nkeys only receive groups within their allowed scope.",
 	Suggest:         true,
 	Flags:           []cli.Flag{},
 	Action:          handleVaultGroupsList,
@@ -46,7 +68,7 @@ var vaultGroupsList = cli.Command{
 
 var vaultGroupsDelete = cli.Command{
 	Name:    "delete",
-	Usage:   "Delete vault group",
+	Usage:   "Soft-deletes a vault group that no longer has any active vaults assigned. This\noperation is blocked when the group still contains vaults.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -66,18 +88,20 @@ func handleVaultGroupsCreate(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
+	params := githubcomcasemarkcasedevgo.VaultGroupNewParams{}
+
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
 		apiquery.ArrayQueryFormatComma,
-		EmptyBody,
+		ApplicationJSON,
 		false,
 	)
 	if err != nil {
 		return err
 	}
 
-	return client.Vault.Groups.New(ctx, options...)
+	return client.Vault.Groups.New(ctx, params, options...)
 }
 
 func handleVaultGroupsUpdate(ctx context.Context, cmd *cli.Command) error {
@@ -91,18 +115,25 @@ func handleVaultGroupsUpdate(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
+	params := githubcomcasemarkcasedevgo.VaultGroupUpdateParams{}
+
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
 		apiquery.ArrayQueryFormatComma,
-		EmptyBody,
+		ApplicationJSON,
 		false,
 	)
 	if err != nil {
 		return err
 	}
 
-	return client.Vault.Groups.Update(ctx, cmd.Value("group-id").(string), options...)
+	return client.Vault.Groups.Update(
+		ctx,
+		cmd.Value("group-id").(string),
+		params,
+		options...,
+	)
 }
 
 func handleVaultGroupsList(ctx context.Context, cmd *cli.Command) error {

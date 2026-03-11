@@ -108,8 +108,9 @@ var agentV1AgentsUpdate = cli.Command{
 			Name:     "id",
 			Required: true,
 		},
-		&requestflag.Flag[string]{
+		&requestflag.Flag[any]{
 			Name:     "description",
+			Usage:    "Updated agent description. Pass null to clear if supported by the client.",
 			BodyPath: "description",
 		},
 		&requestflag.Flag[any]{
@@ -124,26 +125,32 @@ var agentV1AgentsUpdate = cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "instructions",
+			Usage:    "Updated system instructions that guide agent behavior",
 			BodyPath: "instructions",
 		},
 		&requestflag.Flag[string]{
 			Name:     "model",
+			Usage:    "Model identifier the agent should use for future runs",
 			BodyPath: "model",
 		},
 		&requestflag.Flag[string]{
 			Name:     "name",
+			Usage:    "Updated agent display name",
 			BodyPath: "name",
 		},
 		&requestflag.Flag[any]{
 			Name:     "sandbox",
+			Usage:    "Sandbox configuration override for future agent runs. Pass null to clear.",
 			BodyPath: "sandbox",
 		},
 		&requestflag.Flag[any]{
 			Name:     "vault-group",
+			Usage:    "Vault group IDs the agent can access. Pass null to clear.",
 			BodyPath: "vaultGroups",
 		},
 		&requestflag.Flag[any]{
 			Name:     "vault-id",
+			Usage:    "Vault IDs the agent can access directly. Pass null to clear.",
 			BodyPath: "vaultIds",
 		},
 	},
