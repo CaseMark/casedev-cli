@@ -14,23 +14,23 @@ import (
 
 var applicationsV1DeploymentsCreate = cli.Command{
 	Name:    "create",
-	Usage:   "Trigger a new deployment for a project",
+	Usage:   "Creates a deployment for an existing project by fetching repository files from\nGitHub and uploading them to the hosting provider. Use ref to deploy a branch,\ntag, or commit other than the project default branch.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "project-id",
-			Usage:    "Project ID",
+			Usage:    "Project ID to deploy",
 			Required: true,
 			BodyPath: "projectId",
 		},
 		&requestflag.Flag[string]{
 			Name:     "ref",
-			Usage:    "Git ref (branch, tag, or commit) to deploy",
+			Usage:    "Git branch, tag, or commit to deploy. Defaults to the project branch.",
 			BodyPath: "ref",
 		},
 		&requestflag.Flag[string]{
 			Name:     "target",
-			Usage:    "Deployment target",
+			Usage:    "Deployment target environment",
 			Default:  "production",
 			BodyPath: "target",
 		},
@@ -41,7 +41,7 @@ var applicationsV1DeploymentsCreate = cli.Command{
 
 var applicationsV1DeploymentsRetrieve = cli.Command{
 	Name:    "retrieve",
-	Usage:   "Get details of a specific deployment including build logs",
+	Usage:   "Returns deployment details for one project in the authenticated organization.\nSet includeLogs=true to include recent build output in the response.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -50,13 +50,13 @@ var applicationsV1DeploymentsRetrieve = cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:      "project-id",
-			Usage:     "Project ID (for authorization)",
+			Usage:     "Project ID used to verify access to the deployment",
 			Required:  true,
 			QueryPath: "projectId",
 		},
 		&requestflag.Flag[bool]{
 			Name:      "include-logs",
-			Usage:     "Include build logs",
+			Usage:     "Whether to include build logs in the response",
 			Default:   false,
 			QueryPath: "includeLogs",
 		},
@@ -67,12 +67,12 @@ var applicationsV1DeploymentsRetrieve = cli.Command{
 
 var applicationsV1DeploymentsList = cli.Command{
 	Name:    "list",
-	Usage:   "List deployments for a project",
+	Usage:   "Lists recent deployments for one project in the authenticated organization. Use\nthe optional filters to narrow results by target or deployment state.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "project-id",
-			Usage:     "Project ID",
+			Usage:     "Project ID to list deployments for",
 			Required:  true,
 			QueryPath: "projectId",
 		},
@@ -84,12 +84,12 @@ var applicationsV1DeploymentsList = cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:      "state",
-			Usage:     "Filter by deployment state",
+			Usage:     "Deployment state to filter by",
 			QueryPath: "state",
 		},
 		&requestflag.Flag[string]{
 			Name:      "target",
-			Usage:     "Filter by deployment target",
+			Usage:     "Deployment target to filter by",
 			QueryPath: "target",
 		},
 	},
@@ -99,7 +99,7 @@ var applicationsV1DeploymentsList = cli.Command{
 
 var applicationsV1DeploymentsCancel = cli.Command{
 	Name:    "cancel",
-	Usage:   "Cancel a running deployment",
+	Usage:   "Cancels a running deployment after verifying that the referenced project belongs\nto the authenticated organization. Use this when a build is stuck,\nmisconfigured, or no longer needed.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -108,7 +108,7 @@ var applicationsV1DeploymentsCancel = cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "project-id",
-			Usage:    "Project ID (for authorization)",
+			Usage:    "Project ID used to verify access to the deployment",
 			Required: true,
 			BodyPath: "projectId",
 		},
@@ -128,7 +128,7 @@ var applicationsV1DeploymentsCreateFromFiles = cli.Command{
 
 var applicationsV1DeploymentsGetLogs = cli.Command{
 	Name:    "get-logs",
-	Usage:   "Get build logs for a specific deployment",
+	Usage:   "Returns build and runtime log events for a deployment after verifying access to\nthe owning project. Use this when you need detailed output for a failed or\nin-progress build.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -137,7 +137,7 @@ var applicationsV1DeploymentsGetLogs = cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:      "project-id",
-			Usage:     "Project ID (for authorization)",
+			Usage:     "Project ID used to verify access to the deployment",
 			Required:  true,
 			QueryPath: "projectId",
 		},
@@ -148,7 +148,7 @@ var applicationsV1DeploymentsGetLogs = cli.Command{
 
 var applicationsV1DeploymentsGetStatus = cli.Command{
 	Name:    "get-status",
-	Usage:   "Get the current status of a deployment",
+	Usage:   "Returns the current status of a deployment without fetching full build logs. Use\nthis endpoint for lightweight polling while a deployment is building or waiting\nto become ready.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{

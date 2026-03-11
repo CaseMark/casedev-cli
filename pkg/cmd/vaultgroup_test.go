@@ -13,6 +13,19 @@ func TestVaultGroupsCreate(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
 			t, "vault:groups", "create",
 			"--api-key", "string",
+			"--name", "name",
+			"--description", "description",
+		)
+	})
+
+	t.Run("piping data", func(t *testing.T) {
+		// Test piping YAML data over stdin
+		pipeData := []byte("" +
+			"name: name\n" +
+			"description: description\n")
+		mocktest.TestRunMockTestWithPipeAndFlags(
+			t, pipeData, "vault:groups", "create",
+			"--api-key", "string",
 		)
 	})
 }
@@ -21,6 +34,20 @@ func TestVaultGroupsUpdate(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
 			t, "vault:groups", "update",
+			"--api-key", "string",
+			"--group-id", "groupId",
+			"--description", "description",
+			"--name", "name",
+		)
+	})
+
+	t.Run("piping data", func(t *testing.T) {
+		// Test piping YAML data over stdin
+		pipeData := []byte("" +
+			"description: description\n" +
+			"name: name\n")
+		mocktest.TestRunMockTestWithPipeAndFlags(
+			t, pipeData, "vault:groups", "update",
 			"--api-key", "string",
 			"--group-id", "groupId",
 		)

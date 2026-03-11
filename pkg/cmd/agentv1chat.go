@@ -88,6 +88,7 @@ var agentV1ChatReplyToQuestion = cli.Command{
 		},
 		&requestflag.Flag[[]any]{
 			Name:     "answer",
+			Usage:    "Answer selections for each prompt element in the pending question",
 			Required: true,
 			BodyPath: "answers",
 		},
