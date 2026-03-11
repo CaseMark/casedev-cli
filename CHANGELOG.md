@@ -1,5 +1,28 @@
 # Changelog
 
+## 0.14.0 (2026-03-11)
+
+Full Changelog: [v0.13.0...v0.14.0](https://github.com/CaseMark/casedev-cli/compare/v0.13.0...v0.14.0)
+
+### Features
+
+* add `--max-items` flag for paginated/streaming endpoints ([161d0f2](https://github.com/CaseMark/casedev-cli/commit/161d0f2f88a18632f6b01edb2c1a10ad8f5186aa))
+* **api:** api update ([bbf3531](https://github.com/CaseMark/casedev-cli/commit/bbf3531a2bddc2d903a3ceb8c1bd9972220826a4))
+* **api:** api update ([d530243](https://github.com/CaseMark/casedev-cli/commit/d5302438f10ebf09d244939e0a2f906fb7e75e3e))
+
+
+### Bug Fixes
+
+* fix for encoding arrays with `any` type items ([66aca04](https://github.com/CaseMark/casedev-cli/commit/66aca04587d2e606a8c90ff5e10f0b64dea4b3b2))
+
+
+### Chores
+
+* **ci:** skip uploading artifacts on stainless-internal branches ([d938a04](https://github.com/CaseMark/casedev-cli/commit/d938a04191c420b733bb99b03b0b5985e535c12a))
+* **internal:** codegen related update ([dc4b3bb](https://github.com/CaseMark/casedev-cli/commit/dc4b3bb3fa3c271b252b3fe0219f4368c2f5daf2))
+* **internal:** codegen related update ([f29b016](https://github.com/CaseMark/casedev-cli/commit/f29b016b102709b1d699ca891e1d18400a0690d7))
+* **test:** do not count install time for mock server timeout ([04d9879](https://github.com/CaseMark/casedev-cli/commit/04d9879e22b8a8cdcf113b63167ee38415f4a348))
+
 ## 0.13.0 (2026-03-07)
 
 Full Changelog: [v0.12.1...v0.13.0](https://github.com/CaseMark/casedev-cli/compare/v0.12.1...v0.13.0)

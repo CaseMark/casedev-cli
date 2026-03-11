@@ -73,45 +73,96 @@ var agentV1ChatCancel = cli.Command{
 	HideHelpCommand: true,
 }
 
-var agentV1ChatRespond = cli.Command{
-	Name:    "respond",
-	Usage:   "Streams a single assistant turn as normalized state events with stable turn,\nmessage, and part ids.",
+var agentV1ChatReplyToQuestion = cli.Command{
+	Name:    "reply-to-question",
+	Usage:   "Answers a pending OpenCode question for the chat session bound to this agent\nchat.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "id",
 			Required: true,
 		},
-		&requestflag.Flag[any]{
-			Name:     "body",
-			Usage:    "OpenCode message payload. Passed through 1:1.",
+		&requestflag.Flag[string]{
+			Name:     "request-id",
 			Required: true,
-			BodyRoot: true,
+		},
+		&requestflag.Flag[[]any]{
+			Name:     "answer",
+			Required: true,
+			BodyPath: "answers",
+		},
+	},
+	Action:          handleAgentV1ChatReplyToQuestion,
+	HideHelpCommand: true,
+}
+
+var agentV1ChatRespond = requestflag.WithInnerFlags(cli.Command{
+	Name:    "respond",
+	Usage:   "Streams a single assistant turn as normalized SSE events with stable turn,\nmessage, and part IDs. Emits events: `turn.started`, `turn.status`,\n`message.created`, `message.part.updated`, `message.completed`, `session.usage`,\n`turn.completed`.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:     "id",
+			Required: true,
+		},
+		&requestflag.Flag[[]map[string]any]{
+			Name:     "part",
+			Usage:    `Message content parts. Currently only "text" type is supported. Additional types (e.g. file, image) may be added in future versions.`,
+			BodyPath: "parts",
+		},
+		&requestflag.Flag[int64]{
+			Name:  "max-items",
+			Usage: "The maximum number of items to return (use -1 for unlimited).",
 		},
 	},
 	Action:          handleAgentV1ChatRespond,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"part": {
+		&requestflag.InnerFlag[string]{
+			Name:       "part.text",
+			Usage:      "The message text content",
+			InnerField: "text",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "part.type",
+			Usage:      `Part type. Currently only "text" is supported.`,
+			InnerField: "type",
+		},
+	},
+})
 
-var agentV1ChatSendMessage = cli.Command{
+var agentV1ChatSendMessage = requestflag.WithInnerFlags(cli.Command{
 	Name:    "send-message",
-	Usage:   "Proxies a message to the OpenCode session bound to this chat.",
+	Usage:   "Sends a message and returns the complete response as a single JSON body. Blocks\nuntil the agent turn completes.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "id",
 			Required: true,
 		},
-		&requestflag.Flag[any]{
-			Name:     "body",
-			Usage:    "OpenCode message payload. Passed through 1:1.",
-			Required: true,
-			BodyRoot: true,
+		&requestflag.Flag[[]map[string]any]{
+			Name:     "part",
+			Usage:    `Message content parts. Currently only "text" type is supported. Additional types (e.g. file, image) may be added in future versions.`,
+			BodyPath: "parts",
 		},
 	},
 	Action:          handleAgentV1ChatSendMessage,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"part": {
+		&requestflag.InnerFlag[string]{
+			Name:       "part.text",
+			Usage:      "The message text content",
+			InnerField: "text",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "part.type",
+			Usage:      `Part type. Currently only "text" is supported.`,
+			InnerField: "type",
+		},
+	},
+})
 
 var agentV1ChatStream = cli.Command{
 	Name:    "stream",
@@ -126,6 +177,10 @@ var agentV1ChatStream = cli.Command{
 			Name:      "last-event-id",
 			Usage:     "Replay events after this sequence number",
 			QueryPath: "lastEventId",
+		},
+		&requestflag.Flag[int64]{
+			Name:  "max-items",
+			Usage: "The maximum number of items to return (use -1 for unlimited).",
 		},
 	},
 	Action:          handleAgentV1ChatStream,
@@ -236,6 +291,43 @@ func handleAgentV1ChatCancel(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(os.Stdout, "agent:v1:chat cancel", obj, format, transform)
 }
 
+func handleAgentV1ChatReplyToQuestion(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
+		cmd.Set("id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if !cmd.IsSet("request-id") && len(unusedArgs) > 0 {
+		cmd.Set("request-id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	params := githubcomcasemarkcasedevgo.AgentV1ChatReplyToQuestionParams{}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	return client.Agent.V1.Chat.ReplyToQuestion(
+		ctx,
+		cmd.Value("id").(string),
+		cmd.Value("request-id").(string),
+		params,
+		options...,
+	)
+}
+
 func handleAgentV1ChatRespond(ctx context.Context, cmd *cli.Command) error {
 	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
@@ -268,7 +360,11 @@ func handleAgentV1ChatRespond(ctx context.Context, cmd *cli.Command) error {
 		params,
 		options...,
 	)
-	return ShowJSONIterator(os.Stdout, "agent:v1:chat respond", stream, format, transform)
+	maxItems := int64(-1)
+	if cmd.IsSet("max-items") {
+		maxItems = cmd.Value("max-items").(int64)
+	}
+	return ShowJSONIterator(os.Stdout, "agent:v1:chat respond", stream, format, transform, maxItems)
 }
 
 func handleAgentV1ChatSendMessage(ctx context.Context, cmd *cli.Command) error {
@@ -335,5 +431,9 @@ func handleAgentV1ChatStream(ctx context.Context, cmd *cli.Command) error {
 		params,
 		options...,
 	)
-	return ShowJSONIterator(os.Stdout, "agent:v1:chat stream", stream, format, transform)
+	maxItems := int64(-1)
+	if cmd.IsSet("max-items") {
+		maxItems = cmd.Value("max-items").(int64)
+	}
+	return ShowJSONIterator(os.Stdout, "agent:v1:chat stream", stream, format, transform, maxItems)
 }

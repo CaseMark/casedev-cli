@@ -33,6 +33,11 @@ var agentV1RunCreate = cli.Command{
 			BodyPath: "prompt",
 		},
 		&requestflag.Flag[any]{
+			Name:     "callback-url",
+			Usage:    "HTTPS callback URL to receive a notification when the run completes. Registered atomically with the run — eliminates the race condition of calling /watch after /exec. Additional watchers can still be added via POST /run/:id/watch.",
+			BodyPath: "callbackUrl",
+		},
+		&requestflag.Flag[any]{
 			Name:     "guidance",
 			Usage:    "Additional guidance for this run",
 			BodyPath: "guidance",
@@ -49,6 +54,37 @@ var agentV1RunCreate = cli.Command{
 		},
 	},
 	Action:          handleAgentV1RunCreate,
+	HideHelpCommand: true,
+}
+
+var agentV1RunList = cli.Command{
+	Name:    "list",
+	Usage:   "Lists agent runs for the authenticated organization. Supports filtering by\nagent, status, and cursor-based pagination.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:      "agent-id",
+			Usage:     "Filter by agent ID",
+			QueryPath: "agentId",
+		},
+		&requestflag.Flag[string]{
+			Name:      "cursor",
+			Usage:     "Pagination cursor (run ID from previous page). Returns runs created before this run.",
+			QueryPath: "cursor",
+		},
+		&requestflag.Flag[int64]{
+			Name:      "limit",
+			Usage:     "Maximum number of runs to return (default 50, max 250)",
+			Default:   50,
+			QueryPath: "limit",
+		},
+		&requestflag.Flag[string]{
+			Name:      "status",
+			Usage:     "Filter by run status",
+			QueryPath: "status",
+		},
+	},
+	Action:          handleAgentV1RunList,
 	HideHelpCommand: true,
 }
 
@@ -79,6 +115,10 @@ var agentV1RunEvents = cli.Command{
 			Name:      "last-event-id",
 			Usage:     "Replay events after this sequence number",
 			QueryPath: "lastEventId",
+		},
+		&requestflag.Flag[int64]{
+			Name:  "max-items",
+			Usage: "The maximum number of items to return (use -1 for unlimited).",
 		},
 	},
 	Action:          handleAgentV1RunEvents,
@@ -181,6 +221,40 @@ func handleAgentV1RunCreate(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(os.Stdout, "agent:v1:run create", obj, format, transform)
 }
 
+func handleAgentV1RunList(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	params := githubcomcasemarkcasedevgo.AgentV1RunListParams{}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		EmptyBody,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Agent.V1.Run.List(ctx, params, options...)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(os.Stdout, "agent:v1:run list", obj, format, transform)
+}
+
 func handleAgentV1RunCancel(ctx context.Context, cmd *cli.Command) error {
 	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
@@ -248,7 +322,11 @@ func handleAgentV1RunEvents(ctx context.Context, cmd *cli.Command) error {
 		params,
 		options...,
 	)
-	return ShowJSONIterator(os.Stdout, "agent:v1:run events", stream, format, transform)
+	maxItems := int64(-1)
+	if cmd.IsSet("max-items") {
+		maxItems = cmd.Value("max-items").(int64)
+	}
+	return ShowJSONIterator(os.Stdout, "agent:v1:run events", stream, format, transform, maxItems)
 }
 
 func handleAgentV1RunExec(ctx context.Context, cmd *cli.Command) error {
