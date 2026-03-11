@@ -61,6 +61,7 @@ func TestAgentV1ChatRespond(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
 			t, "agent:v1:chat", "respond",
 			"--api-key", "string",
+			"--max-items", "10",
 			"--id", "id",
 			"--body", "{}",
 		)
@@ -72,6 +73,7 @@ func TestAgentV1ChatRespond(t *testing.T) {
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData, "agent:v1:chat", "respond",
 			"--api-key", "string",
+			"--max-items", "10",
 			"--id", "id",
 		)
 	})
@@ -104,6 +106,7 @@ func TestAgentV1ChatStream(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
 			t, "agent:v1:chat", "stream",
 			"--api-key", "string",
+			"--max-items", "10",
 			"--id", "id",
 			"--last-event-id", "0",
 		)
