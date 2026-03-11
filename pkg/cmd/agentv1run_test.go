@@ -15,6 +15,7 @@ func TestAgentV1RunCreate(t *testing.T) {
 			"--api-key", "string",
 			"--agent-id", "agentId",
 			"--prompt", "prompt",
+			"--callback-url", "https://example.com",
 			"--guidance", "guidance",
 			"--model", "model",
 			"--object-id", "[string]",
@@ -26,6 +27,7 @@ func TestAgentV1RunCreate(t *testing.T) {
 		pipeData := []byte("" +
 			"agentId: agentId\n" +
 			"prompt: prompt\n" +
+			"callbackUrl: https://example.com\n" +
 			"guidance: guidance\n" +
 			"model: model\n" +
 			"objectIds:\n" +
@@ -33,6 +35,19 @@ func TestAgentV1RunCreate(t *testing.T) {
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData, "agent:v1:run", "create",
 			"--api-key", "string",
+		)
+	})
+}
+
+func TestAgentV1RunList(t *testing.T) {
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t, "agent:v1:run", "list",
+			"--api-key", "string",
+			"--agent-id", "agentId",
+			"--cursor", "cursor",
+			"--limit", "1",
+			"--status", "queued",
 		)
 	})
 }
