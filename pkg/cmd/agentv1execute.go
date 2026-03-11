@@ -28,12 +28,12 @@ var agentV1ExecuteCreate = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[any]{
 			Name:     "disabled-tool",
-			Usage:    "Denylist of tools the agent cannot use",
+			Usage:    "Denylist of tools the agent cannot use. Mutually exclusive with enabledTools — set one or the other, not both.",
 			BodyPath: "disabledTools",
 		},
 		&requestflag.Flag[any]{
 			Name:     "enabled-tool",
-			Usage:    "Allowlist of tools the agent can use",
+			Usage:    "Allowlist of tools the agent can use. Mutually exclusive with disabledTools — set one or the other, not both.",
 			BodyPath: "enabledTools",
 		},
 		&requestflag.Flag[any]{

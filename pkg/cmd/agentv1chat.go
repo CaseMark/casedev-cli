@@ -96,20 +96,19 @@ var agentV1ChatReplyToQuestion = cli.Command{
 	HideHelpCommand: true,
 }
 
-var agentV1ChatRespond = cli.Command{
+var agentV1ChatRespond = requestflag.WithInnerFlags(cli.Command{
 	Name:    "respond",
-	Usage:   "Streams a single assistant turn as normalized state events with stable turn,\nmessage, and part ids. Emits session.usage before turn.completed when token data\nis available.",
+	Usage:   "Streams a single assistant turn as normalized SSE events with stable turn,\nmessage, and part IDs. Emits events: `turn.started`, `turn.status`,\n`message.created`, `message.part.updated`, `message.completed`, `session.usage`,\n`turn.completed`.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "id",
 			Required: true,
 		},
-		&requestflag.Flag[any]{
-			Name:     "body",
-			Usage:    "OpenCode message payload. Passed through 1:1.",
-			Required: true,
-			BodyRoot: true,
+		&requestflag.Flag[[]map[string]any]{
+			Name:     "part",
+			Usage:    `Message content parts. Currently only "text" type is supported. Additional types (e.g. file, image) may be added in future versions.`,
+			BodyPath: "parts",
 		},
 		&requestflag.Flag[int64]{
 			Name:  "max-items",
@@ -118,27 +117,52 @@ var agentV1ChatRespond = cli.Command{
 	},
 	Action:          handleAgentV1ChatRespond,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"part": {
+		&requestflag.InnerFlag[string]{
+			Name:       "part.text",
+			Usage:      "The message text content",
+			InnerField: "text",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "part.type",
+			Usage:      `Part type. Currently only "text" is supported.`,
+			InnerField: "type",
+		},
+	},
+})
 
-var agentV1ChatSendMessage = cli.Command{
+var agentV1ChatSendMessage = requestflag.WithInnerFlags(cli.Command{
 	Name:    "send-message",
-	Usage:   "Proxies a message to the OpenCode session bound to this chat.",
+	Usage:   "Sends a message and returns the complete response as a single JSON body. Blocks\nuntil the agent turn completes.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "id",
 			Required: true,
 		},
-		&requestflag.Flag[any]{
-			Name:     "body",
-			Usage:    "OpenCode message payload. Passed through 1:1.",
-			Required: true,
-			BodyRoot: true,
+		&requestflag.Flag[[]map[string]any]{
+			Name:     "part",
+			Usage:    `Message content parts. Currently only "text" type is supported. Additional types (e.g. file, image) may be added in future versions.`,
+			BodyPath: "parts",
 		},
 	},
 	Action:          handleAgentV1ChatSendMessage,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"part": {
+		&requestflag.InnerFlag[string]{
+			Name:       "part.text",
+			Usage:      "The message text content",
+			InnerField: "text",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "part.type",
+			Usage:      `Part type. Currently only "text" is supported.`,
+			InnerField: "type",
+		},
+	},
+})
 
 var agentV1ChatStream = cli.Command{
 	Name:    "stream",
@@ -160,30 +184,6 @@ var agentV1ChatStream = cli.Command{
 		},
 	},
 	Action:          handleAgentV1ChatStream,
-	HideHelpCommand: true,
-}
-
-var agentV1ChatUiStream = cli.Command{
-	Name:    "ui-stream",
-	Usage:   "Streams a single assistant turn as AI SDK UIMessageChunk SSE events for direct\nclient rendering.",
-	Suggest: true,
-	Flags: []cli.Flag{
-		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
-		},
-		&requestflag.Flag[any]{
-			Name:     "body",
-			Usage:    "OpenCode message payload. Passed through 1:1.",
-			Required: true,
-			BodyRoot: true,
-		},
-		&requestflag.Flag[int64]{
-			Name:  "max-items",
-			Usage: "The maximum number of items to return (use -1 for unlimited).",
-		},
-	},
-	Action:          handleAgentV1ChatUiStream,
 	HideHelpCommand: true,
 }
 
@@ -436,43 +436,4 @@ func handleAgentV1ChatStream(ctx context.Context, cmd *cli.Command) error {
 		maxItems = cmd.Value("max-items").(int64)
 	}
 	return ShowJSONIterator(os.Stdout, "agent:v1:chat stream", stream, format, transform, maxItems)
-}
-
-func handleAgentV1ChatUiStream(ctx context.Context, cmd *cli.Command) error {
-	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
-	unusedArgs := cmd.Args().Slice()
-	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
-		cmd.Set("id", unusedArgs[0])
-		unusedArgs = unusedArgs[1:]
-	}
-	if len(unusedArgs) > 0 {
-		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
-	}
-
-	params := githubcomcasemarkcasedevgo.AgentV1ChatUiStreamParams{}
-
-	options, err := flagOptions(
-		cmd,
-		apiquery.NestedQueryFormatBrackets,
-		apiquery.ArrayQueryFormatComma,
-		ApplicationJSON,
-		false,
-	)
-	if err != nil {
-		return err
-	}
-
-	format := cmd.Root().String("format")
-	transform := cmd.Root().String("transform")
-	stream := client.Agent.V1.Chat.UiStreamStreaming(
-		ctx,
-		cmd.Value("id").(string),
-		params,
-		options...,
-	)
-	maxItems := int64(-1)
-	if cmd.IsSet("max-items") {
-		maxItems = cmd.Value("max-items").(int64)
-	}
-	return ShowJSONIterator(os.Stdout, "agent:v1:chat ui-stream", stream, format, transform, maxItems)
 }

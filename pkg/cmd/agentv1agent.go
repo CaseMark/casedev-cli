@@ -39,12 +39,12 @@ var agentV1AgentsCreate = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[any]{
 			Name:     "disabled-tool",
-			Usage:    "Denylist of tools the agent cannot use",
+			Usage:    "Denylist of tools the agent cannot use. Mutually exclusive with enabledTools — set one or the other, not both.",
 			BodyPath: "disabledTools",
 		},
 		&requestflag.Flag[any]{
 			Name:     "enabled-tool",
-			Usage:    "Allowlist of tools the agent can use",
+			Usage:    "Allowlist of tools the agent can use. Mutually exclusive with disabledTools — set one or the other, not both.",
 			BodyPath: "enabledTools",
 		},
 		&requestflag.Flag[string]{
@@ -114,10 +114,12 @@ var agentV1AgentsUpdate = cli.Command{
 		},
 		&requestflag.Flag[any]{
 			Name:     "disabled-tool",
+			Usage:    "Denylist of tools the agent cannot use. Mutually exclusive with enabledTools — set one or the other, not both. Pass null to clear.",
 			BodyPath: "disabledTools",
 		},
 		&requestflag.Flag[any]{
 			Name:     "enabled-tool",
+			Usage:    "Allowlist of tools the agent can use. Mutually exclusive with disabledTools — set one or the other, not both. Pass null to clear.",
 			BodyPath: "enabledTools",
 		},
 		&requestflag.Flag[string]{
@@ -150,10 +152,22 @@ var agentV1AgentsUpdate = cli.Command{
 }
 
 var agentV1AgentsList = cli.Command{
-	Name:            "list",
-	Usage:           "Lists all active agents for the authenticated organization.",
-	Suggest:         true,
-	Flags:           []cli.Flag{},
+	Name:    "list",
+	Usage:   "Lists all active agents for the authenticated organization.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:      "cursor",
+			Usage:     "Pagination cursor (agent ID from previous page). Returns agents created before this agent.",
+			QueryPath: "cursor",
+		},
+		&requestflag.Flag[int64]{
+			Name:      "limit",
+			Usage:     "Maximum number of agents to return (default 50, max 250)",
+			Default:   50,
+			QueryPath: "limit",
+		},
+	},
 	Action:          handleAgentV1AgentsList,
 	HideHelpCommand: true,
 }
@@ -291,6 +305,8 @@ func handleAgentV1AgentsList(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
+	params := githubcomcasemarkcasedevgo.AgentV1AgentListParams{}
+
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -304,7 +320,7 @@ func handleAgentV1AgentsList(ctx context.Context, cmd *cli.Command) error {
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Agent.V1.Agents.List(ctx, options...)
+	_, err = client.Agent.V1.Agents.List(ctx, params, options...)
 	if err != nil {
 		return err
 	}

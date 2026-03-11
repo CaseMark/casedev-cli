@@ -129,6 +129,8 @@ func TestAgentV1AgentsList(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
 			t, "agent:v1:agents", "list",
 			"--api-key", "string",
+			"--cursor", "cursor",
+			"--limit", "1",
 		)
 	})
 }
