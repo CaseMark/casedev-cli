@@ -17,55 +17,55 @@ import (
 
 var applicationsV1ProjectsCreate = requestflag.WithInnerFlags(cli.Command{
 	Name:    "create",
-	Usage:   "Create a new web application project",
+	Usage:   "Creates a new application project, validates GitHub access, provisions a default\ncase.dev domain, and starts the deployment workflow. The initial response\nreturns as soon as the workflow is queued so clients can poll for progress.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "git-repo",
-			Usage:    `GitHub repository URL or "owner/repo"`,
+			Usage:    "GitHub repository URL or owner/repo identifier",
 			Required: true,
 			BodyPath: "gitRepo",
 		},
 		&requestflag.Flag[string]{
 			Name:     "name",
-			Usage:    "Project name",
+			Usage:    "Human-readable project name",
 			Required: true,
 			BodyPath: "name",
 		},
 		&requestflag.Flag[string]{
 			Name:     "build-command",
-			Usage:    "Custom build command",
+			Usage:    "Custom build command to override the framework default",
 			BodyPath: "buildCommand",
 		},
 		&requestflag.Flag[[]map[string]any]{
 			Name:     "environment-variable",
-			Usage:    "Environment variables to set on the project",
+			Usage:    "Environment variables to create before the first deployment",
 			BodyPath: "environmentVariables",
 		},
 		&requestflag.Flag[string]{
 			Name:     "framework",
-			Usage:    `Framework (e.g., "nextjs", "remix", "astro")`,
+			Usage:    "Framework preset for the hosting project, such as nextjs or remix",
 			BodyPath: "framework",
 		},
 		&requestflag.Flag[string]{
 			Name:     "git-branch",
-			Usage:    "Git branch to deploy",
+			Usage:    "Git branch to deploy. Defaults to main.",
 			Default:  "main",
 			BodyPath: "gitBranch",
 		},
 		&requestflag.Flag[string]{
 			Name:     "install-command",
-			Usage:    "Custom install command",
+			Usage:    "Custom install command to override the framework default",
 			BodyPath: "installCommand",
 		},
 		&requestflag.Flag[string]{
 			Name:     "output-directory",
-			Usage:    "Build output directory",
+			Usage:    "Build output directory relative to the project root",
 			BodyPath: "outputDirectory",
 		},
 		&requestflag.Flag[string]{
 			Name:     "root-directory",
-			Usage:    "Root directory of the project",
+			Usage:    "Repository subdirectory that contains the app to deploy",
 			BodyPath: "rootDirectory",
 		},
 	},
@@ -80,7 +80,7 @@ var applicationsV1ProjectsCreate = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.InnerFlag[[]string]{
 			Name:       "environment-variable.target",
-			Usage:      "Deployment targets for this variable",
+			Usage:      "Deployment targets that should receive this variable",
 			InnerField: "target",
 		},
 		&requestflag.InnerFlag[string]{
@@ -90,7 +90,7 @@ var applicationsV1ProjectsCreate = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "environment-variable.type",
-			Usage:      "Variable type",
+			Usage:      "Storage mode for the environment variable value",
 			InnerField: "type",
 		},
 	},
@@ -98,7 +98,7 @@ var applicationsV1ProjectsCreate = requestflag.WithInnerFlags(cli.Command{
 
 var applicationsV1ProjectsRetrieve = cli.Command{
 	Name:    "retrieve",
-	Usage:   "Get details of a specific web application project",
+	Usage:   "Returns project details, domains, and recent deployment information for one\napplication project or deployed Thurgood app. Use this endpoint when you need a\nsingle record with hosting metadata for a details view.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -111,17 +111,30 @@ var applicationsV1ProjectsRetrieve = cli.Command{
 }
 
 var applicationsV1ProjectsList = cli.Command{
-	Name:            "list",
-	Usage:           "List all web application projects",
-	Suggest:         true,
-	Flags:           []cli.Flag{},
+	Name:    "list",
+	Usage:   "Lists application projects and deployed Thurgood apps for the authenticated\norganization. Use enrich=true to include additional hosting metadata for\nprojects linked to Vercel.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[bool]{
+			Name:      "enrich",
+			Usage:     "Whether to include additional hosting metadata from Vercel",
+			Default:   false,
+			QueryPath: "enrich",
+		},
+		&requestflag.Flag[float64]{
+			Name:      "limit",
+			Usage:     "Maximum number of projects to return from each backing source",
+			Default:   20,
+			QueryPath: "limit",
+		},
+	},
 	Action:          handleApplicationsV1ProjectsList,
 	HideHelpCommand: true,
 }
 
 var applicationsV1ProjectsDelete = cli.Command{
 	Name:    "delete",
-	Usage:   "Delete a web application project",
+	Usage:   "Soft-deletes an application project or deployed Thurgood app from Case.dev. By\ndefault it also removes the linked hosting project; set deleteFromHosting=false\nto keep the external hosting resources intact.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -130,7 +143,7 @@ var applicationsV1ProjectsDelete = cli.Command{
 		},
 		&requestflag.Flag[bool]{
 			Name:      "delete-from-hosting",
-			Usage:     "Also delete the project from hosting (default: true)",
+			Usage:     "Whether to also delete the linked hosting project. Defaults to true.",
 			Default:   true,
 			QueryPath: "deleteFromHosting",
 		},
@@ -141,7 +154,7 @@ var applicationsV1ProjectsDelete = cli.Command{
 
 var applicationsV1ProjectsCreateDeployment = requestflag.WithInnerFlags(cli.Command{
 	Name:    "create-deployment",
-	Usage:   "Trigger a new deployment for a project.",
+	Usage:   "Starts a new deployment for an existing project using its saved repository and\nhosting configuration. Any environment variables passed in the request are\nmerged into the deployment workflow before the build starts.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -165,7 +178,7 @@ var applicationsV1ProjectsCreateDeployment = requestflag.WithInnerFlags(cli.Comm
 		},
 		&requestflag.InnerFlag[[]string]{
 			Name:       "environment-variable.target",
-			Usage:      "Deployment targets for this variable",
+			Usage:      "Deployment targets that should receive this variable",
 			InnerField: "target",
 		},
 		&requestflag.InnerFlag[string]{
@@ -175,7 +188,7 @@ var applicationsV1ProjectsCreateDeployment = requestflag.WithInnerFlags(cli.Comm
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "environment-variable.type",
-			Usage:      "Variable type",
+			Usage:      "Storage mode for the environment variable value",
 			InnerField: "type",
 		},
 	},
@@ -307,7 +320,7 @@ var applicationsV1ProjectsGetRuntimeLogs = cli.Command{
 
 var applicationsV1ProjectsListDeployments = cli.Command{
 	Name:    "list-deployments",
-	Usage:   "List deployments for a specific project",
+	Usage:   "Lists deployments for one project in the authenticated organization. If the\nhosting project has not been created yet, this endpoint returns an empty list\nwith a progress message instead of failing.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -322,12 +335,12 @@ var applicationsV1ProjectsListDeployments = cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:      "state",
-			Usage:     "Filter by deployment state",
+			Usage:     "Deployment state to filter by",
 			QueryPath: "state",
 		},
 		&requestflag.Flag[string]{
 			Name:      "target",
-			Usage:     "Filter by deployment target",
+			Usage:     "Deployment target to filter by",
 			QueryPath: "target",
 		},
 	},
@@ -426,6 +439,8 @@ func handleApplicationsV1ProjectsList(ctx context.Context, cmd *cli.Command) err
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
+	params := githubcomcasemarkcasedevgo.ApplicationV1ProjectListParams{}
+
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -439,7 +454,7 @@ func handleApplicationsV1ProjectsList(ctx context.Context, cmd *cli.Command) err
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Applications.V1.Projects.List(ctx, options...)
+	_, err = client.Applications.V1.Projects.List(ctx, params, options...)
 	if err != nil {
 		return err
 	}

@@ -26,11 +26,13 @@ var vaultMultipartAbort = cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "object-id",
+			Usage:    "Vault object ID associated with the multipart upload",
 			Required: true,
 			BodyPath: "objectId",
 		},
 		&requestflag.Flag[string]{
 			Name:     "upload-id",
+			Usage:    "Multipart upload ID returned when the upload was initialized",
 			Required: true,
 			BodyPath: "uploadId",
 		},
@@ -50,16 +52,19 @@ var vaultMultipartGetPartURLs = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "object-id",
+			Usage:    "Vault object ID associated with the multipart upload",
 			Required: true,
 			BodyPath: "objectId",
 		},
 		&requestflag.Flag[[]map[string]any]{
 			Name:     "part",
+			Usage:    "Multipart parts that need presigned upload URLs",
 			Required: true,
 			BodyPath: "parts",
 		},
 		&requestflag.Flag[string]{
 			Name:     "upload-id",
+			Usage:    "Multipart upload ID returned when the upload was initialized",
 			Required: true,
 			BodyPath: "uploadId",
 		},
@@ -70,6 +75,7 @@ var vaultMultipartGetPartURLs = requestflag.WithInnerFlags(cli.Command{
 	"part": {
 		&requestflag.InnerFlag[int64]{
 			Name:       "part.part-number",
+			Usage:      "1-based multipart part number",
 			InnerField: "partNumber",
 		},
 		&requestflag.InnerFlag[int64]{

@@ -23,19 +23,23 @@ var vaultEventsSubscriptionsCreate = cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "callback-url",
+			Usage:    "Webhook endpoint URL that will receive vault event deliveries",
 			Required: true,
 			BodyPath: "callbackUrl",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "event-type",
+			Usage:    "Vault event types to deliver. Omit to receive the default supported set.",
 			BodyPath: "eventTypes",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "object-id",
+			Usage:    "Vault object IDs to limit notifications to. Omit to receive events for all objects in the vault.",
 			BodyPath: "objectIds",
 		},
 		&requestflag.Flag[string]{
 			Name:     "signing-secret",
+			Usage:    "Optional secret used to sign outbound webhook deliveries",
 			BodyPath: "signingSecret",
 		},
 	},
@@ -58,26 +62,32 @@ var vaultEventsSubscriptionsUpdate = cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "callback-url",
+			Usage:    "Updated webhook endpoint URL for deliveries",
 			BodyPath: "callbackUrl",
 		},
 		&requestflag.Flag[bool]{
 			Name:     "clear-signing-secret",
+			Usage:    "Whether to remove the existing signing secret",
 			BodyPath: "clearSigningSecret",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "event-type",
+			Usage:    "Updated event types to deliver for this subscription",
 			BodyPath: "eventTypes",
 		},
 		&requestflag.Flag[bool]{
 			Name:     "is-active",
+			Usage:    "Whether the subscription should continue delivering events",
 			BodyPath: "isActive",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "object-id",
+			Usage:    "Updated vault object IDs to limit notifications to. Pass an empty array to remove the filter.",
 			BodyPath: "objectIds",
 		},
 		&requestflag.Flag[string]{
 			Name:     "signing-secret",
+			Usage:    "Replacement secret used to sign webhook deliveries",
 			BodyPath: "signingSecret",
 		},
 	},
