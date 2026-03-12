@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.15.1 (2026-03-12)
+
+Full Changelog: [v0.15.0...v0.15.1](https://github.com/CaseMark/casedev-cli/compare/v0.15.0...v0.15.1)
+
+### Bug Fixes
+
+* fix for test cases with newlines in YAML and better error reporting ([8735c70](https://github.com/CaseMark/casedev-cli/commit/8735c70b6a32e7abf9252c94a14d76f0a70204d3))
+
 ## 0.15.0 (2026-03-12)
 
 Full Changelog: [v0.14.0...v0.15.0](https://github.com/CaseMark/casedev-cli/compare/v0.14.0...v0.15.0)
