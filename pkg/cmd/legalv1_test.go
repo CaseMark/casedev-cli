@@ -15,6 +15,7 @@ func TestLegalV1Docket(t *testing.T) {
 			t, "legal:v1", "docket",
 			"--api-key", "string",
 			"--type", "search",
+			"--acknowledge-pacer-fees=true",
 			"--court", "court",
 			"--date-filed-after", "'2019-12-27'",
 			"--date-filed-before", "'2019-12-27'",
@@ -31,6 +32,7 @@ func TestLegalV1Docket(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("" +
 			"type: search\n" +
+			"acknowledgePacerFees: true\n" +
 			"court: court\n" +
 			"dateFiledAfter: '2019-12-27'\n" +
 			"dateFiledBefore: '2019-12-27'\n" +

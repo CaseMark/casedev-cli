@@ -17,7 +17,7 @@ import (
 
 var legalV1Docket = cli.Command{
 	Name:    "docket",
-	Usage:   "Search federal court dockets or retrieve a specific docket with optional filing\nentries via CourtListener RECAP data.",
+	Usage:   "Search federal court dockets or retrieve a specific docket with optional filing\nentries. Use legal.listCourts() to resolve court slugs for filtering.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -26,9 +26,15 @@ var legalV1Docket = cli.Command{
 			Required: true,
 			BodyPath: "type",
 		},
+		&requestflag.Flag[bool]{
+			Name:     "acknowledge-pacer-fees",
+			Usage:    "Required when live: true. Acknowledges that PACER fees (up to $3.00 per docket) plus a $0.05 service fee will be charged to your account.",
+			Default:  false,
+			BodyPath: "acknowledgePacerFees",
+		},
 		&requestflag.Flag[string]{
 			Name:     "court",
-			Usage:    `Optional CourtListener court slug (e.g. "nysd", "ca9", "cafc")`,
+			Usage:    `Optional court slug for filtering (e.g. "nysd", "ca9", "cafc"). Use legal.listCourts() to find slugs.`,
 			BodyPath: "court",
 		},
 		&requestflag.Flag[any]{
@@ -43,12 +49,12 @@ var legalV1Docket = cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "docket-id",
-			Usage:    "CourtListener docket ID (required for lookup)",
+			Usage:    "Docket ID (required for lookup)",
 			BodyPath: "docketId",
 		},
 		&requestflag.Flag[bool]{
 			Name:     "include-entries",
-			Usage:    "Include docket entries/filings in lookup responses",
+			Usage:    "Include docket entries/filings in lookup responses. Coming soon — currently returns 501. The parameter is accepted for forward compatibility.",
 			Default:  false,
 			BodyPath: "includeEntries",
 		},
@@ -60,7 +66,7 @@ var legalV1Docket = cli.Command{
 		},
 		&requestflag.Flag[bool]{
 			Name:     "live",
-			Usage:    "Reserved for future PACER live fetch support. Setting true currently returns 400.",
+			Usage:    `Trigger a live PACER fetch for dockets not yet in the RECAP archive. Requires acknowledgePacerFees: true. PACER charges up to $3.00 per docket sheet plus a $0.05 service fee. Only valid with type: "lookup".`,
 			Default:  false,
 			BodyPath: "live",
 		},
@@ -251,18 +257,18 @@ var legalV1GetFullText = cli.Command{
 
 var legalV1ListCourts = cli.Command{
 	Name:    "list-courts",
-	Usage:   "Returns CourtListener court IDs and names for docket filtering. Use these IDs in\nlegal.docket() as the court parameter.",
+	Usage:   "Returns court IDs (slugs) and names for use with the docket search endpoint. Use\nthe returned court ID as the `court` parameter in legal.docket().",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[bool]{
 			Name:     "in-use-only",
-			Usage:    "Only return courts currently in use by CourtListener",
+			Usage:    "Only return courts with available docket data",
 			Default:  true,
 			BodyPath: "inUseOnly",
 		},
 		&requestflag.Flag[string]{
 			Name:     "jurisdiction",
-			Usage:    "Optional CourtListener jurisdiction code filter (e.g. FD, F, S)",
+			Usage:    "Optional jurisdiction code filter (e.g. FD for Federal District, F for all Federal, S for State)",
 			BodyPath: "jurisdiction",
 		},
 		&requestflag.Flag[int64]{
