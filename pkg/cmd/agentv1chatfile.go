@@ -39,7 +39,7 @@ var agentV1ChatFilesDownload = cli.Command{
 			Required: true,
 		},
 		&requestflag.Flag[string]{
-			Name:     "path",
+			Name:     "file-path",
 			Required: true,
 		},
 		&requestflag.Flag[string]{
@@ -94,8 +94,8 @@ func handleAgentV1ChatFilesDownload(ctx context.Context, cmd *cli.Command) error
 		cmd.Set("id", unusedArgs[0])
 		unusedArgs = unusedArgs[1:]
 	}
-	if !cmd.IsSet("path") && len(unusedArgs) > 0 {
-		cmd.Set("path", unusedArgs[0])
+	if !cmd.IsSet("file-path") && len(unusedArgs) > 0 {
+		cmd.Set("file-path", unusedArgs[0])
 		unusedArgs = unusedArgs[1:]
 	}
 	if len(unusedArgs) > 0 {
@@ -116,7 +116,7 @@ func handleAgentV1ChatFilesDownload(ctx context.Context, cmd *cli.Command) error
 	response, err := client.Agent.V1.Chat.Files.Download(
 		ctx,
 		cmd.Value("id").(string),
-		cmd.Value("path").(string),
+		cmd.Value("file-path").(string),
 		options...,
 	)
 	if err != nil {
