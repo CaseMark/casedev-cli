@@ -131,6 +131,15 @@ func init() {
 				},
 			},
 			{
+				Name:     "agent:v1:chat:files",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&agentV1ChatFilesList,
+					&agentV1ChatFilesDownload,
+				},
+			},
+			{
 				Name:     "system",
 				Category: "API RESOURCE",
 				Suggest:  true,
