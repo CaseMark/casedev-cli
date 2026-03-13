@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.17.1 (2026-03-13)
+
+Full Changelog: [v0.17.0...v0.17.1](https://github.com/CaseMark/casedev-cli/compare/v0.17.0...v0.17.1)
+
+### Bug Fixes
+
+* add casedev-go checksum entries ([#46](https://github.com/CaseMark/casedev-cli/issues/46)) ([11c0b42](https://github.com/CaseMark/casedev-cli/commit/11c0b424578eca073b5b73b54df9f4aa50fe74ee))
+
 ## 0.17.0 (2026-03-13)
 
 Full Changelog: [v0.16.1...v0.17.0](https://github.com/CaseMark/casedev-cli/compare/v0.16.1...v0.17.0)
