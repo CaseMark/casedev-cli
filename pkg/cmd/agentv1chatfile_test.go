@@ -25,7 +25,7 @@ func TestAgentV1ChatFilesDownload(t *testing.T) {
 			t, "agent:v1:chat:files", "download",
 			"--api-key", "string",
 			"--id", "id",
-			"--path", "path",
+			"--file-path", "filePath",
 			"--output", "/dev/null",
 		)
 	})
