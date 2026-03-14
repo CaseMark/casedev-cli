@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.18.1 (2026-03-14)
+
+Full Changelog: [v0.18.0...v0.18.1](https://github.com/CaseMark/casedev-cli/compare/v0.18.0...v0.18.1)
+
+### Bug Fixes
+
+* only set client options when the corresponding CLI flag or env var is explicitly set ([fd1ab05](https://github.com/CaseMark/casedev-cli/commit/fd1ab052cd8127b05b159aa2a1b0ab931cdd9d62))
+
 ## 0.18.0 (2026-03-13)
 
 Full Changelog: [v0.17.1...v0.18.0](https://github.com/CaseMark/casedev-cli/compare/v0.17.1...v0.18.0)
