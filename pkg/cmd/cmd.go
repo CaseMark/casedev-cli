@@ -351,12 +351,50 @@ func init() {
 				},
 			},
 			{
+				Name:     "mail:v1:inboxes",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&mailV1InboxesCreate,
+					&mailV1InboxesRetrieve,
+					&mailV1InboxesList,
+					&mailV1InboxesDelete,
+					&mailV1InboxesGetAttachment,
+					&mailV1InboxesGetMessage,
+					&mailV1InboxesListMessages,
+					&mailV1InboxesReply,
+					&mailV1InboxesSend,
+				},
+			},
+			{
+				Name:     "operator:v1",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&operatorV1Create,
+					&operatorV1CreateChatCompletion,
+					&operatorV1CreateResponse,
+					&operatorV1GetStatus,
+				},
+			},
+			{
 				Name:     "skills",
 				Category: "API RESOURCE",
 				Suggest:  true,
 				Commands: []*cli.Command{
+					&skillsCreate,
+					&skillsUpdate,
+					&skillsDelete,
 					&skillsRead,
 					&skillsResolve,
+				},
+			},
+			{
+				Name:     "skills:custom",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&skillsCustomList,
 				},
 			},
 			{

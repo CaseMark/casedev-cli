@@ -11,8 +11,9 @@ import (
 func TestApplicationsV1DeploymentsCreate(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "applications:v1:deployments", "create",
+			t,
 			"--api-key", "string",
+			"applications:v1:deployments", "create",
 			"--project-id", "projectId",
 			"--ref", "ref",
 			"--target", "production",
@@ -26,8 +27,9 @@ func TestApplicationsV1DeploymentsCreate(t *testing.T) {
 			"ref: ref\n" +
 			"target: production\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "applications:v1:deployments", "create",
+			t, pipeData,
 			"--api-key", "string",
+			"applications:v1:deployments", "create",
 		)
 	})
 }
@@ -35,8 +37,9 @@ func TestApplicationsV1DeploymentsCreate(t *testing.T) {
 func TestApplicationsV1DeploymentsRetrieve(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "applications:v1:deployments", "retrieve",
+			t,
 			"--api-key", "string",
+			"applications:v1:deployments", "retrieve",
 			"--id", "id",
 			"--project-id", "projectId",
 			"--include-logs=true",
@@ -47,8 +50,9 @@ func TestApplicationsV1DeploymentsRetrieve(t *testing.T) {
 func TestApplicationsV1DeploymentsList(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "applications:v1:deployments", "list",
+			t,
 			"--api-key", "string",
+			"applications:v1:deployments", "list",
 			"--project-id", "projectId",
 			"--limit", "0",
 			"--state", "state",
@@ -60,8 +64,9 @@ func TestApplicationsV1DeploymentsList(t *testing.T) {
 func TestApplicationsV1DeploymentsCancel(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "applications:v1:deployments", "cancel",
+			t,
 			"--api-key", "string",
+			"applications:v1:deployments", "cancel",
 			"--id", "id",
 			"--project-id", "projectId",
 		)
@@ -71,8 +76,9 @@ func TestApplicationsV1DeploymentsCancel(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("projectId: projectId")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "applications:v1:deployments", "cancel",
+			t, pipeData,
 			"--api-key", "string",
+			"applications:v1:deployments", "cancel",
 			"--id", "id",
 		)
 	})
@@ -81,8 +87,9 @@ func TestApplicationsV1DeploymentsCancel(t *testing.T) {
 func TestApplicationsV1DeploymentsCreateFromFiles(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "applications:v1:deployments", "create-from-files",
+			t,
 			"--api-key", "string",
+			"applications:v1:deployments", "create-from-files",
 		)
 	})
 }
@@ -90,8 +97,9 @@ func TestApplicationsV1DeploymentsCreateFromFiles(t *testing.T) {
 func TestApplicationsV1DeploymentsGetLogs(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "applications:v1:deployments", "get-logs",
+			t,
 			"--api-key", "string",
+			"applications:v1:deployments", "get-logs",
 			"--id", "id",
 			"--project-id", "projectId",
 		)
@@ -101,8 +109,9 @@ func TestApplicationsV1DeploymentsGetLogs(t *testing.T) {
 func TestApplicationsV1DeploymentsGetStatus(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "applications:v1:deployments", "get-status",
+			t,
 			"--api-key", "string",
+			"applications:v1:deployments", "get-status",
 			"--id", "id",
 		)
 	})
@@ -111,8 +120,9 @@ func TestApplicationsV1DeploymentsGetStatus(t *testing.T) {
 func TestApplicationsV1DeploymentsStream(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "applications:v1:deployments", "stream",
+			t,
 			"--api-key", "string",
+			"applications:v1:deployments", "stream",
 			"--id", "id",
 			"--project-id", "projectId",
 			"--start-index", "0",

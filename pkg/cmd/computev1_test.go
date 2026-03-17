@@ -11,8 +11,9 @@ import (
 func TestComputeV1GetPricing(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "compute:v1", "get-pricing",
+			t,
 			"--api-key", "string",
+			"compute:v1", "get-pricing",
 		)
 	})
 }
@@ -20,8 +21,9 @@ func TestComputeV1GetPricing(t *testing.T) {
 func TestComputeV1GetUsage(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "compute:v1", "get-usage",
+			t,
 			"--api-key", "string",
+			"compute:v1", "get-usage",
 			"--month", "3",
 			"--year", "2024",
 		)

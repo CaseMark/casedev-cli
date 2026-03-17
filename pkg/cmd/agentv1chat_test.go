@@ -12,8 +12,9 @@ import (
 func TestAgentV1ChatCreate(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "agent:v1:chat", "create",
+			t,
 			"--api-key", "string",
+			"agent:v1:chat", "create",
 			"--idle-timeout-ms", "0",
 			"--model", "model",
 			"--title", "title",
@@ -30,8 +31,9 @@ func TestAgentV1ChatCreate(t *testing.T) {
 			"vaultIds:\n" +
 			"  - string\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "agent:v1:chat", "create",
+			t, pipeData,
 			"--api-key", "string",
+			"agent:v1:chat", "create",
 		)
 	})
 }
@@ -39,8 +41,9 @@ func TestAgentV1ChatCreate(t *testing.T) {
 func TestAgentV1ChatDelete(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "agent:v1:chat", "delete",
+			t,
 			"--api-key", "string",
+			"agent:v1:chat", "delete",
 			"--id", "id",
 		)
 	})
@@ -49,8 +52,9 @@ func TestAgentV1ChatDelete(t *testing.T) {
 func TestAgentV1ChatCancel(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "agent:v1:chat", "cancel",
+			t,
 			"--api-key", "string",
+			"agent:v1:chat", "cancel",
 			"--id", "id",
 		)
 	})
@@ -59,8 +63,9 @@ func TestAgentV1ChatCancel(t *testing.T) {
 func TestAgentV1ChatReplyToQuestion(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "agent:v1:chat", "reply-to-question",
+			t,
 			"--api-key", "string",
+			"agent:v1:chat", "reply-to-question",
 			"--id", "id",
 			"--request-id", "requestID",
 			"--answer", "[string]",
@@ -73,8 +78,9 @@ func TestAgentV1ChatReplyToQuestion(t *testing.T) {
 			"answers:\n" +
 			"  - - string\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "agent:v1:chat", "reply-to-question",
+			t, pipeData,
 			"--api-key", "string",
+			"agent:v1:chat", "reply-to-question",
 			"--id", "id",
 			"--request-id", "requestID",
 		)
@@ -85,8 +91,9 @@ func TestAgentV1ChatRespond(t *testing.T) {
 	t.Skip("Mock server doesn't support text/event-stream responses")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "agent:v1:chat", "respond",
+			t,
 			"--api-key", "string",
+			"agent:v1:chat", "respond",
 			"--max-items", "10",
 			"--id", "id",
 			"--part", "{text: text, type: text}",
@@ -99,8 +106,9 @@ func TestAgentV1ChatRespond(t *testing.T) {
 
 		// Alternative argument passing style using inner flags
 		mocktest.TestRunMockTestWithFlags(
-			t, "agent:v1:chat", "respond",
+			t,
 			"--api-key", "string",
+			"agent:v1:chat", "respond",
 			"--max-items", "10",
 			"--id", "id",
 			"--part.text", "text",
@@ -115,8 +123,9 @@ func TestAgentV1ChatRespond(t *testing.T) {
 			"  - text: text\n" +
 			"    type: text\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "agent:v1:chat", "respond",
+			t, pipeData,
 			"--api-key", "string",
+			"agent:v1:chat", "respond",
 			"--max-items", "10",
 			"--id", "id",
 		)
@@ -126,8 +135,9 @@ func TestAgentV1ChatRespond(t *testing.T) {
 func TestAgentV1ChatSendMessage(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "agent:v1:chat", "send-message",
+			t,
 			"--api-key", "string",
+			"agent:v1:chat", "send-message",
 			"--id", "id",
 			"--part", "{text: text, type: text}",
 		)
@@ -139,8 +149,9 @@ func TestAgentV1ChatSendMessage(t *testing.T) {
 
 		// Alternative argument passing style using inner flags
 		mocktest.TestRunMockTestWithFlags(
-			t, "agent:v1:chat", "send-message",
+			t,
 			"--api-key", "string",
+			"agent:v1:chat", "send-message",
 			"--id", "id",
 			"--part.text", "text",
 			"--part.type", "text",
@@ -154,8 +165,9 @@ func TestAgentV1ChatSendMessage(t *testing.T) {
 			"  - text: text\n" +
 			"    type: text\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "agent:v1:chat", "send-message",
+			t, pipeData,
 			"--api-key", "string",
+			"agent:v1:chat", "send-message",
 			"--id", "id",
 		)
 	})
@@ -165,8 +177,9 @@ func TestAgentV1ChatStream(t *testing.T) {
 	t.Skip("Mock server doesn't support text/event-stream responses")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "agent:v1:chat", "stream",
+			t,
 			"--api-key", "string",
+			"agent:v1:chat", "stream",
 			"--max-items", "10",
 			"--id", "id",
 			"--last-event-id", "0",

@@ -11,8 +11,9 @@ import (
 func TestVoiceBoostListExtract(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "voice:boost-list", "extract",
+			t,
 			"--api-key", "string",
+			"voice:boost-list", "extract",
 			"--category", "person",
 			"--object-id", "string",
 			"--text", "text",
@@ -30,8 +31,9 @@ func TestVoiceBoostListExtract(t *testing.T) {
 			"text: text\n" +
 			"vault_id: vault_id\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "voice:boost-list", "extract",
+			t, pipeData,
 			"--api-key", "string",
+			"voice:boost-list", "extract",
 		)
 	})
 }
@@ -39,8 +41,9 @@ func TestVoiceBoostListExtract(t *testing.T) {
 func TestVoiceBoostListGenerate(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "voice:boost-list", "generate",
+			t,
 			"--api-key", "string",
+			"voice:boost-list", "generate",
 			"--transcription-job-id", "transcription_job_id",
 			"--category", "person",
 		)
@@ -53,8 +56,9 @@ func TestVoiceBoostListGenerate(t *testing.T) {
 			"categories:\n" +
 			"  - person\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "voice:boost-list", "generate",
+			t, pipeData,
 			"--api-key", "string",
+			"voice:boost-list", "generate",
 		)
 	})
 }

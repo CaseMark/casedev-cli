@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.19.0 (2026-03-17)
+
+Full Changelog: [v0.18.1...v0.19.0](https://github.com/CaseMark/casedev-cli/compare/v0.18.1...v0.19.0)
+
+### Features
+
+* **api:** api update ([55398aa](https://github.com/CaseMark/casedev-cli/commit/55398aaee864618bcbbe0823c8e283475b060a5b))
+
+
+### Bug Fixes
+
+* better support passing client args in any position ([1abc117](https://github.com/CaseMark/casedev-cli/commit/1abc1174fd9e3f4bfd069c139e88d485bd2666fd))
+* improved workflow for developing on branches ([561bc6e](https://github.com/CaseMark/casedev-cli/commit/561bc6e0671fb1b79d86a8e59f3847edac60fcf3))
+* no longer require an API key when building on production repos ([27607fe](https://github.com/CaseMark/casedev-cli/commit/27607fecc4a04348461621afd8abf95ca74260d5))
+
+
+### Chores
+
+* **internal:** codegen related update ([66a3173](https://github.com/CaseMark/casedev-cli/commit/66a31733024c44f38b0e6ab46e0e4d635c4dd458))
+* **internal:** tweak CI branches ([684f1eb](https://github.com/CaseMark/casedev-cli/commit/684f1eb5404e4849e964b8b96491623bfed72125))
+* update SDK settings ([c780277](https://github.com/CaseMark/casedev-cli/commit/c780277e2e5aebd28af7e123305e06d3c2f0c233))
+
 ## 0.18.1 (2026-03-14)
 
 Full Changelog: [v0.18.0...v0.18.1](https://github.com/CaseMark/casedev-cli/compare/v0.18.0...v0.18.1)

@@ -12,8 +12,9 @@ import (
 func TestVaultMultipartAbort(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "vault:multipart", "abort",
+			t,
 			"--api-key", "string",
+			"vault:multipart", "abort",
 			"--id", "id",
 			"--object-id", "objectId",
 			"--upload-id", "uploadId",
@@ -26,8 +27,9 @@ func TestVaultMultipartAbort(t *testing.T) {
 			"objectId: objectId\n" +
 			"uploadId: uploadId\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "vault:multipart", "abort",
+			t, pipeData,
 			"--api-key", "string",
+			"vault:multipart", "abort",
 			"--id", "id",
 		)
 	})
@@ -36,8 +38,9 @@ func TestVaultMultipartAbort(t *testing.T) {
 func TestVaultMultipartGetPartURLs(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "vault:multipart", "get-part-urls",
+			t,
 			"--api-key", "string",
+			"vault:multipart", "get-part-urls",
 			"--id", "id",
 			"--object-id", "objectId",
 			"--part", "{partNumber: 1, sizeBytes: 1}",
@@ -51,8 +54,9 @@ func TestVaultMultipartGetPartURLs(t *testing.T) {
 
 		// Alternative argument passing style using inner flags
 		mocktest.TestRunMockTestWithFlags(
-			t, "vault:multipart", "get-part-urls",
+			t,
 			"--api-key", "string",
+			"vault:multipart", "get-part-urls",
 			"--id", "id",
 			"--object-id", "objectId",
 			"--part.part-number", "1",
@@ -70,8 +74,9 @@ func TestVaultMultipartGetPartURLs(t *testing.T) {
 			"    sizeBytes: 1\n" +
 			"uploadId: uploadId\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "vault:multipart", "get-part-urls",
+			t, pipeData,
 			"--api-key", "string",
+			"vault:multipart", "get-part-urls",
 			"--id", "id",
 		)
 	})

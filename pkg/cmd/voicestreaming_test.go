@@ -11,8 +11,9 @@ import (
 func TestVoiceStreamingGetURL(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "voice:streaming", "get-url",
+			t,
 			"--api-key", "string",
+			"voice:streaming", "get-url",
 		)
 	})
 }

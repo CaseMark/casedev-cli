@@ -11,8 +11,9 @@ import (
 func TestComputeV1EnvironmentsCreate(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "compute:v1:environments", "create",
+			t,
 			"--api-key", "string",
+			"compute:v1:environments", "create",
 			"--name", "document-review-prod",
 		)
 	})
@@ -21,8 +22,9 @@ func TestComputeV1EnvironmentsCreate(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("name: document-review-prod")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "compute:v1:environments", "create",
+			t, pipeData,
 			"--api-key", "string",
+			"compute:v1:environments", "create",
 		)
 	})
 }
@@ -30,8 +32,9 @@ func TestComputeV1EnvironmentsCreate(t *testing.T) {
 func TestComputeV1EnvironmentsRetrieve(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "compute:v1:environments", "retrieve",
+			t,
 			"--api-key", "string",
+			"compute:v1:environments", "retrieve",
 			"--name", "name",
 		)
 	})
@@ -40,8 +43,9 @@ func TestComputeV1EnvironmentsRetrieve(t *testing.T) {
 func TestComputeV1EnvironmentsList(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "compute:v1:environments", "list",
+			t,
 			"--api-key", "string",
+			"compute:v1:environments", "list",
 		)
 	})
 }
@@ -49,8 +53,9 @@ func TestComputeV1EnvironmentsList(t *testing.T) {
 func TestComputeV1EnvironmentsDelete(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "compute:v1:environments", "delete",
+			t,
 			"--api-key", "string",
+			"compute:v1:environments", "delete",
 			"--name", "litigation-processing",
 		)
 	})
@@ -59,8 +64,9 @@ func TestComputeV1EnvironmentsDelete(t *testing.T) {
 func TestComputeV1EnvironmentsSetDefault(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "compute:v1:environments", "set-default",
+			t,
 			"--api-key", "string",
+			"compute:v1:environments", "set-default",
 			"--name", "prod-legal-docs",
 		)
 	})

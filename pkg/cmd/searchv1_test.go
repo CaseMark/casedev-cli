@@ -11,8 +11,9 @@ import (
 func TestSearchV1Answer(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "search:v1", "answer",
+			t,
 			"--api-key", "string",
+			"search:v1", "answer",
 			"--query", "query",
 			"--exclude-domain", "string",
 			"--include-domain", "string",
@@ -44,8 +45,9 @@ func TestSearchV1Answer(t *testing.T) {
 			"text: true\n" +
 			"useCustomLLM: true\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "search:v1", "answer",
+			t, pipeData,
 			"--api-key", "string",
+			"search:v1", "answer",
 		)
 	})
 }
@@ -53,8 +55,9 @@ func TestSearchV1Answer(t *testing.T) {
 func TestSearchV1Contents(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "search:v1", "contents",
+			t,
 			"--api-key", "string",
+			"search:v1", "contents",
 			"--url", "https://example.com",
 			"--context", "context",
 			"--extras", "{}",
@@ -83,8 +86,9 @@ func TestSearchV1Contents(t *testing.T) {
 			"summary: true\n" +
 			"text: true\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "search:v1", "contents",
+			t, pipeData,
 			"--api-key", "string",
+			"search:v1", "contents",
 		)
 	})
 }
@@ -92,8 +96,9 @@ func TestSearchV1Contents(t *testing.T) {
 func TestSearchV1Research(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "search:v1", "research",
+			t,
 			"--api-key", "string",
+			"search:v1", "research",
 			"--instructions", "instructions",
 			"--model", "fast",
 			"--output-schema", "{}",
@@ -109,8 +114,9 @@ func TestSearchV1Research(t *testing.T) {
 			"outputSchema: {}\n" +
 			"query: query\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "search:v1", "research",
+			t, pipeData,
 			"--api-key", "string",
+			"search:v1", "research",
 		)
 	})
 }
@@ -118,8 +124,9 @@ func TestSearchV1Research(t *testing.T) {
 func TestSearchV1RetrieveResearch(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "search:v1", "retrieve-research",
+			t,
 			"--api-key", "string",
+			"search:v1", "retrieve-research",
 			"--id", "id",
 			"--events", "events",
 			"--stream=true",
@@ -130,8 +137,9 @@ func TestSearchV1RetrieveResearch(t *testing.T) {
 func TestSearchV1Search(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "search:v1", "search",
+			t,
 			"--api-key", "string",
+			"search:v1", "search",
 			"--query", "query",
 			"--additional-query", "string",
 			"--category", "category",
@@ -170,8 +178,9 @@ func TestSearchV1Search(t *testing.T) {
 			"type: auto\n" +
 			"userLocation: userLocation\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "search:v1", "search",
+			t, pipeData,
 			"--api-key", "string",
+			"search:v1", "search",
 		)
 	})
 }
@@ -179,8 +188,9 @@ func TestSearchV1Search(t *testing.T) {
 func TestSearchV1Similar(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "search:v1", "similar",
+			t,
 			"--api-key", "string",
+			"search:v1", "similar",
 			"--url", "https://example.com",
 			"--contents", "contents",
 			"--end-crawl-date", "'2019-12-27'",
@@ -210,8 +220,9 @@ func TestSearchV1Similar(t *testing.T) {
 			"startCrawlDate: '2019-12-27'\n" +
 			"startPublishedDate: '2019-12-27'\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "search:v1", "similar",
+			t, pipeData,
 			"--api-key", "string",
+			"search:v1", "similar",
 		)
 	})
 }

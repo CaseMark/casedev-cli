@@ -11,8 +11,9 @@ import (
 func TestAgentV1ChatFilesList(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "agent:v1:chat:files", "list",
+			t,
 			"--api-key", "string",
+			"agent:v1:chat:files", "list",
 			"--id", "id",
 		)
 	})
@@ -22,8 +23,9 @@ func TestAgentV1ChatFilesDownload(t *testing.T) {
 	t.Skip("Mock server doesn't support application/octet-stream responses")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "agent:v1:chat:files", "download",
+			t,
 			"--api-key", "string",
+			"agent:v1:chat:files", "download",
 			"--id", "id",
 			"--file-path", "filePath",
 			"--output", "/dev/null",

@@ -11,8 +11,9 @@ import (
 func TestVoiceTranscriptionCreate(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "voice:transcription", "create",
+			t,
 			"--api-key", "string",
+			"voice:transcription", "create",
 			"--audio-url", "audio_url",
 			"--auto-highlights=true",
 			"--boost-param", "low",
@@ -52,8 +53,9 @@ func TestVoiceTranscriptionCreate(t *testing.T) {
 			"word_boost:\n" +
 			"  - string\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "voice:transcription", "create",
+			t, pipeData,
 			"--api-key", "string",
+			"voice:transcription", "create",
 		)
 	})
 }
@@ -61,8 +63,9 @@ func TestVoiceTranscriptionCreate(t *testing.T) {
 func TestVoiceTranscriptionRetrieve(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "voice:transcription", "retrieve",
+			t,
 			"--api-key", "string",
+			"voice:transcription", "retrieve",
 			"--id", "tr_abc123def456",
 		)
 	})
@@ -71,8 +74,9 @@ func TestVoiceTranscriptionRetrieve(t *testing.T) {
 func TestVoiceTranscriptionDelete(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "voice:transcription", "delete",
+			t,
 			"--api-key", "string",
+			"voice:transcription", "delete",
 			"--id", "id",
 		)
 	})

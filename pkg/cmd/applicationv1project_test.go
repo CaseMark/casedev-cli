@@ -12,8 +12,9 @@ import (
 func TestApplicationsV1ProjectsCreate(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "applications:v1:projects", "create",
+			t,
 			"--api-key", "string",
+			"applications:v1:projects", "create",
 			"--git-repo", "gitRepo",
 			"--name", "name",
 			"--build-command", "buildCommand",
@@ -32,8 +33,9 @@ func TestApplicationsV1ProjectsCreate(t *testing.T) {
 
 		// Alternative argument passing style using inner flags
 		mocktest.TestRunMockTestWithFlags(
-			t, "applications:v1:projects", "create",
+			t,
 			"--api-key", "string",
+			"applications:v1:projects", "create",
 			"--git-repo", "gitRepo",
 			"--name", "name",
 			"--build-command", "buildCommand",
@@ -67,8 +69,9 @@ func TestApplicationsV1ProjectsCreate(t *testing.T) {
 			"outputDirectory: outputDirectory\n" +
 			"rootDirectory: rootDirectory\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "applications:v1:projects", "create",
+			t, pipeData,
 			"--api-key", "string",
+			"applications:v1:projects", "create",
 		)
 	})
 }
@@ -76,8 +79,9 @@ func TestApplicationsV1ProjectsCreate(t *testing.T) {
 func TestApplicationsV1ProjectsRetrieve(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "applications:v1:projects", "retrieve",
+			t,
 			"--api-key", "string",
+			"applications:v1:projects", "retrieve",
 			"--id", "id",
 		)
 	})
@@ -86,8 +90,9 @@ func TestApplicationsV1ProjectsRetrieve(t *testing.T) {
 func TestApplicationsV1ProjectsList(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "applications:v1:projects", "list",
+			t,
 			"--api-key", "string",
+			"applications:v1:projects", "list",
 			"--enrich=true",
 			"--limit", "0",
 		)
@@ -97,8 +102,9 @@ func TestApplicationsV1ProjectsList(t *testing.T) {
 func TestApplicationsV1ProjectsDelete(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "applications:v1:projects", "delete",
+			t,
 			"--api-key", "string",
+			"applications:v1:projects", "delete",
 			"--id", "id",
 			"--delete-from-hosting=true",
 		)
@@ -108,8 +114,9 @@ func TestApplicationsV1ProjectsDelete(t *testing.T) {
 func TestApplicationsV1ProjectsCreateDeployment(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "applications:v1:projects", "create-deployment",
+			t,
 			"--api-key", "string",
+			"applications:v1:projects", "create-deployment",
 			"--id", "id",
 			"--environment-variable", "{key: key, target: [production], value: value, type: plain}",
 		)
@@ -121,8 +128,9 @@ func TestApplicationsV1ProjectsCreateDeployment(t *testing.T) {
 
 		// Alternative argument passing style using inner flags
 		mocktest.TestRunMockTestWithFlags(
-			t, "applications:v1:projects", "create-deployment",
+			t,
 			"--api-key", "string",
+			"applications:v1:projects", "create-deployment",
 			"--id", "id",
 			"--environment-variable.key", "key",
 			"--environment-variable.target", "[production]",
@@ -141,8 +149,9 @@ func TestApplicationsV1ProjectsCreateDeployment(t *testing.T) {
 			"    value: value\n" +
 			"    type: plain\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "applications:v1:projects", "create-deployment",
+			t, pipeData,
 			"--api-key", "string",
+			"applications:v1:projects", "create-deployment",
 			"--id", "id",
 		)
 	})
@@ -151,8 +160,9 @@ func TestApplicationsV1ProjectsCreateDeployment(t *testing.T) {
 func TestApplicationsV1ProjectsCreateDomain(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "applications:v1:projects", "create-domain",
+			t,
 			"--api-key", "string",
+			"applications:v1:projects", "create-domain",
 			"--id", "id",
 			"--domain", "domain",
 			"--git-branch", "gitBranch",
@@ -165,8 +175,9 @@ func TestApplicationsV1ProjectsCreateDomain(t *testing.T) {
 			"domain: domain\n" +
 			"gitBranch: gitBranch\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "applications:v1:projects", "create-domain",
+			t, pipeData,
 			"--api-key", "string",
+			"applications:v1:projects", "create-domain",
 			"--id", "id",
 		)
 	})
@@ -175,8 +186,9 @@ func TestApplicationsV1ProjectsCreateDomain(t *testing.T) {
 func TestApplicationsV1ProjectsCreateEnv(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "applications:v1:projects", "create-env",
+			t,
 			"--api-key", "string",
+			"applications:v1:projects", "create-env",
 			"--id", "id",
 			"--key", "key",
 			"--target", "production",
@@ -196,8 +208,9 @@ func TestApplicationsV1ProjectsCreateEnv(t *testing.T) {
 			"gitBranch: gitBranch\n" +
 			"type: plain\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "applications:v1:projects", "create-env",
+			t, pipeData,
 			"--api-key", "string",
+			"applications:v1:projects", "create-env",
 			"--id", "id",
 		)
 	})
@@ -206,8 +219,9 @@ func TestApplicationsV1ProjectsCreateEnv(t *testing.T) {
 func TestApplicationsV1ProjectsDeleteDomain(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "applications:v1:projects", "delete-domain",
+			t,
 			"--api-key", "string",
+			"applications:v1:projects", "delete-domain",
 			"--id", "id",
 			"--domain", "domain",
 		)
@@ -217,8 +231,9 @@ func TestApplicationsV1ProjectsDeleteDomain(t *testing.T) {
 func TestApplicationsV1ProjectsDeleteEnv(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "applications:v1:projects", "delete-env",
+			t,
 			"--api-key", "string",
+			"applications:v1:projects", "delete-env",
 			"--id", "id",
 			"--env-id", "envId",
 		)
@@ -228,8 +243,9 @@ func TestApplicationsV1ProjectsDeleteEnv(t *testing.T) {
 func TestApplicationsV1ProjectsGetRuntimeLogs(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "applications:v1:projects", "get-runtime-logs",
+			t,
 			"--api-key", "string",
+			"applications:v1:projects", "get-runtime-logs",
 			"--id", "id",
 			"--limit", "0",
 		)
@@ -239,8 +255,9 @@ func TestApplicationsV1ProjectsGetRuntimeLogs(t *testing.T) {
 func TestApplicationsV1ProjectsListDeployments(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "applications:v1:projects", "list-deployments",
+			t,
 			"--api-key", "string",
+			"applications:v1:projects", "list-deployments",
 			"--id", "id",
 			"--limit", "0",
 			"--state", "state",
@@ -252,8 +269,9 @@ func TestApplicationsV1ProjectsListDeployments(t *testing.T) {
 func TestApplicationsV1ProjectsListDomains(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "applications:v1:projects", "list-domains",
+			t,
 			"--api-key", "string",
+			"applications:v1:projects", "list-domains",
 			"--id", "id",
 		)
 	})
@@ -262,8 +280,9 @@ func TestApplicationsV1ProjectsListDomains(t *testing.T) {
 func TestApplicationsV1ProjectsListEnv(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "applications:v1:projects", "list-env",
+			t,
 			"--api-key", "string",
+			"applications:v1:projects", "list-env",
 			"--id", "id",
 			"--decrypt=true",
 		)

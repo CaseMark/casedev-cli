@@ -11,8 +11,9 @@ import (
 func TestTranslateV1Detect(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "translate:v1", "detect",
+			t,
 			"--api-key", "string",
+			"translate:v1", "detect",
 			"--q", "string",
 		)
 	})
@@ -21,8 +22,9 @@ func TestTranslateV1Detect(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("q: string")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "translate:v1", "detect",
+			t, pipeData,
 			"--api-key", "string",
+			"translate:v1", "detect",
 		)
 	})
 }
@@ -30,8 +32,9 @@ func TestTranslateV1Detect(t *testing.T) {
 func TestTranslateV1ListLanguages(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "translate:v1", "list-languages",
+			t,
 			"--api-key", "string",
+			"translate:v1", "list-languages",
 			"--model", "nmt",
 			"--target", "target",
 		)
@@ -41,8 +44,9 @@ func TestTranslateV1ListLanguages(t *testing.T) {
 func TestTranslateV1Translate(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "translate:v1", "translate",
+			t,
 			"--api-key", "string",
+			"translate:v1", "translate",
 			"--q", "string",
 			"--target", "es",
 			"--format", "text",
@@ -60,8 +64,9 @@ func TestTranslateV1Translate(t *testing.T) {
 			"model: nmt\n" +
 			"source: en\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "translate:v1", "translate",
+			t, pipeData,
 			"--api-key", "string",
+			"translate:v1", "translate",
 		)
 	})
 }

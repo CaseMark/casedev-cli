@@ -12,8 +12,9 @@ import (
 func TestAgentV1ExecuteCreate(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "agent:v1:execute", "create",
+			t,
 			"--api-key", "string",
+			"agent:v1:execute", "create",
 			"--prompt", "prompt",
 			"--disabled-tool", "[string]",
 			"--enabled-tool", "[string]",
@@ -32,8 +33,9 @@ func TestAgentV1ExecuteCreate(t *testing.T) {
 
 		// Alternative argument passing style using inner flags
 		mocktest.TestRunMockTestWithFlags(
-			t, "agent:v1:execute", "create",
+			t,
 			"--api-key", "string",
+			"agent:v1:execute", "create",
 			"--prompt", "prompt",
 			"--disabled-tool", "[string]",
 			"--enabled-tool", "[string]",
@@ -66,8 +68,9 @@ func TestAgentV1ExecuteCreate(t *testing.T) {
 			"vaultIds:\n" +
 			"  - string\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "agent:v1:execute", "create",
+			t, pipeData,
 			"--api-key", "string",
+			"agent:v1:execute", "create",
 		)
 	})
 }

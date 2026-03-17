@@ -12,8 +12,9 @@ import (
 func TestLlmV1ChatCreateCompletion(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "llm:v1:chat", "create-completion",
+			t,
 			"--api-key", "string",
+			"llm:v1:chat", "create-completion",
 			"--message", "{content: content, role: system}",
 			"--casemark-show-reasoning=false",
 			"--frequency-penalty", "0",
@@ -32,8 +33,9 @@ func TestLlmV1ChatCreateCompletion(t *testing.T) {
 
 		// Alternative argument passing style using inner flags
 		mocktest.TestRunMockTestWithFlags(
-			t, "llm:v1:chat", "create-completion",
+			t,
 			"--api-key", "string",
+			"llm:v1:chat", "create-completion",
 			"--message.content", "content",
 			"--message.role", "system",
 			"--casemark-show-reasoning=false",
@@ -62,8 +64,9 @@ func TestLlmV1ChatCreateCompletion(t *testing.T) {
 			"temperature: 0.7\n" +
 			"top_p: 0\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "llm:v1:chat", "create-completion",
+			t, pipeData,
 			"--api-key", "string",
+			"llm:v1:chat", "create-completion",
 		)
 	})
 }

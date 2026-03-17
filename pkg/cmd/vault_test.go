@@ -12,8 +12,9 @@ import (
 func TestVaultCreate(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "vault", "create",
+			t,
 			"--api-key", "string",
+			"vault", "create",
 			"--name", "Contract Review Archive",
 			"--description", "Repository for all client contract reviews and analysis",
 			"--enable-graph=true",
@@ -35,8 +36,9 @@ func TestVaultCreate(t *testing.T) {
 			"  containsPHI: true\n" +
 			"  hipaaCompliant: true\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "vault", "create",
+			t, pipeData,
 			"--api-key", "string",
+			"vault", "create",
 		)
 	})
 }
@@ -44,8 +46,9 @@ func TestVaultCreate(t *testing.T) {
 func TestVaultRetrieve(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "vault", "retrieve",
+			t,
 			"--api-key", "string",
+			"vault", "retrieve",
 			"--id", "vault_abc123",
 		)
 	})
@@ -54,8 +57,9 @@ func TestVaultRetrieve(t *testing.T) {
 func TestVaultUpdate(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "vault", "update",
+			t,
 			"--api-key", "string",
+			"vault", "update",
 			"--id", "id",
 			"--description", "description",
 			"--enable-graph=false",
@@ -72,8 +76,9 @@ func TestVaultUpdate(t *testing.T) {
 			"groupId: groupId\n" +
 			"name: Updated Vault Name\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "vault", "update",
+			t, pipeData,
 			"--api-key", "string",
+			"vault", "update",
 			"--id", "id",
 		)
 	})
@@ -82,8 +87,9 @@ func TestVaultUpdate(t *testing.T) {
 func TestVaultList(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "vault", "list",
+			t,
 			"--api-key", "string",
+			"vault", "list",
 		)
 	})
 }
@@ -91,8 +97,9 @@ func TestVaultList(t *testing.T) {
 func TestVaultDelete(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "vault", "delete",
+			t,
 			"--api-key", "string",
+			"vault", "delete",
 			"--id", "id",
 			"--async=true",
 		)
@@ -102,8 +109,9 @@ func TestVaultDelete(t *testing.T) {
 func TestVaultConfirmUpload(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "vault", "confirm-upload",
+			t,
 			"--api-key", "string",
+			"vault", "confirm-upload",
 			"--id", "id",
 			"--object-id", "objectId",
 			"--size-bytes", "1",
@@ -123,8 +131,9 @@ func TestVaultConfirmUpload(t *testing.T) {
 			"errorCode: errorCode\n" +
 			"errorMessage: errorMessage\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "vault", "confirm-upload",
+			t, pipeData,
 			"--api-key", "string",
+			"vault", "confirm-upload",
 			"--id", "id",
 			"--object-id", "objectId",
 		)
@@ -134,8 +143,9 @@ func TestVaultConfirmUpload(t *testing.T) {
 func TestVaultIngest(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "vault", "ingest",
+			t,
 			"--api-key", "string",
+			"vault", "ingest",
 			"--id", "id",
 			"--object-id", "objectId",
 		)
@@ -145,8 +155,9 @@ func TestVaultIngest(t *testing.T) {
 func TestVaultSearch(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "vault", "search",
+			t,
 			"--api-key", "string",
+			"vault", "search",
 			"--id", "id",
 			"--query", "query",
 			"--filters", "{object_id: string}",
@@ -161,8 +172,9 @@ func TestVaultSearch(t *testing.T) {
 
 		// Alternative argument passing style using inner flags
 		mocktest.TestRunMockTestWithFlags(
-			t, "vault", "search",
+			t,
 			"--api-key", "string",
+			"vault", "search",
 			"--id", "id",
 			"--query", "query",
 			"--filters.object-id", "string",
@@ -180,8 +192,9 @@ func TestVaultSearch(t *testing.T) {
 			"method: vector\n" +
 			"topK: 1\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "vault", "search",
+			t, pipeData,
 			"--api-key", "string",
+			"vault", "search",
 			"--id", "id",
 		)
 	})
@@ -190,8 +203,9 @@ func TestVaultSearch(t *testing.T) {
 func TestVaultUpload(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "vault", "upload",
+			t,
 			"--api-key", "string",
+			"vault", "upload",
 			"--id", "id",
 			"--content-type", "contentType",
 			"--filename", "filename",
@@ -212,8 +226,9 @@ func TestVaultUpload(t *testing.T) {
 			"path: path\n" +
 			"sizeBytes: 1\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "vault", "upload",
+			t, pipeData,
 			"--api-key", "string",
+			"vault", "upload",
 			"--id", "id",
 		)
 	})

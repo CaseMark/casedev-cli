@@ -8,12 +8,15 @@ import (
 	"github.com/CaseMark/casedev-cli/internal/mocktest"
 )
 
-func TestDatabaseV1GetUsage(t *testing.T) {
+func TestSkillsCustomList(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
 			t,
 			"--api-key", "string",
-			"database:v1", "get-usage",
+			"skills:custom", "list",
+			"--cursor", "cursor",
+			"--limit", "1",
+			"--tag", "tag",
 		)
 	})
 }

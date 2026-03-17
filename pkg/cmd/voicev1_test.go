@@ -11,8 +11,9 @@ import (
 func TestVoiceV1ListVoices(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "voice:v1", "list-voices",
+			t,
 			"--api-key", "string",
+			"voice:v1", "list-voices",
 			"--category", "category",
 			"--collection-id", "collection_id",
 			"--include-total-count=true",
