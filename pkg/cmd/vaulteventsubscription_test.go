@@ -11,8 +11,9 @@ import (
 func TestVaultEventsSubscriptionsCreate(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "vault:events:subscriptions", "create",
+			t,
 			"--api-key", "string",
+			"vault:events:subscriptions", "create",
 			"--id", "id",
 			"--callback-url", "https://example.com",
 			"--event-type", "string",
@@ -31,8 +32,9 @@ func TestVaultEventsSubscriptionsCreate(t *testing.T) {
 			"  - string\n" +
 			"signingSecret: signingSecret\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "vault:events:subscriptions", "create",
+			t, pipeData,
 			"--api-key", "string",
+			"vault:events:subscriptions", "create",
 			"--id", "id",
 		)
 	})
@@ -41,8 +43,9 @@ func TestVaultEventsSubscriptionsCreate(t *testing.T) {
 func TestVaultEventsSubscriptionsUpdate(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "vault:events:subscriptions", "update",
+			t,
 			"--api-key", "string",
+			"vault:events:subscriptions", "update",
 			"--id", "id",
 			"--subscription-id", "subscriptionId",
 			"--callback-url", "https://example.com",
@@ -66,8 +69,9 @@ func TestVaultEventsSubscriptionsUpdate(t *testing.T) {
 			"  - string\n" +
 			"signingSecret: signingSecret\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "vault:events:subscriptions", "update",
+			t, pipeData,
 			"--api-key", "string",
+			"vault:events:subscriptions", "update",
 			"--id", "id",
 			"--subscription-id", "subscriptionId",
 		)
@@ -77,8 +81,9 @@ func TestVaultEventsSubscriptionsUpdate(t *testing.T) {
 func TestVaultEventsSubscriptionsList(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "vault:events:subscriptions", "list",
+			t,
 			"--api-key", "string",
+			"vault:events:subscriptions", "list",
 			"--id", "id",
 		)
 	})
@@ -87,8 +92,9 @@ func TestVaultEventsSubscriptionsList(t *testing.T) {
 func TestVaultEventsSubscriptionsDelete(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "vault:events:subscriptions", "delete",
+			t,
 			"--api-key", "string",
+			"vault:events:subscriptions", "delete",
 			"--id", "id",
 			"--subscription-id", "subscriptionId",
 		)
@@ -98,8 +104,9 @@ func TestVaultEventsSubscriptionsDelete(t *testing.T) {
 func TestVaultEventsSubscriptionsTest(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "vault:events:subscriptions", "test",
+			t,
 			"--api-key", "string",
+			"vault:events:subscriptions", "test",
 			"--id", "id",
 			"--subscription-id", "subscriptionId",
 			"--event-type", "eventType",
@@ -116,8 +123,9 @@ func TestVaultEventsSubscriptionsTest(t *testing.T) {
 			"payload:\n" +
 			"  foo: bar\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "vault:events:subscriptions", "test",
+			t, pipeData,
 			"--api-key", "string",
+			"vault:events:subscriptions", "test",
 			"--id", "id",
 			"--subscription-id", "subscriptionId",
 		)

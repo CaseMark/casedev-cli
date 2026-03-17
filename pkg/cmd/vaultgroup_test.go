@@ -11,8 +11,9 @@ import (
 func TestVaultGroupsCreate(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "vault:groups", "create",
+			t,
 			"--api-key", "string",
+			"vault:groups", "create",
 			"--name", "name",
 			"--description", "description",
 		)
@@ -24,8 +25,9 @@ func TestVaultGroupsCreate(t *testing.T) {
 			"name: name\n" +
 			"description: description\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "vault:groups", "create",
+			t, pipeData,
 			"--api-key", "string",
+			"vault:groups", "create",
 		)
 	})
 }
@@ -33,8 +35,9 @@ func TestVaultGroupsCreate(t *testing.T) {
 func TestVaultGroupsUpdate(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "vault:groups", "update",
+			t,
 			"--api-key", "string",
+			"vault:groups", "update",
 			"--group-id", "groupId",
 			"--description", "description",
 			"--name", "name",
@@ -47,8 +50,9 @@ func TestVaultGroupsUpdate(t *testing.T) {
 			"description: description\n" +
 			"name: name\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "vault:groups", "update",
+			t, pipeData,
 			"--api-key", "string",
+			"vault:groups", "update",
 			"--group-id", "groupId",
 		)
 	})
@@ -57,8 +61,9 @@ func TestVaultGroupsUpdate(t *testing.T) {
 func TestVaultGroupsList(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "vault:groups", "list",
+			t,
 			"--api-key", "string",
+			"vault:groups", "list",
 		)
 	})
 }
@@ -66,8 +71,9 @@ func TestVaultGroupsList(t *testing.T) {
 func TestVaultGroupsDelete(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "vault:groups", "delete",
+			t,
 			"--api-key", "string",
+			"vault:groups", "delete",
 			"--group-id", "groupId",
 		)
 	})

@@ -11,8 +11,9 @@ import (
 func TestFormatV1TemplatesCreate(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "format:v1:templates", "create",
+			t,
 			"--api-key", "string",
+			"format:v1:templates", "create",
 			"--content", "content",
 			"--name", "name",
 			"--type", "caption",
@@ -36,8 +37,9 @@ func TestFormatV1TemplatesCreate(t *testing.T) {
 			"variables:\n" +
 			"  - string\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "format:v1:templates", "create",
+			t, pipeData,
 			"--api-key", "string",
+			"format:v1:templates", "create",
 		)
 	})
 }
@@ -45,8 +47,9 @@ func TestFormatV1TemplatesCreate(t *testing.T) {
 func TestFormatV1TemplatesRetrieve(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "format:v1:templates", "retrieve",
+			t,
 			"--api-key", "string",
+			"format:v1:templates", "retrieve",
 			"--id", "id",
 		)
 	})
@@ -55,8 +58,9 @@ func TestFormatV1TemplatesRetrieve(t *testing.T) {
 func TestFormatV1TemplatesList(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "format:v1:templates", "list",
+			t,
 			"--api-key", "string",
+			"format:v1:templates", "list",
 			"--type", "type",
 		)
 	})

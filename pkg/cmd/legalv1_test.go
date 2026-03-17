@@ -12,8 +12,9 @@ import (
 func TestLegalV1Docket(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "legal:v1", "docket",
+			t,
 			"--api-key", "string",
+			"legal:v1", "docket",
 			"--type", "search",
 			"--acknowledge-pacer-fees=true",
 			"--court", "court",
@@ -43,8 +44,9 @@ func TestLegalV1Docket(t *testing.T) {
 			"offset: 0\n" +
 			"query: xx\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "legal:v1", "docket",
+			t, pipeData,
 			"--api-key", "string",
+			"legal:v1", "docket",
 		)
 	})
 }
@@ -52,8 +54,9 @@ func TestLegalV1Docket(t *testing.T) {
 func TestLegalV1Draft(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "legal:v1", "draft",
+			t,
 			"--api-key", "string",
+			"legal:v1", "draft",
 			"--instructions", "xxxxxxxxxx",
 			"--vault-id", "vault_id",
 			"--citations=true",
@@ -73,8 +76,9 @@ func TestLegalV1Draft(t *testing.T) {
 
 		// Alternative argument passing style using inner flags
 		mocktest.TestRunMockTestWithFlags(
-			t, "legal:v1", "draft",
+			t,
 			"--api-key", "string",
+			"legal:v1", "draft",
 			"--instructions", "xxxxxxxxxx",
 			"--vault-id", "vault_id",
 			"--citations=true",
@@ -106,8 +110,9 @@ func TestLegalV1Draft(t *testing.T) {
 			"output_type: pdf\n" +
 			"verified: true\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "legal:v1", "draft",
+			t, pipeData,
 			"--api-key", "string",
+			"legal:v1", "draft",
 		)
 	})
 }
@@ -115,8 +120,9 @@ func TestLegalV1Draft(t *testing.T) {
 func TestLegalV1Find(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "legal:v1", "find",
+			t,
 			"--api-key", "string",
+			"legal:v1", "find",
 			"--query", "xxx",
 			"--jurisdiction", "jurisdiction",
 			"--num-results", "1",
@@ -130,8 +136,9 @@ func TestLegalV1Find(t *testing.T) {
 			"jurisdiction: jurisdiction\n" +
 			"numResults: 1\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "legal:v1", "find",
+			t, pipeData,
 			"--api-key", "string",
+			"legal:v1", "find",
 		)
 	})
 }
@@ -139,8 +146,9 @@ func TestLegalV1Find(t *testing.T) {
 func TestLegalV1GetCitations(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "legal:v1", "get-citations",
+			t,
 			"--api-key", "string",
+			"legal:v1", "get-citations",
 			"--text", "text",
 		)
 	})
@@ -149,8 +157,9 @@ func TestLegalV1GetCitations(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("text: text")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "legal:v1", "get-citations",
+			t, pipeData,
 			"--api-key", "string",
+			"legal:v1", "get-citations",
 		)
 	})
 }
@@ -158,8 +167,9 @@ func TestLegalV1GetCitations(t *testing.T) {
 func TestLegalV1GetCitationsFromURL(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "legal:v1", "get-citations-from-url",
+			t,
 			"--api-key", "string",
+			"legal:v1", "get-citations-from-url",
 			"--url", "https://example.com",
 		)
 	})
@@ -168,8 +178,9 @@ func TestLegalV1GetCitationsFromURL(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("url: https://example.com")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "legal:v1", "get-citations-from-url",
+			t, pipeData,
 			"--api-key", "string",
+			"legal:v1", "get-citations-from-url",
 		)
 	})
 }
@@ -177,8 +188,9 @@ func TestLegalV1GetCitationsFromURL(t *testing.T) {
 func TestLegalV1GetFullText(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "legal:v1", "get-full-text",
+			t,
 			"--api-key", "string",
+			"legal:v1", "get-full-text",
 			"--url", "https://example.com",
 			"--highlight-query", "highlightQuery",
 			"--max-characters", "1000",
@@ -194,8 +206,9 @@ func TestLegalV1GetFullText(t *testing.T) {
 			"maxCharacters: 1000\n" +
 			"summaryQuery: summaryQuery\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "legal:v1", "get-full-text",
+			t, pipeData,
 			"--api-key", "string",
+			"legal:v1", "get-full-text",
 		)
 	})
 }
@@ -203,8 +216,9 @@ func TestLegalV1GetFullText(t *testing.T) {
 func TestLegalV1ListCourts(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "legal:v1", "list-courts",
+			t,
 			"--api-key", "string",
+			"legal:v1", "list-courts",
 			"--in-use-only=true",
 			"--jurisdiction", "jurisdiction",
 			"--limit", "1",
@@ -222,8 +236,9 @@ func TestLegalV1ListCourts(t *testing.T) {
 			"offset: 0\n" +
 			"query: xx\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "legal:v1", "list-courts",
+			t, pipeData,
 			"--api-key", "string",
+			"legal:v1", "list-courts",
 		)
 	})
 }
@@ -231,8 +246,9 @@ func TestLegalV1ListCourts(t *testing.T) {
 func TestLegalV1ListJurisdictions(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "legal:v1", "list-jurisdictions",
+			t,
 			"--api-key", "string",
+			"legal:v1", "list-jurisdictions",
 			"--name", "xx",
 		)
 	})
@@ -241,8 +257,9 @@ func TestLegalV1ListJurisdictions(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("name: xx")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "legal:v1", "list-jurisdictions",
+			t, pipeData,
 			"--api-key", "string",
+			"legal:v1", "list-jurisdictions",
 		)
 	})
 }
@@ -250,8 +267,9 @@ func TestLegalV1ListJurisdictions(t *testing.T) {
 func TestLegalV1PatentSearch(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "legal:v1", "patent-search",
+			t,
 			"--api-key", "string",
+			"legal:v1", "patent-search",
 			"--query", "x",
 			"--application-status", "applicationStatus",
 			"--application-type", "Utility",
@@ -285,8 +303,9 @@ func TestLegalV1PatentSearch(t *testing.T) {
 			"sortBy: filingDate\n" +
 			"sortOrder: asc\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "legal:v1", "patent-search",
+			t, pipeData,
 			"--api-key", "string",
+			"legal:v1", "patent-search",
 		)
 	})
 }
@@ -294,8 +313,9 @@ func TestLegalV1PatentSearch(t *testing.T) {
 func TestLegalV1Research(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "legal:v1", "research",
+			t,
 			"--api-key", "string",
+			"legal:v1", "research",
 			"--query", "xxx",
 			"--additional-query", "string",
 			"--jurisdiction", "jurisdiction",
@@ -312,8 +332,9 @@ func TestLegalV1Research(t *testing.T) {
 			"jurisdiction: jurisdiction\n" +
 			"numResults: 1\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "legal:v1", "research",
+			t, pipeData,
 			"--api-key", "string",
+			"legal:v1", "research",
 		)
 	})
 }
@@ -321,8 +342,9 @@ func TestLegalV1Research(t *testing.T) {
 func TestLegalV1Similar(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "legal:v1", "similar",
+			t,
 			"--api-key", "string",
+			"legal:v1", "similar",
 			"--url", "https://example.com",
 			"--jurisdiction", "jurisdiction",
 			"--num-results", "1",
@@ -338,8 +360,9 @@ func TestLegalV1Similar(t *testing.T) {
 			"numResults: 1\n" +
 			"startPublishedDate: '2019-12-27'\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "legal:v1", "similar",
+			t, pipeData,
 			"--api-key", "string",
+			"legal:v1", "similar",
 		)
 	})
 }
@@ -347,8 +370,9 @@ func TestLegalV1Similar(t *testing.T) {
 func TestLegalV1TrademarkSearch(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "legal:v1", "trademark-search",
+			t,
 			"--api-key", "string",
+			"legal:v1", "trademark-search",
 			"--registration-number", "registrationNumber",
 			"--serial-number", "serialNumber",
 		)
@@ -360,8 +384,9 @@ func TestLegalV1TrademarkSearch(t *testing.T) {
 			"registrationNumber: registrationNumber\n" +
 			"serialNumber: serialNumber\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "legal:v1", "trademark-search",
+			t, pipeData,
 			"--api-key", "string",
+			"legal:v1", "trademark-search",
 		)
 	})
 }
@@ -369,8 +394,9 @@ func TestLegalV1TrademarkSearch(t *testing.T) {
 func TestLegalV1Verify(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "legal:v1", "verify",
+			t,
 			"--api-key", "string",
+			"legal:v1", "verify",
 			"--text", "text",
 		)
 	})
@@ -379,8 +405,9 @@ func TestLegalV1Verify(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("text: text")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "legal:v1", "verify",
+			t, pipeData,
 			"--api-key", "string",
+			"legal:v1", "verify",
 		)
 	})
 }

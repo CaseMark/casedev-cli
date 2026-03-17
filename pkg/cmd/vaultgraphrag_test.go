@@ -11,8 +11,9 @@ import (
 func TestVaultGraphragGetStats(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "vault:graphrag", "get-stats",
+			t,
 			"--api-key", "string",
+			"vault:graphrag", "get-stats",
 			"--id", "id",
 		)
 	})
@@ -21,8 +22,9 @@ func TestVaultGraphragGetStats(t *testing.T) {
 func TestVaultGraphragInit(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "vault:graphrag", "init",
+			t,
 			"--api-key", "string",
+			"vault:graphrag", "init",
 			"--id", "id",
 		)
 	})
@@ -31,8 +33,9 @@ func TestVaultGraphragInit(t *testing.T) {
 func TestVaultGraphragProcessObject(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "vault:graphrag", "process-object",
+			t,
 			"--api-key", "string",
+			"vault:graphrag", "process-object",
 			"--id", "id",
 			"--object-id", "objectId",
 		)

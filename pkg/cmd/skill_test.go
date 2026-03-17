@@ -11,8 +11,9 @@ import (
 func TestSkillsCreate(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "skills", "create",
+			t,
 			"--api-key", "string",
+			"skills", "create",
 			"--content", "x",
 			"--name", "x",
 			"--metadata", "{}",
@@ -33,8 +34,9 @@ func TestSkillsCreate(t *testing.T) {
 			"tags:\n" +
 			"  - string\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "skills", "create",
+			t, pipeData,
 			"--api-key", "string",
+			"skills", "create",
 		)
 	})
 }
@@ -42,8 +44,9 @@ func TestSkillsCreate(t *testing.T) {
 func TestSkillsUpdate(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "skills", "update",
+			t,
 			"--api-key", "string",
+			"skills", "update",
 			"--slug", "slug",
 			"--content", "content",
 			"--metadata", "{}",
@@ -65,8 +68,9 @@ func TestSkillsUpdate(t *testing.T) {
 			"tags:\n" +
 			"  - string\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "skills", "update",
+			t, pipeData,
 			"--api-key", "string",
+			"skills", "update",
 			"--slug", "slug",
 		)
 	})
@@ -75,8 +79,9 @@ func TestSkillsUpdate(t *testing.T) {
 func TestSkillsDelete(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "skills", "delete",
+			t,
 			"--api-key", "string",
+			"skills", "delete",
 			"--slug", "slug",
 		)
 	})
@@ -85,8 +90,9 @@ func TestSkillsDelete(t *testing.T) {
 func TestSkillsRead(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "skills", "read",
+			t,
 			"--api-key", "string",
+			"skills", "read",
 			"--slug", "slug",
 		)
 	})
@@ -95,8 +101,9 @@ func TestSkillsRead(t *testing.T) {
 func TestSkillsResolve(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "skills", "resolve",
+			t,
 			"--api-key", "string",
+			"skills", "resolve",
 			"--q", "q",
 			"--limit", "1",
 		)

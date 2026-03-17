@@ -11,8 +11,9 @@ import (
 func TestDatabaseV1GetUsage(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "database:v1", "get-usage",
+			t,
 			"--api-key", "string",
+			"database:v1", "get-usage",
 		)
 	})
 }

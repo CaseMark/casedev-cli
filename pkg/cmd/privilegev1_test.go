@@ -11,8 +11,9 @@ import (
 func TestPrivilegeV1Detect(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "privilege:v1", "detect",
+			t,
 			"--api-key", "string",
+			"privilege:v1", "detect",
 			"--category", "attorney_client",
 			"--content", "content",
 			"--document-id", "document_id",
@@ -35,8 +36,9 @@ func TestPrivilegeV1Detect(t *testing.T) {
 			"model: model\n" +
 			"vault_id: vault_id\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "privilege:v1", "detect",
+			t, pipeData,
 			"--api-key", "string",
+			"privilege:v1", "detect",
 		)
 	})
 }

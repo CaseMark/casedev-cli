@@ -12,8 +12,9 @@ import (
 func TestOcrV1Retrieve(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "ocr:v1", "retrieve",
+			t,
 			"--api-key", "string",
+			"ocr:v1", "retrieve",
 			"--id", "id",
 		)
 	})
@@ -23,8 +24,9 @@ func TestOcrV1Download(t *testing.T) {
 	t.Skip("Mock server doesn't support application/octet-stream responses")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "ocr:v1", "download",
+			t,
 			"--api-key", "string",
+			"ocr:v1", "download",
 			"--id", "id",
 			"--type", "text",
 			"--output", "/dev/null",
@@ -35,8 +37,9 @@ func TestOcrV1Download(t *testing.T) {
 func TestOcrV1Process(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "ocr:v1", "process",
+			t,
 			"--api-key", "string",
+			"ocr:v1", "process",
 			"--document-url", "https://example.com/contract.pdf",
 			"--callback-url", "https://your-app.com/webhooks/ocr-complete",
 			"--document-id", "contract-2024-001",
@@ -53,8 +56,9 @@ func TestOcrV1Process(t *testing.T) {
 
 		// Alternative argument passing style using inner flags
 		mocktest.TestRunMockTestWithFlags(
-			t, "ocr:v1", "process",
+			t,
 			"--api-key", "string",
+			"ocr:v1", "process",
 			"--document-url", "https://example.com/contract.pdf",
 			"--callback-url", "https://your-app.com/webhooks/ocr-complete",
 			"--document-id", "contract-2024-001",
@@ -83,8 +87,9 @@ func TestOcrV1Process(t *testing.T) {
 			"result_bucket: my-ocr-results\n" +
 			"result_prefix: ocr/2024/\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "ocr:v1", "process",
+			t, pipeData,
 			"--api-key", "string",
+			"ocr:v1", "process",
 		)
 	})
 }

@@ -11,8 +11,9 @@ import (
 func TestSystemListServices(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "system", "list-services",
+			t,
 			"--api-key", "string",
+			"system", "list-services",
 		)
 	})
 }

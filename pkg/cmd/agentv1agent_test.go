@@ -12,8 +12,9 @@ import (
 func TestAgentV1AgentsCreate(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "agent:v1:agents", "create",
+			t,
 			"--api-key", "string",
+			"agent:v1:agents", "create",
 			"--instructions", "instructions",
 			"--name", "name",
 			"--description", "description",
@@ -32,8 +33,9 @@ func TestAgentV1AgentsCreate(t *testing.T) {
 
 		// Alternative argument passing style using inner flags
 		mocktest.TestRunMockTestWithFlags(
-			t, "agent:v1:agents", "create",
+			t,
 			"--api-key", "string",
+			"agent:v1:agents", "create",
 			"--instructions", "instructions",
 			"--name", "name",
 			"--description", "description",
@@ -66,8 +68,9 @@ func TestAgentV1AgentsCreate(t *testing.T) {
 			"vaultIds:\n" +
 			"  - string\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "agent:v1:agents", "create",
+			t, pipeData,
 			"--api-key", "string",
+			"agent:v1:agents", "create",
 		)
 	})
 }
@@ -75,8 +78,9 @@ func TestAgentV1AgentsCreate(t *testing.T) {
 func TestAgentV1AgentsRetrieve(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "agent:v1:agents", "retrieve",
+			t,
 			"--api-key", "string",
+			"agent:v1:agents", "retrieve",
 			"--id", "id",
 		)
 	})
@@ -85,8 +89,9 @@ func TestAgentV1AgentsRetrieve(t *testing.T) {
 func TestAgentV1AgentsUpdate(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "agent:v1:agents", "update",
+			t,
 			"--api-key", "string",
+			"agent:v1:agents", "update",
 			"--id", "id",
 			"--description", "description",
 			"--disabled-tool", "[string]",
@@ -117,8 +122,9 @@ func TestAgentV1AgentsUpdate(t *testing.T) {
 			"vaultIds:\n" +
 			"  - string\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "agent:v1:agents", "update",
+			t, pipeData,
 			"--api-key", "string",
+			"agent:v1:agents", "update",
 			"--id", "id",
 		)
 	})
@@ -127,8 +133,9 @@ func TestAgentV1AgentsUpdate(t *testing.T) {
 func TestAgentV1AgentsList(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "agent:v1:agents", "list",
+			t,
 			"--api-key", "string",
+			"agent:v1:agents", "list",
 			"--cursor", "cursor",
 			"--limit", "1",
 		)
@@ -138,8 +145,9 @@ func TestAgentV1AgentsList(t *testing.T) {
 func TestAgentV1AgentsDelete(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "agent:v1:agents", "delete",
+			t,
 			"--api-key", "string",
+			"agent:v1:agents", "delete",
 			"--id", "id",
 		)
 	})
