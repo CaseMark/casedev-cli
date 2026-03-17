@@ -339,6 +339,47 @@ func TestLegalV1Research(t *testing.T) {
 	})
 }
 
+func TestLegalV1SecFiling(t *testing.T) {
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"legal:v1", "sec-filing",
+			"--type", "search",
+			"--cik", "cik",
+			"--date-after", "'2019-12-27'",
+			"--date-before", "'2019-12-27'",
+			"--entity", "entity",
+			"--form-type", "string",
+			"--limit", "1",
+			"--offset", "0",
+			"--query", "xx",
+			"--ticker", "ticker",
+		)
+	})
+
+	t.Run("piping data", func(t *testing.T) {
+		// Test piping YAML data over stdin
+		pipeData := []byte("" +
+			"type: search\n" +
+			"cik: cik\n" +
+			"dateAfter: '2019-12-27'\n" +
+			"dateBefore: '2019-12-27'\n" +
+			"entity: entity\n" +
+			"formTypes:\n" +
+			"  - string\n" +
+			"limit: 1\n" +
+			"offset: 0\n" +
+			"query: xx\n" +
+			"ticker: ticker\n")
+		mocktest.TestRunMockTestWithPipeAndFlags(
+			t, pipeData,
+			"--api-key", "string",
+			"legal:v1", "sec-filing",
+		)
+	})
+}
+
 func TestLegalV1Similar(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(

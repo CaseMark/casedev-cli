@@ -289,6 +289,7 @@ func init() {
 					&legalV1ListJurisdictions,
 					&legalV1PatentSearch,
 					&legalV1Research,
+					&legalV1SecFiling,
 					&legalV1Similar,
 					&legalV1TrademarkSearch,
 					&legalV1Verify,
@@ -364,17 +365,6 @@ func init() {
 					&mailV1InboxesListMessages,
 					&mailV1InboxesReply,
 					&mailV1InboxesSend,
-				},
-			},
-			{
-				Name:     "operator:v1",
-				Category: "API RESOURCE",
-				Suggest:  true,
-				Commands: []*cli.Command{
-					&operatorV1Create,
-					&operatorV1CreateChatCompletion,
-					&operatorV1CreateResponse,
-					&operatorV1GetStatus,
 				},
 			},
 			{
