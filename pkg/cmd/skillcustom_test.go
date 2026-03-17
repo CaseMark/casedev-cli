@@ -11,8 +11,9 @@ import (
 func TestSkillsCustomList(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "skills:custom", "list",
+			t,
 			"--api-key", "string",
+			"skills:custom", "list",
 			"--cursor", "cursor",
 			"--limit", "1",
 			"--tag", "tag",

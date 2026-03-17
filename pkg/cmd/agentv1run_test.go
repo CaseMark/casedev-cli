@@ -11,8 +11,9 @@ import (
 func TestAgentV1RunCreate(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "agent:v1:run", "create",
+			t,
 			"--api-key", "string",
+			"agent:v1:run", "create",
 			"--agent-id", "agentId",
 			"--prompt", "prompt",
 			"--callback-url", "https://example.com",
@@ -33,8 +34,9 @@ func TestAgentV1RunCreate(t *testing.T) {
 			"objectIds:\n" +
 			"  - string\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "agent:v1:run", "create",
+			t, pipeData,
 			"--api-key", "string",
+			"agent:v1:run", "create",
 		)
 	})
 }
@@ -42,8 +44,9 @@ func TestAgentV1RunCreate(t *testing.T) {
 func TestAgentV1RunList(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "agent:v1:run", "list",
+			t,
 			"--api-key", "string",
+			"agent:v1:run", "list",
 			"--agent-id", "agentId",
 			"--cursor", "cursor",
 			"--limit", "1",
@@ -55,8 +58,9 @@ func TestAgentV1RunList(t *testing.T) {
 func TestAgentV1RunCancel(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "agent:v1:run", "cancel",
+			t,
 			"--api-key", "string",
+			"agent:v1:run", "cancel",
 			"--id", "id",
 		)
 	})
@@ -66,8 +70,9 @@ func TestAgentV1RunEvents(t *testing.T) {
 	t.Skip("Mock server doesn't support text/event-stream responses")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "agent:v1:run", "events",
+			t,
 			"--api-key", "string",
+			"agent:v1:run", "events",
 			"--max-items", "10",
 			"--id", "id",
 			"--last-event-id", "0",
@@ -78,8 +83,9 @@ func TestAgentV1RunEvents(t *testing.T) {
 func TestAgentV1RunExec(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "agent:v1:run", "exec",
+			t,
 			"--api-key", "string",
+			"agent:v1:run", "exec",
 			"--id", "id",
 		)
 	})
@@ -88,8 +94,9 @@ func TestAgentV1RunExec(t *testing.T) {
 func TestAgentV1RunGetDetails(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "agent:v1:run", "get-details",
+			t,
 			"--api-key", "string",
+			"agent:v1:run", "get-details",
 			"--id", "id",
 		)
 	})
@@ -98,8 +105,9 @@ func TestAgentV1RunGetDetails(t *testing.T) {
 func TestAgentV1RunGetStatus(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "agent:v1:run", "get-status",
+			t,
 			"--api-key", "string",
+			"agent:v1:run", "get-status",
 			"--id", "id",
 		)
 	})
@@ -108,8 +116,9 @@ func TestAgentV1RunGetStatus(t *testing.T) {
 func TestAgentV1RunWatch(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "agent:v1:run", "watch",
+			t,
 			"--api-key", "string",
+			"agent:v1:run", "watch",
 			"--id", "id",
 			"--callback-url", "https://example.com",
 		)
@@ -119,8 +128,9 @@ func TestAgentV1RunWatch(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("callbackUrl: https://example.com")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "agent:v1:run", "watch",
+			t, pipeData,
 			"--api-key", "string",
+			"agent:v1:run", "watch",
 			"--id", "id",
 		)
 	})

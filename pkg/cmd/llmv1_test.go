@@ -11,8 +11,9 @@ import (
 func TestLlmV1CreateEmbedding(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "llm:v1", "create-embedding",
+			t,
 			"--api-key", "string",
+			"llm:v1", "create-embedding",
 			"--input", "string",
 			"--model", "model",
 			"--dimensions", "0",
@@ -30,8 +31,9 @@ func TestLlmV1CreateEmbedding(t *testing.T) {
 			"encoding_format: float\n" +
 			"user: user\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "llm:v1", "create-embedding",
+			t, pipeData,
 			"--api-key", "string",
+			"llm:v1", "create-embedding",
 		)
 	})
 }
@@ -39,8 +41,9 @@ func TestLlmV1CreateEmbedding(t *testing.T) {
 func TestLlmV1ListModels(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "llm:v1", "list-models",
+			t,
 			"--api-key", "string",
+			"llm:v1", "list-models",
 		)
 	})
 }

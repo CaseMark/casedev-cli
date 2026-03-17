@@ -11,8 +11,9 @@ import (
 func TestMailV1InboxesCreate(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "mail:v1:inboxes", "create",
+			t,
 			"--api-key", "string",
+			"mail:v1:inboxes", "create",
 			"--address", "address",
 			"--display-name", "displayName",
 		)
@@ -24,8 +25,9 @@ func TestMailV1InboxesCreate(t *testing.T) {
 			"address: address\n" +
 			"displayName: displayName\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "mail:v1:inboxes", "create",
+			t, pipeData,
 			"--api-key", "string",
+			"mail:v1:inboxes", "create",
 		)
 	})
 }
@@ -33,8 +35,9 @@ func TestMailV1InboxesCreate(t *testing.T) {
 func TestMailV1InboxesRetrieve(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "mail:v1:inboxes", "retrieve",
+			t,
 			"--api-key", "string",
+			"mail:v1:inboxes", "retrieve",
 			"--inbox-id", "inboxId",
 		)
 	})
@@ -43,8 +46,9 @@ func TestMailV1InboxesRetrieve(t *testing.T) {
 func TestMailV1InboxesList(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "mail:v1:inboxes", "list",
+			t,
 			"--api-key", "string",
+			"mail:v1:inboxes", "list",
 		)
 	})
 }
@@ -52,8 +56,9 @@ func TestMailV1InboxesList(t *testing.T) {
 func TestMailV1InboxesDelete(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "mail:v1:inboxes", "delete",
+			t,
 			"--api-key", "string",
+			"mail:v1:inboxes", "delete",
 			"--inbox-id", "inboxId",
 		)
 	})
@@ -62,8 +67,9 @@ func TestMailV1InboxesDelete(t *testing.T) {
 func TestMailV1InboxesGetAttachment(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "mail:v1:inboxes", "get-attachment",
+			t,
 			"--api-key", "string",
+			"mail:v1:inboxes", "get-attachment",
 			"--inbox-id", "inboxId",
 			"--message-id", "messageId",
 			"--attachment-id", "attachmentId",
@@ -74,8 +80,9 @@ func TestMailV1InboxesGetAttachment(t *testing.T) {
 func TestMailV1InboxesGetMessage(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "mail:v1:inboxes", "get-message",
+			t,
 			"--api-key", "string",
+			"mail:v1:inboxes", "get-message",
 			"--inbox-id", "inboxId",
 			"--message-id", "messageId",
 		)
@@ -85,8 +92,9 @@ func TestMailV1InboxesGetMessage(t *testing.T) {
 func TestMailV1InboxesListMessages(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "mail:v1:inboxes", "list-messages",
+			t,
 			"--api-key", "string",
+			"mail:v1:inboxes", "list-messages",
 			"--inbox-id", "inboxId",
 		)
 	})
@@ -95,8 +103,9 @@ func TestMailV1InboxesListMessages(t *testing.T) {
 func TestMailV1InboxesReply(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "mail:v1:inboxes", "reply",
+			t,
 			"--api-key", "string",
+			"mail:v1:inboxes", "reply",
 			"--inbox-id", "inboxId",
 			"--message-id", "messageId",
 		)
@@ -106,8 +115,9 @@ func TestMailV1InboxesReply(t *testing.T) {
 func TestMailV1InboxesSend(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "mail:v1:inboxes", "send",
+			t,
 			"--api-key", "string",
+			"mail:v1:inboxes", "send",
 			"--inbox-id", "inboxId",
 		)
 	})

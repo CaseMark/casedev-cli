@@ -11,8 +11,9 @@ import (
 func TestDatabaseV1ProjectsCreate(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "database:v1:projects", "create",
+			t,
 			"--api-key", "string",
+			"database:v1:projects", "create",
 			"--name", "litigation-docs-db",
 			"--description", "Production database for litigation document management",
 			"--region", "aws-us-east-1",
@@ -26,8 +27,9 @@ func TestDatabaseV1ProjectsCreate(t *testing.T) {
 			"description: Production database for litigation document management\n" +
 			"region: aws-us-east-1\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "database:v1:projects", "create",
+			t, pipeData,
 			"--api-key", "string",
+			"database:v1:projects", "create",
 		)
 	})
 }
@@ -35,8 +37,9 @@ func TestDatabaseV1ProjectsCreate(t *testing.T) {
 func TestDatabaseV1ProjectsRetrieve(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "database:v1:projects", "retrieve",
+			t,
 			"--api-key", "string",
+			"database:v1:projects", "retrieve",
 			"--id", "id",
 		)
 	})
@@ -45,8 +48,9 @@ func TestDatabaseV1ProjectsRetrieve(t *testing.T) {
 func TestDatabaseV1ProjectsList(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "database:v1:projects", "list",
+			t,
 			"--api-key", "string",
+			"database:v1:projects", "list",
 		)
 	})
 }
@@ -54,8 +58,9 @@ func TestDatabaseV1ProjectsList(t *testing.T) {
 func TestDatabaseV1ProjectsDelete(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "database:v1:projects", "delete",
+			t,
 			"--api-key", "string",
+			"database:v1:projects", "delete",
 			"--id", "id",
 		)
 	})
@@ -64,8 +69,9 @@ func TestDatabaseV1ProjectsDelete(t *testing.T) {
 func TestDatabaseV1ProjectsCreateBranch(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "database:v1:projects", "create-branch",
+			t,
 			"--api-key", "string",
+			"database:v1:projects", "create-branch",
 			"--id", "id",
 			"--name", "staging",
 			"--parent-branch-id", "branch_main_123",
@@ -78,8 +84,9 @@ func TestDatabaseV1ProjectsCreateBranch(t *testing.T) {
 			"name: staging\n" +
 			"parentBranchId: branch_main_123\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "database:v1:projects", "create-branch",
+			t, pipeData,
 			"--api-key", "string",
+			"database:v1:projects", "create-branch",
 			"--id", "id",
 		)
 	})
@@ -88,8 +95,9 @@ func TestDatabaseV1ProjectsCreateBranch(t *testing.T) {
 func TestDatabaseV1ProjectsGetConnection(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "database:v1:projects", "get-connection",
+			t,
 			"--api-key", "string",
+			"database:v1:projects", "get-connection",
 			"--id", "id",
 			"--branch", "branch",
 			"--pooled=true",
@@ -100,8 +108,9 @@ func TestDatabaseV1ProjectsGetConnection(t *testing.T) {
 func TestDatabaseV1ProjectsListBranches(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "database:v1:projects", "list-branches",
+			t,
 			"--api-key", "string",
+			"database:v1:projects", "list-branches",
 			"--id", "id",
 		)
 	})

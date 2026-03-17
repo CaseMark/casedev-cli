@@ -12,8 +12,9 @@ import (
 func TestMemoryV1Create(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "memory:v1", "create",
+			t,
 			"--api-key", "string",
+			"memory:v1", "create",
 			"--message", "{content: content, role: user}",
 			"--category", "category",
 			"--extraction-prompt", "extraction_prompt",
@@ -40,8 +41,9 @@ func TestMemoryV1Create(t *testing.T) {
 
 		// Alternative argument passing style using inner flags
 		mocktest.TestRunMockTestWithFlags(
-			t, "memory:v1", "create",
+			t,
 			"--api-key", "string",
+			"memory:v1", "create",
 			"--message.content", "content",
 			"--message.role", "user",
 			"--category", "category",
@@ -87,8 +89,9 @@ func TestMemoryV1Create(t *testing.T) {
 			"tag_8: tag_8\n" +
 			"tag_9: tag_9\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "memory:v1", "create",
+			t, pipeData,
 			"--api-key", "string",
+			"memory:v1", "create",
 		)
 	})
 }
@@ -96,8 +99,9 @@ func TestMemoryV1Create(t *testing.T) {
 func TestMemoryV1Retrieve(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "memory:v1", "retrieve",
+			t,
 			"--api-key", "string",
+			"memory:v1", "retrieve",
 			"--id", "id",
 		)
 	})
@@ -106,8 +110,9 @@ func TestMemoryV1Retrieve(t *testing.T) {
 func TestMemoryV1List(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "memory:v1", "list",
+			t,
 			"--api-key", "string",
+			"memory:v1", "list",
 			"--category", "category",
 			"--limit", "0",
 			"--offset", "0",
@@ -130,8 +135,9 @@ func TestMemoryV1List(t *testing.T) {
 func TestMemoryV1Delete(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "memory:v1", "delete",
+			t,
 			"--api-key", "string",
+			"memory:v1", "delete",
 			"--id", "id",
 		)
 	})
@@ -140,8 +146,9 @@ func TestMemoryV1Delete(t *testing.T) {
 func TestMemoryV1DeleteAll(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "memory:v1", "delete-all",
+			t,
 			"--api-key", "string",
+			"memory:v1", "delete-all",
 			"--tag-1", "tag_1",
 			"--tag-10", "tag_10",
 			"--tag-11", "tag_11",
@@ -161,8 +168,9 @@ func TestMemoryV1DeleteAll(t *testing.T) {
 func TestMemoryV1Search(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "memory:v1", "search",
+			t,
 			"--api-key", "string",
+			"memory:v1", "search",
 			"--query", "query",
 			"--category", "category",
 			"--tag-1", "tag_1",
@@ -200,8 +208,9 @@ func TestMemoryV1Search(t *testing.T) {
 			"tag_9: tag_9\n" +
 			"top_k: 1\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "memory:v1", "search",
+			t, pipeData,
 			"--api-key", "string",
+			"memory:v1", "search",
 		)
 	})
 }

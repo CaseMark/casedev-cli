@@ -11,8 +11,9 @@ import (
 func TestOperatorV1Create(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "operator:v1", "create",
+			t,
 			"--api-key", "string",
+			"operator:v1", "create",
 			"--name", "name",
 			"--model", "model",
 			"--size", "small",
@@ -26,8 +27,9 @@ func TestOperatorV1Create(t *testing.T) {
 			"model: model\n" +
 			"size: small\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "operator:v1", "create",
+			t, pipeData,
 			"--api-key", "string",
+			"operator:v1", "create",
 		)
 	})
 }
@@ -35,8 +37,9 @@ func TestOperatorV1Create(t *testing.T) {
 func TestOperatorV1CreateChatCompletion(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "operator:v1", "create-chat-completion",
+			t,
 			"--api-key", "string",
+			"operator:v1", "create-chat-completion",
 		)
 	})
 }
@@ -44,8 +47,9 @@ func TestOperatorV1CreateChatCompletion(t *testing.T) {
 func TestOperatorV1CreateResponse(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "operator:v1", "create-response",
+			t,
 			"--api-key", "string",
+			"operator:v1", "create-response",
 		)
 	})
 }
@@ -53,8 +57,9 @@ func TestOperatorV1CreateResponse(t *testing.T) {
 func TestOperatorV1GetStatus(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "operator:v1", "get-status",
+			t,
 			"--api-key", "string",
+			"operator:v1", "get-status",
 		)
 	})
 }

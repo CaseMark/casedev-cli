@@ -11,8 +11,9 @@ import (
 func TestComputeV1InstanceTypesList(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "compute:v1:instance-types", "list",
+			t,
 			"--api-key", "string",
+			"compute:v1:instance-types", "list",
 		)
 	})
 }

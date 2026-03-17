@@ -11,8 +11,9 @@ import (
 func TestComputeV1InstancesCreate(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "compute:v1:instances", "create",
+			t,
 			"--api-key", "string",
+			"compute:v1:instances", "create",
 			"--instance-type", "gpu_1x_a10",
 			"--name", "ocr-batch-job",
 			"--region", "us-west-1",
@@ -31,8 +32,9 @@ func TestComputeV1InstancesCreate(t *testing.T) {
 			"vaultIds:\n" +
 			"  - vault_abc123\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData, "compute:v1:instances", "create",
+			t, pipeData,
 			"--api-key", "string",
+			"compute:v1:instances", "create",
 		)
 	})
 }
@@ -40,8 +42,9 @@ func TestComputeV1InstancesCreate(t *testing.T) {
 func TestComputeV1InstancesRetrieve(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "compute:v1:instances", "retrieve",
+			t,
 			"--api-key", "string",
+			"compute:v1:instances", "retrieve",
 			"--id", "id",
 		)
 	})
@@ -50,8 +53,9 @@ func TestComputeV1InstancesRetrieve(t *testing.T) {
 func TestComputeV1InstancesList(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "compute:v1:instances", "list",
+			t,
 			"--api-key", "string",
+			"compute:v1:instances", "list",
 		)
 	})
 }
@@ -59,8 +63,9 @@ func TestComputeV1InstancesList(t *testing.T) {
 func TestComputeV1InstancesDelete(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "compute:v1:instances", "delete",
+			t,
 			"--api-key", "string",
+			"compute:v1:instances", "delete",
 			"--id", "id",
 		)
 	})

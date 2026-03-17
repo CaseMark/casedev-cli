@@ -11,8 +11,9 @@ import (
 func TestLlmGetConfig(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
-			t, "llm", "get-config",
+			t,
 			"--api-key", "string",
+			"llm", "get-config",
 		)
 	})
 }
