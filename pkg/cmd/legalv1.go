@@ -421,6 +421,69 @@ var legalV1Research = cli.Command{
 	HideHelpCommand: true,
 }
 
+var legalV1SecFiling = cli.Command{
+	Name:    "sec-filing",
+	Usage:   "Search SEC EDGAR full-text filings via efts.sec.gov or fetch a filer's\nstructured filing history via data.sec.gov. Returns direct SEC archive URLs with\nfiling metadata and match snippets when available.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:     "type",
+			Usage:    "Run a full-text search or fetch a single entity filing history",
+			Required: true,
+			BodyPath: "type",
+		},
+		&requestflag.Flag[string]{
+			Name:     "cik",
+			Usage:    "CIK for entity lookups. Accepts padded or unpadded digits.",
+			BodyPath: "cik",
+		},
+		&requestflag.Flag[any]{
+			Name:     "date-after",
+			Usage:    "Optional lower filing date bound (YYYY-MM-DD)",
+			BodyPath: "dateAfter",
+		},
+		&requestflag.Flag[any]{
+			Name:     "date-before",
+			Usage:    "Optional upper filing date bound (YYYY-MM-DD)",
+			BodyPath: "dateBefore",
+		},
+		&requestflag.Flag[string]{
+			Name:     "entity",
+			Usage:    "Optional entity filter passed through to EDGAR full-text search",
+			BodyPath: "entity",
+		},
+		&requestflag.Flag[[]string]{
+			Name:     "form-type",
+			Usage:    "Optional SEC form type filter such as 10-K, 10-Q, 8-K, or 4",
+			BodyPath: "formTypes",
+		},
+		&requestflag.Flag[int64]{
+			Name:     "limit",
+			Usage:    "Maximum filings to return",
+			Default:  25,
+			BodyPath: "limit",
+		},
+		&requestflag.Flag[int64]{
+			Name:     "offset",
+			Usage:    "Result offset for pagination",
+			Default:  0,
+			BodyPath: "offset",
+		},
+		&requestflag.Flag[string]{
+			Name:     "query",
+			Usage:    "Full-text SEC search query (required for type: search)",
+			BodyPath: "query",
+		},
+		&requestflag.Flag[string]{
+			Name:     "ticker",
+			Usage:    "Optional company ticker. Valid for both search and entity lookups.",
+			BodyPath: "ticker",
+		},
+	},
+	Action:          handleLegalV1SecFiling,
+	HideHelpCommand: true,
+}
+
 var legalV1Similar = cli.Command{
 	Name:    "similar",
 	Usage:   "Find cases and documents similar to a given legal source. Useful for finding\nciting cases, related precedents, or similar statutes.",
@@ -827,6 +890,40 @@ func handleLegalV1Research(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
 	return ShowJSON(os.Stdout, "legal:v1 research", obj, format, transform)
+}
+
+func handleLegalV1SecFiling(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	params := githubcomcasemarkcasedevgo.LegalV1SecFilingParams{}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Legal.V1.SecFiling(ctx, params, options...)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(os.Stdout, "legal:v1 sec-filing", obj, format, transform)
 }
 
 func handleLegalV1Similar(ctx context.Context, cmd *cli.Command) error {
