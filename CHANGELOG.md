@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.20.1 (2026-03-18)
+
+Full Changelog: [v0.20.0...v0.20.1](https://github.com/CaseMark/casedev-cli/compare/v0.20.0...v0.20.1)
+
+### Bug Fixes
+
+* avoid reading from stdin unless request body is form encoded or json ([72e551b](https://github.com/CaseMark/casedev-cli/commit/72e551bee1115cc80c456f1aa60090837f064c8f))
+
 ## 0.20.0 (2026-03-17)
 
 Full Changelog: [v0.19.0...v0.20.0](https://github.com/CaseMark/casedev-cli/compare/v0.19.0...v0.20.0)
