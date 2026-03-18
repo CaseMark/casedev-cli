@@ -98,6 +98,7 @@ homebrew_casks:
 notarize:
   macos:
     - enabled: '{{ isEnvSet "MACOS_SIGN_P12" }}'
+      ids: [macos]
       sign:
         certificate: '{{ .Env.MACOS_SIGN_P12 }}'
         password: '{{ .Env.MACOS_SIGN_PASSWORD }}'
