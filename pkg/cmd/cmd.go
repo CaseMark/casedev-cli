@@ -362,9 +362,11 @@ func init() {
 					&mailV1InboxesDelete,
 					&mailV1InboxesGetAttachment,
 					&mailV1InboxesGetMessage,
+					&mailV1InboxesGetPolicy,
 					&mailV1InboxesListMessages,
 					&mailV1InboxesReply,
 					&mailV1InboxesSend,
+					&mailV1InboxesSetPolicy,
 				},
 			},
 			{
