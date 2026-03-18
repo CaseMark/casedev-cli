@@ -107,6 +107,20 @@ var mailV1InboxesGetMessage = cli.Command{
 	HideHelpCommand: true,
 }
 
+var mailV1InboxesGetPolicy = cli.Command{
+	Name:    "get-policy",
+	Usage:   "Get the sender allowlist and send/reply/read access rules for an inbox owned by\nthe authenticated organization.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:     "inbox-id",
+			Required: true,
+		},
+	},
+	Action:          handleMailV1InboxesGetPolicy,
+	HideHelpCommand: true,
+}
+
 var mailV1InboxesListMessages = cli.Command{
 	Name:    "list-messages",
 	Usage:   "List messages for an inbox owned by the authenticated organization.",
@@ -150,6 +164,44 @@ var mailV1InboxesSend = cli.Command{
 		},
 	},
 	Action:          handleMailV1InboxesSend,
+	HideHelpCommand: true,
+}
+
+var mailV1InboxesSetPolicy = cli.Command{
+	Name:    "set-policy",
+	Usage:   "Set the sender allowlist and send/reply/read access rules for an inbox owned by\nthe authenticated organization.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:     "inbox-id",
+			Required: true,
+		},
+		&requestflag.Flag[[]string]{
+			Name:     "allowed-sender-pattern",
+			Usage:    "Exact emails, @domain rules, or *",
+			BodyPath: "allowedSenderPatterns",
+		},
+		&requestflag.Flag[bool]{
+			Name:     "enforce-sender-allowlist",
+			BodyPath: "enforceSenderAllowlist",
+		},
+		&requestflag.Flag[[]string]{
+			Name:     "read-access-rule",
+			Usage:    "Rules like organization, operator, user:<id>, api_key, api_key:<id>, clerk_session, or *",
+			BodyPath: "readAccessRules",
+		},
+		&requestflag.Flag[[]string]{
+			Name:     "reply-access-rule",
+			Usage:    "Rules like organization, operator, user:<id>, api_key, api_key:<id>, clerk_session, or *",
+			BodyPath: "replyAccessRules",
+		},
+		&requestflag.Flag[[]string]{
+			Name:     "send-access-rule",
+			Usage:    "Rules like organization, user:<id>, api_key, api_key:<id>, clerk_session, or *",
+			BodyPath: "sendAccessRules",
+		},
+	},
+	Action:          handleMailV1InboxesSetPolicy,
 	HideHelpCommand: true,
 }
 
@@ -322,6 +374,31 @@ func handleMailV1InboxesGetMessage(ctx context.Context, cmd *cli.Command) error 
 	)
 }
 
+func handleMailV1InboxesGetPolicy(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("inbox-id") && len(unusedArgs) > 0 {
+		cmd.Set("inbox-id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		EmptyBody,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	return client.Mail.V1.Inboxes.GetPolicy(ctx, cmd.Value("inbox-id").(string), options...)
+}
+
 func handleMailV1InboxesListMessages(ctx context.Context, cmd *cli.Command) error {
 	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
@@ -404,4 +481,36 @@ func handleMailV1InboxesSend(ctx context.Context, cmd *cli.Command) error {
 	}
 
 	return client.Mail.V1.Inboxes.Send(ctx, cmd.Value("inbox-id").(string), options...)
+}
+
+func handleMailV1InboxesSetPolicy(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("inbox-id") && len(unusedArgs) > 0 {
+		cmd.Set("inbox-id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	params := githubcomcasemarkcasedevgo.MailV1InboxSetPolicyParams{}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	return client.Mail.V1.Inboxes.SetPolicy(
+		ctx,
+		cmd.Value("inbox-id").(string),
+		params,
+		options...,
+	)
 }
