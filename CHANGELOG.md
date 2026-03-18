@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.20.2 (2026-03-18)
+
+Full Changelog: [v0.20.1...v0.20.2](https://github.com/CaseMark/casedev-cli/compare/v0.20.1...v0.20.2)
+
+### Chores
+
+* add macOS release notarization ([7b74b03](https://github.com/CaseMark/casedev-cli/commit/7b74b035e6c8dae769e3684f47315b513ce9df46))
+
 ## 0.20.1 (2026-03-18)
 
 Full Changelog: [v0.20.0...v0.20.1](https://github.com/CaseMark/casedev-cli/compare/v0.20.0...v0.20.1)
