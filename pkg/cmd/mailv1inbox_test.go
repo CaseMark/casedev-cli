@@ -89,6 +89,17 @@ func TestMailV1InboxesGetMessage(t *testing.T) {
 	})
 }
 
+func TestMailV1InboxesGetPolicy(t *testing.T) {
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"mail:v1:inboxes", "get-policy",
+			"--inbox-id", "inboxId",
+		)
+	})
+}
+
 func TestMailV1InboxesListMessages(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
@@ -118,6 +129,42 @@ func TestMailV1InboxesSend(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"mail:v1:inboxes", "send",
+			"--inbox-id", "inboxId",
+		)
+	})
+}
+
+func TestMailV1InboxesSetPolicy(t *testing.T) {
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"mail:v1:inboxes", "set-policy",
+			"--inbox-id", "inboxId",
+			"--allowed-sender-pattern", "string",
+			"--enforce-sender-allowlist=true",
+			"--read-access-rule", "string",
+			"--reply-access-rule", "string",
+			"--send-access-rule", "string",
+		)
+	})
+
+	t.Run("piping data", func(t *testing.T) {
+		// Test piping YAML data over stdin
+		pipeData := []byte("" +
+			"allowedSenderPatterns:\n" +
+			"  - string\n" +
+			"enforceSenderAllowlist: true\n" +
+			"readAccessRules:\n" +
+			"  - string\n" +
+			"replyAccessRules:\n" +
+			"  - string\n" +
+			"sendAccessRules:\n" +
+			"  - string\n")
+		mocktest.TestRunMockTestWithPipeAndFlags(
+			t, pipeData,
+			"--api-key", "string",
+			"mail:v1:inboxes", "set-policy",
 			"--inbox-id", "inboxId",
 		)
 	})

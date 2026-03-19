@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.21.0 (2026-03-19)
+
+Full Changelog: [v0.20.2...v0.21.0](https://github.com/CaseMark/casedev-cli/compare/v0.20.2...v0.21.0)
+
+### Features
+
+* **api:** api update ([302e01a](https://github.com/CaseMark/casedev-cli/commit/302e01af3df9fe604bfcde198c03f1beaca17771))
+
+
+### Bug Fixes
+
+* clear quarantine for homebrew installs ([18af47f](https://github.com/CaseMark/casedev-cli/commit/18af47f8fb8aeefde6aefae39613637f450c65fa))
+* target macOS builds for notarization ([2059ddb](https://github.com/CaseMark/casedev-cli/commit/2059ddb4b126d6eff36e5fc9baee9e15400974ee))
+
+
+### Chores
+
+* **internal:** codegen related update ([efe2292](https://github.com/CaseMark/casedev-cli/commit/efe229244b0a53368a9b47d2ca0386d85113eab0))
+
 ## 0.20.2 (2026-03-18)
 
 Full Changelog: [v0.20.1...v0.20.2](https://github.com/CaseMark/casedev-cli/compare/v0.20.1...v0.20.2)
