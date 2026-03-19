@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.21.1 (2026-03-19)
+
+Full Changelog: [v0.21.0...v0.21.1](https://github.com/CaseMark/casedev-cli/compare/v0.21.0...v0.21.1)
+
+### Bug Fixes
+
+* improve linking behavior when developing on a branch not in the Go SDK ([5cae562](https://github.com/CaseMark/casedev-cli/commit/5cae5621bd05cdd2ed4501626a54d556e7106842))
+
 ## 0.21.0 (2026-03-19)
 
 Full Changelog: [v0.20.2...v0.21.0](https://github.com/CaseMark/casedev-cli/compare/v0.20.2...v0.21.0)
