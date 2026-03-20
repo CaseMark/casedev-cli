@@ -21,7 +21,6 @@ func TestOcrV1Retrieve(t *testing.T) {
 }
 
 func TestOcrV1Download(t *testing.T) {
-	t.Skip("Mock server doesn't support application/octet-stream responses")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
 			t,

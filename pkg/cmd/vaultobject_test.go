@@ -107,7 +107,6 @@ func TestVaultObjectsCreatePresignedURL(t *testing.T) {
 }
 
 func TestVaultObjectsDownload(t *testing.T) {
-	t.Skip("Mock server doesn't support application/octet-stream responses")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
 			t,
