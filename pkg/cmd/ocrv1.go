@@ -40,6 +40,7 @@ var ocrV1Download = cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "type",
+			Usage:    `Allowed values: "text", "json", "pdf", "original".`,
 			Required: true,
 		},
 		&requestflag.Flag[string]{
