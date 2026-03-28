@@ -339,6 +339,100 @@ func init() {
 				},
 			},
 			{
+				Name:     "matters:v1",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&mattersV1Create,
+					&mattersV1Retrieve,
+					&mattersV1Update,
+					&mattersV1List,
+				},
+			},
+			{
+				Name:     "matters:v1:agent-types",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&mattersV1AgentTypesCreate,
+					&mattersV1AgentTypesList,
+				},
+			},
+			{
+				Name:     "matters:v1:parties",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&mattersV1PartiesCreate,
+					&mattersV1PartiesRetrieve,
+					&mattersV1PartiesUpdate,
+					&mattersV1PartiesList,
+				},
+			},
+			{
+				Name:     "matters:v1:types",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&mattersV1TypesCreate,
+					&mattersV1TypesRetrieve,
+					&mattersV1TypesUpdate,
+					&mattersV1TypesList,
+				},
+			},
+			{
+				Name:     "matters:v1:events:subscriptions",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&mattersV1EventsSubscriptionsCreate,
+					&mattersV1EventsSubscriptionsList,
+					&mattersV1EventsSubscriptionsDelete,
+				},
+			},
+			{
+				Name:     "matters:v1:log",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&mattersV1LogCreate,
+					&mattersV1LogList,
+					&mattersV1LogExport,
+				},
+			},
+			{
+				Name:     "matters:v1:matter-parties",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&mattersV1MatterPartiesCreate,
+					&mattersV1MatterPartiesList,
+				},
+			},
+			{
+				Name:     "matters:v1:shares",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&mattersV1SharesCreate,
+					&mattersV1SharesList,
+					&mattersV1SharesDelete,
+				},
+			},
+			{
+				Name:     "matters:v1:work-items",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&mattersV1WorkItemsCreate,
+					&mattersV1WorkItemsRetrieve,
+					&mattersV1WorkItemsUpdate,
+					&mattersV1WorkItemsList,
+					&mattersV1WorkItemsDecide,
+					&mattersV1WorkItemsListExecutions,
+				},
+			},
+			{
 				Name:     "llm",
 				Category: "API RESOURCE",
 				Suggest:  true,
