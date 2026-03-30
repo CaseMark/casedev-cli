@@ -31,6 +31,7 @@ func TestMattersV1Create(t *testing.T) {
 			"--status", "intake",
 			"--subtype", "subtype",
 			"--vault", "{description: description, enableGraph: true, enableIndexing: true, metadata: {foo: bar}}",
+			"--vault-id", "vault_id",
 		)
 	})
 
@@ -62,6 +63,7 @@ func TestMattersV1Create(t *testing.T) {
 			"--vault.enable-graph=true",
 			"--vault.enable-indexing=true",
 			"--vault.metadata", "{foo: bar}",
+			"--vault-id", "vault_id",
 		)
 	})
 
@@ -93,7 +95,8 @@ func TestMattersV1Create(t *testing.T) {
 			"  enableGraph: true\n" +
 			"  enableIndexing: true\n" +
 			"  metadata:\n" +
-			"    foo: bar\n")
+			"    foo: bar\n" +
+			"vault_id: vault_id\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",
