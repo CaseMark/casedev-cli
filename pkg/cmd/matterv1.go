@@ -14,7 +14,7 @@ import (
 
 var mattersV1Create = requestflag.WithInnerFlags(cli.Command{
 	Name:    "create",
-	Usage:   "Create a new legal matter and provision its primary vault.",
+	Usage:   "Create a new legal matter and optionally link an existing primary vault.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -82,6 +82,10 @@ var mattersV1Create = requestflag.WithInnerFlags(cli.Command{
 		&requestflag.Flag[map[string]any]{
 			Name:     "vault",
 			BodyPath: "vault",
+		},
+		&requestflag.Flag[string]{
+			Name:     "vault-id",
+			BodyPath: "vault_id",
 		},
 	},
 	Action:          handleMattersV1Create,
