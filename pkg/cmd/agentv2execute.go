@@ -17,13 +17,18 @@ import (
 
 var agentV2ExecuteCreate = requestflag.WithInnerFlags(cli.Command{
 	Name:    "create",
-	Usage:   "Creates an ephemeral agent and immediately executes a v2 run on the Daytona\nruntime.",
+	Usage:   "Creates an ephemeral agent and executes it immediately. By default this uses the\nlightweight synchronous linc runtime on Vercel Sandbox. Set `agentRuntime: true`\nto opt into the legacy Daytona-backed agent runtime.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "prompt",
 			Required: true,
 			BodyPath: "prompt",
+		},
+		&requestflag.Flag[any]{
+			Name:     "agent-runtime",
+			Usage:    "Set to true to opt into the legacy Daytona-backed agent runtime.",
+			BodyPath: "agentRuntime",
 		},
 		&requestflag.Flag[any]{
 			Name:     "disabled-tool",

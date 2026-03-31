@@ -16,6 +16,7 @@ func TestAgentV2ExecuteCreate(t *testing.T) {
 			"--api-key", "string",
 			"agent:v2:execute", "create",
 			"--prompt", "prompt",
+			"--agent-runtime=true",
 			"--disabled-tool", "[string]",
 			"--enabled-tool", "[string]",
 			"--guidance", "guidance",
@@ -37,6 +38,7 @@ func TestAgentV2ExecuteCreate(t *testing.T) {
 			"--api-key", "string",
 			"agent:v2:execute", "create",
 			"--prompt", "prompt",
+			"--agent-runtime=true",
 			"--disabled-tool", "[string]",
 			"--enabled-tool", "[string]",
 			"--guidance", "guidance",
@@ -53,6 +55,7 @@ func TestAgentV2ExecuteCreate(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("" +
 			"prompt: prompt\n" +
+			"agentRuntime: true\n" +
 			"disabledTools:\n" +
 			"  - string\n" +
 			"enabledTools:\n" +
