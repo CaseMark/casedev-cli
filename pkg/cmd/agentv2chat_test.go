@@ -88,6 +88,7 @@ func TestAgentV2ChatReplyToQuestion(t *testing.T) {
 }
 
 func TestAgentV2ChatRespond(t *testing.T) {
+	t.Skip("Mock server doesn't support text/event-stream responses")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
 			t,
@@ -173,6 +174,7 @@ func TestAgentV2ChatSendMessage(t *testing.T) {
 }
 
 func TestAgentV2ChatStream(t *testing.T) {
+	t.Skip("Mock server doesn't support text/event-stream responses")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
 			t,
