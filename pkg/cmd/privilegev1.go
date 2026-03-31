@@ -17,12 +17,12 @@ import (
 
 var privilegeV1Detect = cli.Command{
 	Name:    "detect",
-	Usage:   "Analyzes text or vault documents for legal privilege. Detects attorney-client\nprivilege, work product doctrine, common interest privilege, and litigation hold\nmaterials.",
+	Usage:   "Analyzes text or vault documents for legal privilege review. Detects\nattorney-client privilege, work product doctrine, and common interest privilege.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[[]string]{
 			Name:     "category",
-			Usage:    "Privilege categories to check. Defaults to all: attorney_client, work_product, common_interest, litigation_hold",
+			Usage:    "Privilege categories to check. Defaults to all: attorney_client, work_product, common_interest",
 			BodyPath: "categories",
 		},
 		&requestflag.Flag[string]{
