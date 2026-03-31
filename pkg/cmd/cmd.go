@@ -140,6 +140,49 @@ func init() {
 				},
 			},
 			{
+				Name:     "agent:v2:run",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&agentV2RunCreate,
+					&agentV2RunEvents,
+					&agentV2RunExec,
+					&agentV2RunGetDetails,
+					&agentV2RunGetStatus,
+				},
+			},
+			{
+				Name:     "agent:v2:execute",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&agentV2ExecuteCreate,
+				},
+			},
+			{
+				Name:     "agent:v2:chat",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&agentV2ChatCreate,
+					&agentV2ChatDelete,
+					&agentV2ChatCancel,
+					&agentV2ChatReplyToQuestion,
+					&agentV2ChatRespond,
+					&agentV2ChatSendMessage,
+					&agentV2ChatStream,
+				},
+			},
+			{
+				Name:     "agent:v2:chat:files",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&agentV2ChatFilesList,
+					&agentV2ChatFilesDownload,
+				},
+			},
+			{
 				Name:     "system",
 				Category: "API RESOURCE",
 				Suggest:  true,
@@ -293,6 +336,100 @@ func init() {
 					&legalV1Similar,
 					&legalV1TrademarkSearch,
 					&legalV1Verify,
+				},
+			},
+			{
+				Name:     "matters:v1",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&mattersV1Create,
+					&mattersV1Retrieve,
+					&mattersV1Update,
+					&mattersV1List,
+				},
+			},
+			{
+				Name:     "matters:v1:agent-types",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&mattersV1AgentTypesCreate,
+					&mattersV1AgentTypesList,
+				},
+			},
+			{
+				Name:     "matters:v1:parties",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&mattersV1PartiesCreate,
+					&mattersV1PartiesRetrieve,
+					&mattersV1PartiesUpdate,
+					&mattersV1PartiesList,
+				},
+			},
+			{
+				Name:     "matters:v1:types",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&mattersV1TypesCreate,
+					&mattersV1TypesRetrieve,
+					&mattersV1TypesUpdate,
+					&mattersV1TypesList,
+				},
+			},
+			{
+				Name:     "matters:v1:events:subscriptions",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&mattersV1EventsSubscriptionsCreate,
+					&mattersV1EventsSubscriptionsList,
+					&mattersV1EventsSubscriptionsDelete,
+				},
+			},
+			{
+				Name:     "matters:v1:log",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&mattersV1LogCreate,
+					&mattersV1LogList,
+					&mattersV1LogExport,
+				},
+			},
+			{
+				Name:     "matters:v1:matter-parties",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&mattersV1MatterPartiesCreate,
+					&mattersV1MatterPartiesList,
+				},
+			},
+			{
+				Name:     "matters:v1:shares",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&mattersV1SharesCreate,
+					&mattersV1SharesList,
+					&mattersV1SharesDelete,
+				},
+			},
+			{
+				Name:     "matters:v1:work-items",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&mattersV1WorkItemsCreate,
+					&mattersV1WorkItemsRetrieve,
+					&mattersV1WorkItemsUpdate,
+					&mattersV1WorkItemsList,
+					&mattersV1WorkItemsDecide,
+					&mattersV1WorkItemsListExecutions,
 				},
 			},
 			{

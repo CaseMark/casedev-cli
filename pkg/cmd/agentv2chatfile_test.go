@@ -8,23 +8,23 @@ import (
 	"github.com/CaseMark/casedev-cli/internal/mocktest"
 )
 
-func TestAgentV1ChatFilesList(t *testing.T) {
+func TestAgentV2ChatFilesList(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
 			t,
 			"--api-key", "string",
-			"agent:v1:chat:files", "list",
+			"agent:v2:chat:files", "list",
 			"--id", "id",
 		)
 	})
 }
 
-func TestAgentV1ChatFilesDownload(t *testing.T) {
+func TestAgentV2ChatFilesDownload(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
 			t,
 			"--api-key", "string",
-			"agent:v1:chat:files", "download",
+			"agent:v2:chat:files", "download",
 			"--id", "id",
 			"--file-path", "filePath",
 			"--output", "/dev/null",

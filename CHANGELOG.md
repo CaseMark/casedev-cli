@@ -1,5 +1,42 @@
 # Changelog
 
+## 0.23.0 (2026-03-30)
+
+Full Changelog: [v0.22.0...v0.23.0](https://github.com/CaseMark/casedev-cli/compare/v0.22.0...v0.23.0)
+
+### Features
+
+* add default description for enum CLI flags without an explicit description ([c564ecb](https://github.com/CaseMark/casedev-cli/commit/c564ecbaeafc59ae38bc5a1f6890d2450eec3eb0))
+* **api:** api update ([d638c0b](https://github.com/CaseMark/casedev-cli/commit/d638c0b1e3d9279ab75408ce506d14d1c7a32c1d))
+* **api:** api update ([30d3adf](https://github.com/CaseMark/casedev-cli/commit/30d3adf6b533ca86f32b503b26363d8ed002d71c))
+* **api:** api update ([78eb231](https://github.com/CaseMark/casedev-cli/commit/78eb231eb2f916e5234c232dbc0ebf51e7ad24f0))
+* set CLI flag constant values automatically where `x-stainless-const` is set ([9ed07b2](https://github.com/CaseMark/casedev-cli/commit/9ed07b218aca315d5b740c3695b0c77dce8c91c7))
+
+
+### Bug Fixes
+
+* cli no longer hangs when stdin is attached to a pipe with empty input ([136a9fb](https://github.com/CaseMark/casedev-cli/commit/136a9fb53c2f3e83054711fbc0c5d01718bf3ac5))
+* fix for off-by-one error in pagination logic ([db09c87](https://github.com/CaseMark/casedev-cli/commit/db09c872956e4c7c038a6d4f0dadb5b60e44a910))
+
+
+### Chores
+
+* **ci:** skip lint on metadata-only changes ([baf033b](https://github.com/CaseMark/casedev-cli/commit/baf033bf1d0af73628e0c6877d364c22ddcdd33c))
+* **internal:** codegen related update ([23e1822](https://github.com/CaseMark/casedev-cli/commit/23e18227417db0663835bd61037bff322337b8ad))
+* **internal:** codegen related update ([79f80bc](https://github.com/CaseMark/casedev-cli/commit/79f80bceb5ce0ce97c0c9fe79e2aef74eb29d2e1))
+* **internal:** update gitignore ([391e22e](https://github.com/CaseMark/casedev-cli/commit/391e22ee305269489ee8737a53e5e1b072015031))
+* **internal:** update multipart form array serialization ([9680caf](https://github.com/CaseMark/casedev-cli/commit/9680caf8afbb66bfe8266ab9ccd4ada71b046530))
+* omit full usage information when missing required CLI parameters ([aba147c](https://github.com/CaseMark/casedev-cli/commit/aba147ccffe743a48b2d3140b0787cecd2db100f))
+* **tests:** bump steady to v0.19.4 ([8a8ce29](https://github.com/CaseMark/casedev-cli/commit/8a8ce29d99f5b155ba8b40e71a4d23376f23adaa))
+* **tests:** bump steady to v0.19.5 ([1b3ef46](https://github.com/CaseMark/casedev-cli/commit/1b3ef46113bf79ca6426b4d49268bcabaac58bfe))
+* **tests:** bump steady to v0.19.6 ([c51c368](https://github.com/CaseMark/casedev-cli/commit/c51c368560db70442f2a2b02f5eaddeacb57ec98))
+* **tests:** bump steady to v0.19.7 ([2f8e158](https://github.com/CaseMark/casedev-cli/commit/2f8e1588667c4420c613ae60c5c1f982f17102be))
+
+
+### Refactors
+
+* **tests:** switch from prism to steady ([4f50ad5](https://github.com/CaseMark/casedev-cli/commit/4f50ad5efa6345b97bf9f69beaaa3669e393cb1f))
+
 ## 0.22.0 (2026-03-19)
 
 Full Changelog: [v0.21.1...v0.22.0](https://github.com/CaseMark/casedev-cli/compare/v0.21.1...v0.22.0)
