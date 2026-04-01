@@ -176,7 +176,7 @@ var mattersV1WorkItemsList = cli.Command{
 
 var mattersV1WorkItemsDecide = cli.Command{
 	Name:    "decide",
-	Usage:   "Allow a human to act as the orchestrator for a work item.",
+	Usage:   "Approve, revise, block, or reassign a work item. Used by humans or agents to\nmove work items through their lifecycle.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
