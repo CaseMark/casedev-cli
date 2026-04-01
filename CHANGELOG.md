@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.25.1 (2026-04-01)
+
+Full Changelog: [v0.25.0...v0.25.1](https://github.com/CaseMark/casedev-cli/compare/v0.25.0...v0.25.1)
+
+### Chores
+
+* **tests:** bump steady to v0.20.1 ([3fa2419](https://github.com/CaseMark/casedev-cli/commit/3fa2419ed3b8a1e5ceeed29407149bedb3cdc8b1))
+
 ## 0.25.0 (2026-03-31)
 
 Full Changelog: [v0.24.0...v0.25.0](https://github.com/CaseMark/casedev-cli/compare/v0.24.0...v0.25.0)
