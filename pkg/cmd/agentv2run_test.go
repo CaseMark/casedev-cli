@@ -42,7 +42,6 @@ func TestAgentV2RunCreate(t *testing.T) {
 }
 
 func TestAgentV2RunEvents(t *testing.T) {
-	t.Skip("Mock server doesn't support text/event-stream responses")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
 			t,

@@ -87,29 +87,10 @@ homebrew_casks:
     homepage: https://case.dev
     description: The official CLI for case.dev — manage legal AI resources from the terminal
     license: Apache-2.0
-    binaries:
-      - casedev
-    hooks:
-      post:
-        install: |
-          if OS.mac?
-            system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/casedev"]
-          end
+    binary: "casedev"
     completions:
       bash: "completions/casedev.bash"
       zsh: "completions/casedev.zsh"
       fish: "completions/casedev.fish"
     manpages:
     - man/man1/casedev.1.gz
-
-notarize:
-  macos:
-    - enabled: '{{ isEnvSet "MACOS_SIGN_P12" }}'
-      ids: [macos]
-      sign:
-        certificate: '{{ .Env.MACOS_SIGN_P12 }}'
-        password: '{{ .Env.MACOS_SIGN_PASSWORD }}'
-      notarize:
-        issuer_id: '{{ .Env.MACOS_NOTARY_ISSUER_ID }}'
-        key_id: '{{ .Env.MACOS_NOTARY_KEY_ID }}'
-        key: '{{ .Env.MACOS_NOTARY_KEY }}'
