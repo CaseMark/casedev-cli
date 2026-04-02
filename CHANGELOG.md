@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.25.2 (2026-04-02)
+
+Full Changelog: [v0.25.1...v0.25.2](https://github.com/CaseMark/casedev-cli/compare/v0.25.1...v0.25.2)
+
+### Chores
+
+* remove custom code ([f50bf06](https://github.com/CaseMark/casedev-cli/commit/f50bf060a6eec14c78d3f7fe1799d239dbc8d58f))
+
 ## 0.25.1 (2026-04-01)
 
 Full Changelog: [v0.25.0...v0.25.1](https://github.com/CaseMark/casedev-cli/compare/v0.25.0...v0.25.1)

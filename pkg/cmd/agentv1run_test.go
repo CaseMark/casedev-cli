@@ -67,7 +67,7 @@ func TestAgentV1RunCancel(t *testing.T) {
 }
 
 func TestAgentV1RunEvents(t *testing.T) {
-	t.Skip("Mock server doesn't support text/event-stream responses")
+	t.Skip("TEMP: SSE endpoints return object events but SDK expects string — fix in casedotdev-mono PR #1147")
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
 			t,
