@@ -106,6 +106,11 @@ var agentV2ChatRespond = requestflag.WithInnerFlags(cli.Command{
 			Name:     "id",
 			Required: true,
 		},
+		&requestflag.Flag[any]{
+			Name:     "model",
+			Usage:    "Optional model override. When provided, the runtime bootstrap config is updated so subsequent turns use this model. Conversation history is preserved.",
+			BodyPath: "model",
+		},
 		&requestflag.Flag[[]map[string]any]{
 			Name:     "part",
 			Usage:    `Message content parts. Currently only "text" type is supported. Additional types (e.g. file, image) may be added in future versions.`,
@@ -141,6 +146,11 @@ var agentV2ChatSendMessage = requestflag.WithInnerFlags(cli.Command{
 		&requestflag.Flag[string]{
 			Name:     "id",
 			Required: true,
+		},
+		&requestflag.Flag[any]{
+			Name:     "model",
+			Usage:    "Optional model override. When provided, the runtime bootstrap config is updated so subsequent turns use this model. Conversation history is preserved.",
+			BodyPath: "model",
 		},
 		&requestflag.Flag[[]map[string]any]{
 			Name:     "part",

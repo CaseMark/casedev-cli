@@ -95,6 +95,7 @@ func TestAgentV2ChatRespond(t *testing.T) {
 			"agent:v2:chat", "respond",
 			"--max-items", "10",
 			"--id", "id",
+			"--model", "model",
 			"--part", "{text: text, type: text}",
 		)
 	})
@@ -110,6 +111,7 @@ func TestAgentV2ChatRespond(t *testing.T) {
 			"agent:v2:chat", "respond",
 			"--max-items", "10",
 			"--id", "id",
+			"--model", "model",
 			"--part.text", "text",
 			"--part.type", "text",
 		)
@@ -118,6 +120,7 @@ func TestAgentV2ChatRespond(t *testing.T) {
 	t.Run("piping data", func(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("" +
+			"model: model\n" +
 			"parts:\n" +
 			"  - text: text\n" +
 			"    type: text\n")
@@ -138,6 +141,7 @@ func TestAgentV2ChatSendMessage(t *testing.T) {
 			"--api-key", "string",
 			"agent:v2:chat", "send-message",
 			"--id", "id",
+			"--model", "model",
 			"--part", "{text: text, type: text}",
 		)
 	})
@@ -152,6 +156,7 @@ func TestAgentV2ChatSendMessage(t *testing.T) {
 			"--api-key", "string",
 			"agent:v2:chat", "send-message",
 			"--id", "id",
+			"--model", "model",
 			"--part.text", "text",
 			"--part.type", "text",
 		)
@@ -160,6 +165,7 @@ func TestAgentV2ChatSendMessage(t *testing.T) {
 	t.Run("piping data", func(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("" +
+			"model: model\n" +
 			"parts:\n" +
 			"  - text: text\n" +
 			"    type: text\n")
