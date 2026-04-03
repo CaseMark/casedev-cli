@@ -624,6 +624,18 @@ func init() {
 				},
 			},
 			{
+				Name:     "vault:memory",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&vaultMemoryCreate,
+					&vaultMemoryUpdate,
+					&vaultMemoryList,
+					&vaultMemoryDelete,
+					&vaultMemorySearch,
+				},
+			},
+			{
 				Name:     "voice:streaming",
 				Category: "API RESOURCE",
 				Suggest:  true,
