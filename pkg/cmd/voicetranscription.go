@@ -117,6 +117,11 @@ var voiceTranscriptionRetrieve = cli.Command{
 			Name:     "id",
 			Required: true,
 		},
+		&requestflag.Flag[string]{
+			Name:      "include-text",
+			Usage:     "Include full transcript text in response for vault-based jobs (default: false)",
+			QueryPath: "include_text",
+		},
 	},
 	Action:          handleVoiceTranscriptionRetrieve,
 	HideHelpCommand: true,
@@ -181,6 +186,8 @@ func handleVoiceTranscriptionRetrieve(ctx context.Context, cmd *cli.Command) err
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
+	params := githubcomcasemarkcasedevgo.VoiceTranscriptionGetParams{}
+
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -194,7 +201,12 @@ func handleVoiceTranscriptionRetrieve(ctx context.Context, cmd *cli.Command) err
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Voice.Transcription.Get(ctx, cmd.Value("id").(string), options...)
+	_, err = client.Voice.Transcription.Get(
+		ctx,
+		cmd.Value("id").(string),
+		params,
+		options...,
+	)
 	if err != nil {
 		return err
 	}

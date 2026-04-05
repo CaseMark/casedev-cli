@@ -67,6 +67,7 @@ func TestVoiceTranscriptionRetrieve(t *testing.T) {
 			"--api-key", "string",
 			"voice:transcription", "retrieve",
 			"--id", "tr_abc123def456",
+			"--include-text", "true",
 		)
 	})
 }
