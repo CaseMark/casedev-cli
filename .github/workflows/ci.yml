@@ -36,7 +36,7 @@ jobs:
       - name: Link staging branch
         if: github.repository == 'stainless-sdks/router-cli'
         run: |
-          ./scripts/link 'github.com/stainless-sdks/router-go@${{ github.ref_name }}' || go mod edit -dropreplace='github.com/stainless-sdks/router-go
+          ./scripts/link 'github.com/stainless-sdks/router-go@${{ github.ref_name }}' || go mod edit -dropreplace='github.com/stainless-sdks/router-go'
 
       - name: Bootstrap
         run: ./scripts/bootstrap
@@ -64,7 +64,7 @@ jobs:
       - name: Link staging branch
         if: github.repository == 'stainless-sdks/router-cli'
         run: |
-          ./scripts/link 'github.com/stainless-sdks/router-go@${{ github.ref_name }}' || go mod edit -dropreplace='github.com/stainless-sdks/router-go
+          ./scripts/link 'github.com/stainless-sdks/router-go@${{ github.ref_name }}' || go mod edit -dropreplace='github.com/stainless-sdks/router-go'
 
       - name: Bootstrap
         run: ./scripts/bootstrap
@@ -113,7 +113,7 @@ jobs:
       - name: Link staging branch
         if: github.repository == 'stainless-sdks/router-cli'
         run: |
-          ./scripts/link 'github.com/stainless-sdks/router-go@${{ github.ref_name }}' || go mod edit -dropreplace='github.com/stainless-sdks/router-go
+          ./scripts/link 'github.com/stainless-sdks/router-go@${{ github.ref_name }}' || go mod edit -dropreplace='github.com/stainless-sdks/router-go'
 
       - name: Bootstrap
         run: ./scripts/bootstrap
