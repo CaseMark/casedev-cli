@@ -39,6 +39,9 @@ func init() {
 				Name:        "base-url",
 				DefaultText: "url",
 				Usage:       "Override the base URL for API requests",
+				Validator: func(baseURL string) error {
+					return ValidateBaseURL(baseURL, "--base-url")
+				},
 			},
 			&cli.StringFlag{
 				Name:  "format",
@@ -550,6 +553,26 @@ func init() {
 				},
 			},
 			{
+				Name:     "usage:v1",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&usageV1Retrieve,
+				},
+			},
+			{
+				Name:     "usage:v1:subscriptions",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&usageV1SubscriptionsCreate,
+					&usageV1SubscriptionsUpdate,
+					&usageV1SubscriptionsList,
+					&usageV1SubscriptionsDelete,
+					&usageV1SubscriptionsTest,
+				},
+			},
+			{
 				Name:     "vault",
 				Category: "API RESOURCE",
 				Suggest:  true,
@@ -621,6 +644,18 @@ func init() {
 					&vaultObjectsGetOcrWords,
 					&vaultObjectsGetSummarizeJob,
 					&vaultObjectsGetText,
+				},
+			},
+			{
+				Name:     "vault:memory",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&vaultMemoryCreate,
+					&vaultMemoryUpdate,
+					&vaultMemoryList,
+					&vaultMemoryDelete,
+					&vaultMemorySearch,
 				},
 			},
 			{
