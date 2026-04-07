@@ -37,10 +37,10 @@ var voiceTranscriptionCreate = cli.Command{
 			BodyPath: "boost_param",
 		},
 		&requestflag.Flag[bool]{
-			Name:     "content-safety-labels",
+			Name:     "content-safety",
 			Usage:    "Enable content moderation and safety labeling",
 			Default:  false,
-			BodyPath: "content_safety_labels",
+			BodyPath: "content_safety",
 		},
 		&requestflag.Flag[string]{
 			Name:     "format",

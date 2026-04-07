@@ -17,7 +17,7 @@ func TestVoiceTranscriptionCreate(t *testing.T) {
 			"--audio-url", "audio_url",
 			"--auto-highlights=true",
 			"--boost-param", "low",
-			"--content-safety-labels=true",
+			"--content-safety=true",
 			"--format", "json",
 			"--format-text=true",
 			"--language-code", "language_code",
@@ -38,7 +38,7 @@ func TestVoiceTranscriptionCreate(t *testing.T) {
 			"audio_url: audio_url\n" +
 			"auto_highlights: true\n" +
 			"boost_param: low\n" +
-			"content_safety_labels: true\n" +
+			"content_safety: true\n" +
 			"format: json\n" +
 			"format_text: true\n" +
 			"language_code: language_code\n" +
