@@ -1,5 +1,36 @@
 # Changelog
 
+## 0.26.0 (2026-04-07)
+
+Full Changelog: [v0.25.2...v0.26.0](https://github.com/CaseMark/casedev-cli/compare/v0.25.2...v0.26.0)
+
+### Features
+
+* allow `-` as value representing stdin to binary-only file parameters in CLIs ([9fd4903](https://github.com/CaseMark/casedev-cli/commit/9fd4903f65c85ec8f51b64dc49d165da5e2bc6da))
+* **api:** api update ([2f4ef56](https://github.com/CaseMark/casedev-cli/commit/2f4ef5662b3e632c901cbb66b38c220c8e66c416))
+* **api:** api update ([30b729e](https://github.com/CaseMark/casedev-cli/commit/30b729e294208980bf00e811b2459f95ccc8e829))
+* **api:** api update ([2d39064](https://github.com/CaseMark/casedev-cli/commit/2d390642d42555851011245a14c0e61d4c83418f))
+* **api:** api update ([d18fa62](https://github.com/CaseMark/casedev-cli/commit/d18fa62dfdcd441a0ac7d6d57fcd71cfa2d77f1f))
+* **api:** api update ([16afc4e](https://github.com/CaseMark/casedev-cli/commit/16afc4e566a3bbc20d4d69ff9beb7826349f2c3a))
+* **api:** api update ([61ef998](https://github.com/CaseMark/casedev-cli/commit/61ef998738a607870192cdf402ad8dacb501878d))
+* better error message if scheme forgotten in CLI `*_BASE_URL`/`--base-url` ([168324f](https://github.com/CaseMark/casedev-cli/commit/168324f33e51bdb17e2ab1579cc1910ba880628f))
+* binary-only parameters become CLI flags that take filenames only ([2a9a312](https://github.com/CaseMark/casedev-cli/commit/2a9a31231ffa4fc550f5eb182f6b7793df3dc3ae))
+
+
+### Bug Fixes
+
+* fall back to main branch if linking fails in CI ([3750136](https://github.com/CaseMark/casedev-cli/commit/375013610c04b5e32bfe3a2f6792d4cdd9492263))
+* fix quoting typo ([c0f148c](https://github.com/CaseMark/casedev-cli/commit/c0f148cbe310f1e161586acd755bfbc6bb9bb834))
+
+
+### Chores
+
+* **internal:** codegen related update ([f564468](https://github.com/CaseMark/casedev-cli/commit/f564468bf5bc0d07cb896da63538ffe78dc70c59))
+* **internal:** codegen related update ([fb3f89e](https://github.com/CaseMark/casedev-cli/commit/fb3f89e2c9b38de2221f5eb5e0b6b2fdcdccb2e9))
+* mark all CLI-related tests in Go with `t.Parallel()` ([0f9c2dc](https://github.com/CaseMark/casedev-cli/commit/0f9c2dc14c21ebaad9ad668c18d1309bdaf5a911))
+* modify CLI tests to inject stdout so mutating `os.Stdout` isn't necessary ([5a946ed](https://github.com/CaseMark/casedev-cli/commit/5a946ed97ead93a7234f8e1f59a0e7b02868233e))
+* switch some CLI Go tests from `os.Chdir` to `t.Chdir` ([1ced5f6](https://github.com/CaseMark/casedev-cli/commit/1ced5f6d806cec2d62df41e8e930a904eecf291b))
+
 ## 0.25.2 (2026-04-02)
 
 Full Changelog: [v0.25.1...v0.25.2](https://github.com/CaseMark/casedev-cli/compare/v0.25.1...v0.25.2)
