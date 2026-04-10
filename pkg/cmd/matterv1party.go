@@ -26,7 +26,7 @@ var mattersV1PartiesCreate = cli.Command{
 			Name:     "address",
 			BodyPath: "addresses",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[map[string]any]{
 			Name:     "custom-fields",
 			BodyPath: "custom_fields",
 		},

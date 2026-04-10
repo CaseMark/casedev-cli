@@ -32,7 +32,7 @@ var mattersV1MatterPartiesCreate = cli.Command{
 			Required: true,
 			BodyPath: "role",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[map[string]any]{
 			Name:     "custom-fields",
 			BodyPath: "custom_fields",
 		},
