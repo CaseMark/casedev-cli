@@ -52,7 +52,7 @@ var agentV1AgentsCreate = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "LLM model identifier (e.g. anthropic/claude-sonnet-4.6). Defaults to anthropic/claude-sonnet-4.6",
 			BodyPath: "model",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[map[string]any]{
 			Name:     "sandbox",
 			Usage:    "Custom sandbox configuration (cpu, memoryMiB)",
 			BodyPath: "sandbox",

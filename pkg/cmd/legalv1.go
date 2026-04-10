@@ -114,7 +114,7 @@ var legalV1Draft = requestflag.WithInnerFlags(cli.Command{
 			Usage:    `Court or jurisdiction formatting hint. Triggers a legal-skills search. E.g., "California Superior Court", "SDNY", "federal pleading"`,
 			BodyPath: "format",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[map[string]any]{
 			Name:     "length",
 			Usage:    "Target document length",
 			BodyPath: "length",

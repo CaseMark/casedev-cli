@@ -56,7 +56,7 @@ var agentV1ExecuteCreate = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "Scope this run to specific vault object IDs. The agent will only access these objects.",
 			BodyPath: "objectIds",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[map[string]any]{
 			Name:     "sandbox",
 			Usage:    "Custom sandbox resources (cpu, memoryMiB)",
 			BodyPath: "sandbox",

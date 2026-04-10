@@ -54,7 +54,7 @@ var agentV2ExecuteCreate = requestflag.WithInnerFlags(cli.Command{
 			Name:     "object-id",
 			BodyPath: "objectIds",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[map[string]any]{
 			Name:     "sandbox",
 			BodyPath: "sandbox",
 		},
