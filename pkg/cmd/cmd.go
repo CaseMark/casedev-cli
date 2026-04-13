@@ -170,6 +170,7 @@ func init() {
 					&agentV2ChatCreate,
 					&agentV2ChatDelete,
 					&agentV2ChatCancel,
+					&agentV2ChatCreateStreamToken,
 					&agentV2ChatReplyToQuestion,
 					&agentV2ChatRespond,
 					&agentV2ChatSendMessage,
