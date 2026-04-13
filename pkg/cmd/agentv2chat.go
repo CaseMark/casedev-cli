@@ -73,6 +73,20 @@ var agentV2ChatCancel = cli.Command{
 	HideHelpCommand: true,
 }
 
+var agentV2ChatCreateStreamToken = cli.Command{
+	Name:    "create-stream-token",
+	Usage:   "Returns a short-lived token that allows browser clients to connect directly to\nthe agent chat SSE stream without exposing the underlying org API key.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:     "id",
+			Required: true,
+		},
+	},
+	Action:          handleAgentV2ChatCreateStreamToken,
+	HideHelpCommand: true,
+}
+
 var agentV2ChatReplyToQuestion = cli.Command{
 	Name:    "reply-to-question",
 	Usage:   "Answers a pending OpenCode question for the Daytona-backed chat session and\nresumes or recovers the runtime if needed.",
@@ -177,12 +191,17 @@ var agentV2ChatSendMessage = requestflag.WithInnerFlags(cli.Command{
 
 var agentV2ChatStream = cli.Command{
 	Name:    "stream",
-	Usage:   "Relays OpenCode SSE events for this Daytona-backed chat runtime. Supports replay\nfrom buffered events using Last-Event-ID and transparently reconnects stopped or\narchived runtimes.",
+	Usage:   "Relays OpenCode SSE events for this Daytona-backed chat runtime. Supports replay\nfrom buffered events using Last-Event-ID and transparently reconnects stopped or\narchived runtimes. Accepts either Bearer token auth or a short-lived stream\ntoken via query parameter. When both are provided, Bearer auth takes precedence.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "id",
 			Required: true,
+		},
+		&requestflag.Flag[string]{
+			Name:      "token",
+			Usage:     "Short-lived stream token from POST /agent/v2/chat/:id/stream-token. If provided, Bearer auth is not required.",
+			QueryPath: "token",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "last-event-id",
@@ -300,6 +319,41 @@ func handleAgentV2ChatCancel(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
 	return ShowJSON(os.Stdout, "agent:v2:chat cancel", obj, format, transform)
+}
+
+func handleAgentV2ChatCreateStreamToken(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
+		cmd.Set("id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		EmptyBody,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Agent.V2.Chat.NewStreamToken(ctx, cmd.Value("id").(string), options...)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(os.Stdout, "agent:v2:chat create-stream-token", obj, format, transform)
 }
 
 func handleAgentV2ChatReplyToQuestion(ctx context.Context, cmd *cli.Command) error {

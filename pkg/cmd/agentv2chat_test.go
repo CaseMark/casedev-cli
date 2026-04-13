@@ -60,6 +60,17 @@ func TestAgentV2ChatCancel(t *testing.T) {
 	})
 }
 
+func TestAgentV2ChatCreateStreamToken(t *testing.T) {
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"agent:v2:chat", "create-stream-token",
+			"--id", "id",
+		)
+	})
+}
+
 func TestAgentV2ChatReplyToQuestion(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
@@ -188,6 +199,7 @@ func TestAgentV2ChatStream(t *testing.T) {
 			"agent:v2:chat", "stream",
 			"--max-items", "10",
 			"--id", "id",
+			"--token", "token",
 			"--last-event-id", "0",
 		)
 	})
