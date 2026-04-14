@@ -119,7 +119,7 @@ var applicationsV1DeploymentsCancel = cli.Command{
 
 var applicationsV1DeploymentsCreateFromFiles = cli.Command{
 	Name:            "create-from-files",
-	Usage:           "Create a deployment from raw file contents (for Thurgood sandbox deployments)",
+	Usage:           "Create a deployment from raw file contents for application deployments",
 	Suggest:         true,
 	Flags:           []cli.Flag{},
 	Action:          handleApplicationsV1DeploymentsCreateFromFiles,
