@@ -24,6 +24,11 @@ var ocrV1Retrieve = cli.Command{
 			Name:     "id",
 			Required: true,
 		},
+		&requestflag.Flag[string]{
+			Name:      "include-text",
+			Usage:     "Include full OCR text in completed responses (default: true)",
+			QueryPath: "include_text",
+		},
 	},
 	Action:          handleOcrV1Retrieve,
 	HideHelpCommand: true,
@@ -129,6 +134,8 @@ func handleOcrV1Retrieve(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
+	params := githubcomcasemarkcasedevgo.OcrV1GetParams{}
+
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -142,7 +149,12 @@ func handleOcrV1Retrieve(ctx context.Context, cmd *cli.Command) error {
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Ocr.V1.Get(ctx, cmd.Value("id").(string), options...)
+	_, err = client.Ocr.V1.Get(
+		ctx,
+		cmd.Value("id").(string),
+		params,
+		options...,
+	)
 	if err != nil {
 		return err
 	}
