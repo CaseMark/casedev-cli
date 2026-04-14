@@ -58,7 +58,7 @@ var databaseV1ProjectsRetrieve = cli.Command{
 
 var databaseV1ProjectsList = cli.Command{
 	Name:            "list",
-	Usage:           "Retrieves all serverless Postgres database projects for the authenticated\norganization. Includes storage and compute metrics, plus linked deployments from\nThurgood apps and Compute instances.",
+	Usage:           "Retrieves all serverless Postgres database projects for the authenticated\norganization. Includes storage and compute metrics, plus linked application\ndeployments and Compute instances.",
 	Suggest:         true,
 	Flags:           []cli.Flag{},
 	Action:          handleDatabaseV1ProjectsList,
