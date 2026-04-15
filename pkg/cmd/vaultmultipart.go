@@ -156,6 +156,7 @@ func handleVaultMultipartGetPartURLs(ctx context.Context, cmd *cli.Command) erro
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "vault:multipart get-part-urls", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "vault:multipart get-part-urls", obj, format, explicitFormat, transform)
 }

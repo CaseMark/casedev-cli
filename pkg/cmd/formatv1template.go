@@ -122,8 +122,9 @@ func handleFormatV1TemplatesCreate(ctx context.Context, cmd *cli.Command) error 
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "format:v1:templates create", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "format:v1:templates create", obj, format, explicitFormat, transform)
 }
 
 func handleFormatV1TemplatesRetrieve(ctx context.Context, cmd *cli.Command) error {
@@ -157,8 +158,9 @@ func handleFormatV1TemplatesRetrieve(ctx context.Context, cmd *cli.Command) erro
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "format:v1:templates retrieve", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "format:v1:templates retrieve", obj, format, explicitFormat, transform)
 }
 
 func handleFormatV1TemplatesList(ctx context.Context, cmd *cli.Command) error {
@@ -191,6 +193,7 @@ func handleFormatV1TemplatesList(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "format:v1:templates list", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "format:v1:templates list", obj, format, explicitFormat, transform)
 }

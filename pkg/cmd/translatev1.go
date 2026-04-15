@@ -120,8 +120,9 @@ func handleTranslateV1Detect(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "translate:v1 detect", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "translate:v1 detect", obj, format, explicitFormat, transform)
 }
 
 func handleTranslateV1ListLanguages(ctx context.Context, cmd *cli.Command) error {
@@ -154,8 +155,9 @@ func handleTranslateV1ListLanguages(ctx context.Context, cmd *cli.Command) error
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "translate:v1 list-languages", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "translate:v1 list-languages", obj, format, explicitFormat, transform)
 }
 
 func handleTranslateV1Translate(ctx context.Context, cmd *cli.Command) error {
@@ -188,6 +190,7 @@ func handleTranslateV1Translate(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "translate:v1 translate", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "translate:v1 translate", obj, format, explicitFormat, transform)
 }

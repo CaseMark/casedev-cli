@@ -582,8 +582,9 @@ func handleLegalV1Docket(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "legal:v1 docket", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "legal:v1 docket", obj, format, explicitFormat, transform)
 }
 
 func handleLegalV1Draft(ctx context.Context, cmd *cli.Command) error {
@@ -616,8 +617,9 @@ func handleLegalV1Draft(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "legal:v1 draft", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "legal:v1 draft", obj, format, explicitFormat, transform)
 }
 
 func handleLegalV1Find(ctx context.Context, cmd *cli.Command) error {
@@ -650,8 +652,9 @@ func handleLegalV1Find(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "legal:v1 find", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "legal:v1 find", obj, format, explicitFormat, transform)
 }
 
 func handleLegalV1GetCitations(ctx context.Context, cmd *cli.Command) error {
@@ -684,8 +687,9 @@ func handleLegalV1GetCitations(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "legal:v1 get-citations", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "legal:v1 get-citations", obj, format, explicitFormat, transform)
 }
 
 func handleLegalV1GetCitationsFromURL(ctx context.Context, cmd *cli.Command) error {
@@ -718,8 +722,9 @@ func handleLegalV1GetCitationsFromURL(ctx context.Context, cmd *cli.Command) err
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "legal:v1 get-citations-from-url", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "legal:v1 get-citations-from-url", obj, format, explicitFormat, transform)
 }
 
 func handleLegalV1GetFullText(ctx context.Context, cmd *cli.Command) error {
@@ -752,8 +757,9 @@ func handleLegalV1GetFullText(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "legal:v1 get-full-text", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "legal:v1 get-full-text", obj, format, explicitFormat, transform)
 }
 
 func handleLegalV1ListCourts(ctx context.Context, cmd *cli.Command) error {
@@ -786,8 +792,9 @@ func handleLegalV1ListCourts(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "legal:v1 list-courts", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "legal:v1 list-courts", obj, format, explicitFormat, transform)
 }
 
 func handleLegalV1ListJurisdictions(ctx context.Context, cmd *cli.Command) error {
@@ -820,8 +827,9 @@ func handleLegalV1ListJurisdictions(ctx context.Context, cmd *cli.Command) error
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "legal:v1 list-jurisdictions", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "legal:v1 list-jurisdictions", obj, format, explicitFormat, transform)
 }
 
 func handleLegalV1PatentSearch(ctx context.Context, cmd *cli.Command) error {
@@ -854,8 +862,9 @@ func handleLegalV1PatentSearch(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "legal:v1 patent-search", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "legal:v1 patent-search", obj, format, explicitFormat, transform)
 }
 
 func handleLegalV1Research(ctx context.Context, cmd *cli.Command) error {
@@ -888,8 +897,9 @@ func handleLegalV1Research(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "legal:v1 research", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "legal:v1 research", obj, format, explicitFormat, transform)
 }
 
 func handleLegalV1SecFiling(ctx context.Context, cmd *cli.Command) error {
@@ -922,8 +932,9 @@ func handleLegalV1SecFiling(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "legal:v1 sec-filing", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "legal:v1 sec-filing", obj, format, explicitFormat, transform)
 }
 
 func handleLegalV1Similar(ctx context.Context, cmd *cli.Command) error {
@@ -956,8 +967,9 @@ func handleLegalV1Similar(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "legal:v1 similar", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "legal:v1 similar", obj, format, explicitFormat, transform)
 }
 
 func handleLegalV1TrademarkSearch(ctx context.Context, cmd *cli.Command) error {
@@ -990,8 +1002,9 @@ func handleLegalV1TrademarkSearch(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "legal:v1 trademark-search", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "legal:v1 trademark-search", obj, format, explicitFormat, transform)
 }
 
 func handleLegalV1Verify(ctx context.Context, cmd *cli.Command) error {
@@ -1024,6 +1037,7 @@ func handleLegalV1Verify(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "legal:v1 verify", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "legal:v1 verify", obj, format, explicitFormat, transform)
 }

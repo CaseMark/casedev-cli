@@ -461,8 +461,9 @@ func handleApplicationsV1ProjectsList(ctx context.Context, cmd *cli.Command) err
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "applications:v1:projects list", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "applications:v1:projects list", obj, format, explicitFormat, transform)
 }
 
 func handleApplicationsV1ProjectsDelete(ctx context.Context, cmd *cli.Command) error {
