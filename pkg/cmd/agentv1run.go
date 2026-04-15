@@ -217,8 +217,9 @@ func handleAgentV1RunCreate(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "agent:v1:run create", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "agent:v1:run create", obj, format, explicitFormat, transform)
 }
 
 func handleAgentV1RunList(ctx context.Context, cmd *cli.Command) error {
@@ -251,8 +252,9 @@ func handleAgentV1RunList(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "agent:v1:run list", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "agent:v1:run list", obj, format, explicitFormat, transform)
 }
 
 func handleAgentV1RunCancel(ctx context.Context, cmd *cli.Command) error {
@@ -286,8 +288,9 @@ func handleAgentV1RunCancel(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "agent:v1:run cancel", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "agent:v1:run cancel", obj, format, explicitFormat, transform)
 }
 
 func handleAgentV1RunEvents(ctx context.Context, cmd *cli.Command) error {
@@ -315,6 +318,7 @@ func handleAgentV1RunEvents(ctx context.Context, cmd *cli.Command) error {
 	}
 
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
 	stream := client.Agent.V1.Run.EventsStreaming(
 		ctx,
@@ -326,7 +330,7 @@ func handleAgentV1RunEvents(ctx context.Context, cmd *cli.Command) error {
 	if cmd.IsSet("max-items") {
 		maxItems = cmd.Value("max-items").(int64)
 	}
-	return ShowJSONIterator(os.Stdout, "agent:v1:run events", stream, format, transform, maxItems)
+	return ShowJSONIterator(os.Stdout, os.Stderr, "agent:v1:run events", stream, format, explicitFormat, transform, maxItems)
 }
 
 func handleAgentV1RunExec(ctx context.Context, cmd *cli.Command) error {
@@ -360,8 +364,9 @@ func handleAgentV1RunExec(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "agent:v1:run exec", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "agent:v1:run exec", obj, format, explicitFormat, transform)
 }
 
 func handleAgentV1RunGetDetails(ctx context.Context, cmd *cli.Command) error {
@@ -395,8 +400,9 @@ func handleAgentV1RunGetDetails(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "agent:v1:run get-details", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "agent:v1:run get-details", obj, format, explicitFormat, transform)
 }
 
 func handleAgentV1RunGetStatus(ctx context.Context, cmd *cli.Command) error {
@@ -430,8 +436,9 @@ func handleAgentV1RunGetStatus(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "agent:v1:run get-status", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "agent:v1:run get-status", obj, format, explicitFormat, transform)
 }
 
 func handleAgentV1RunWatch(ctx context.Context, cmd *cli.Command) error {
@@ -472,6 +479,7 @@ func handleAgentV1RunWatch(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "agent:v1:run watch", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "agent:v1:run watch", obj, format, explicitFormat, transform)
 }

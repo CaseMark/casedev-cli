@@ -223,8 +223,9 @@ func handleAgentV1AgentsCreate(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "agent:v1:agents create", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "agent:v1:agents create", obj, format, explicitFormat, transform)
 }
 
 func handleAgentV1AgentsRetrieve(ctx context.Context, cmd *cli.Command) error {
@@ -258,8 +259,9 @@ func handleAgentV1AgentsRetrieve(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "agent:v1:agents retrieve", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "agent:v1:agents retrieve", obj, format, explicitFormat, transform)
 }
 
 func handleAgentV1AgentsUpdate(ctx context.Context, cmd *cli.Command) error {
@@ -300,8 +302,9 @@ func handleAgentV1AgentsUpdate(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "agent:v1:agents update", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "agent:v1:agents update", obj, format, explicitFormat, transform)
 }
 
 func handleAgentV1AgentsList(ctx context.Context, cmd *cli.Command) error {
@@ -334,8 +337,9 @@ func handleAgentV1AgentsList(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "agent:v1:agents list", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "agent:v1:agents list", obj, format, explicitFormat, transform)
 }
 
 func handleAgentV1AgentsDelete(ctx context.Context, cmd *cli.Command) error {
@@ -369,6 +373,7 @@ func handleAgentV1AgentsDelete(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "agent:v1:agents delete", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "agent:v1:agents delete", obj, format, explicitFormat, transform)
 }

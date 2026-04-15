@@ -114,6 +114,7 @@ func handleLlmV1ChatCreateCompletion(ctx context.Context, cmd *cli.Command) erro
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "llm:v1:chat create-completion", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "llm:v1:chat create-completion", obj, format, explicitFormat, transform)
 }

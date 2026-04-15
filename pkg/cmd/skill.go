@@ -176,8 +176,9 @@ func handleSkillsCreate(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "skills create", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "skills create", obj, format, explicitFormat, transform)
 }
 
 func handleSkillsUpdate(ctx context.Context, cmd *cli.Command) error {
@@ -218,8 +219,9 @@ func handleSkillsUpdate(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "skills update", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "skills update", obj, format, explicitFormat, transform)
 }
 
 func handleSkillsDelete(ctx context.Context, cmd *cli.Command) error {
@@ -253,8 +255,9 @@ func handleSkillsDelete(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "skills delete", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "skills delete", obj, format, explicitFormat, transform)
 }
 
 func handleSkillsRead(ctx context.Context, cmd *cli.Command) error {
@@ -288,8 +291,9 @@ func handleSkillsRead(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "skills read", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "skills read", obj, format, explicitFormat, transform)
 }
 
 func handleSkillsResolve(ctx context.Context, cmd *cli.Command) error {
@@ -322,6 +326,7 @@ func handleSkillsResolve(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "skills resolve", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "skills resolve", obj, format, explicitFormat, transform)
 }

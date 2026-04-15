@@ -322,8 +322,9 @@ func handleVaultCreate(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "vault create", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "vault create", obj, format, explicitFormat, transform)
 }
 
 func handleVaultRetrieve(ctx context.Context, cmd *cli.Command) error {
@@ -357,8 +358,9 @@ func handleVaultRetrieve(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "vault retrieve", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "vault retrieve", obj, format, explicitFormat, transform)
 }
 
 func handleVaultUpdate(ctx context.Context, cmd *cli.Command) error {
@@ -399,8 +401,9 @@ func handleVaultUpdate(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "vault update", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "vault update", obj, format, explicitFormat, transform)
 }
 
 func handleVaultList(ctx context.Context, cmd *cli.Command) error {
@@ -431,8 +434,9 @@ func handleVaultList(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "vault list", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "vault list", obj, format, explicitFormat, transform)
 }
 
 func handleVaultDelete(ctx context.Context, cmd *cli.Command) error {
@@ -473,8 +477,9 @@ func handleVaultDelete(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "vault delete", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "vault delete", obj, format, explicitFormat, transform)
 }
 
 func handleVaultConfirmUpload(ctx context.Context, cmd *cli.Command) error {
@@ -520,8 +525,9 @@ func handleVaultConfirmUpload(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "vault confirm-upload", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "vault confirm-upload", obj, format, explicitFormat, transform)
 }
 
 func handleVaultIngest(ctx context.Context, cmd *cli.Command) error {
@@ -564,8 +570,9 @@ func handleVaultIngest(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "vault ingest", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "vault ingest", obj, format, explicitFormat, transform)
 }
 
 func handleVaultSearch(ctx context.Context, cmd *cli.Command) error {
@@ -606,8 +613,9 @@ func handleVaultSearch(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "vault search", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "vault search", obj, format, explicitFormat, transform)
 }
 
 func handleVaultUpload(ctx context.Context, cmd *cli.Command) error {
@@ -648,6 +656,7 @@ func handleVaultUpload(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "vault upload", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "vault upload", obj, format, explicitFormat, transform)
 }

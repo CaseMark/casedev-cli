@@ -161,8 +161,9 @@ func handleOcrV1Retrieve(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "ocr:v1 retrieve", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "ocr:v1 retrieve", obj, format, explicitFormat, transform)
 }
 
 func handleOcrV1Download(ctx context.Context, cmd *cli.Command) error {
@@ -237,6 +238,7 @@ func handleOcrV1Process(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "ocr:v1 process", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "ocr:v1 process", obj, format, explicitFormat, transform)
 }

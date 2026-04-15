@@ -427,8 +427,9 @@ func handleMemoryV1Create(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "memory:v1 create", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "memory:v1 create", obj, format, explicitFormat, transform)
 }
 
 func handleMemoryV1Retrieve(ctx context.Context, cmd *cli.Command) error {
@@ -462,8 +463,9 @@ func handleMemoryV1Retrieve(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "memory:v1 retrieve", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "memory:v1 retrieve", obj, format, explicitFormat, transform)
 }
 
 func handleMemoryV1List(ctx context.Context, cmd *cli.Command) error {
@@ -496,8 +498,9 @@ func handleMemoryV1List(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "memory:v1 list", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "memory:v1 list", obj, format, explicitFormat, transform)
 }
 
 func handleMemoryV1Delete(ctx context.Context, cmd *cli.Command) error {
@@ -531,8 +534,9 @@ func handleMemoryV1Delete(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "memory:v1 delete", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "memory:v1 delete", obj, format, explicitFormat, transform)
 }
 
 func handleMemoryV1DeleteAll(ctx context.Context, cmd *cli.Command) error {
@@ -565,8 +569,9 @@ func handleMemoryV1DeleteAll(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "memory:v1 delete-all", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "memory:v1 delete-all", obj, format, explicitFormat, transform)
 }
 
 func handleMemoryV1Search(ctx context.Context, cmd *cli.Command) error {
@@ -599,6 +604,7 @@ func handleMemoryV1Search(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "memory:v1 search", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "memory:v1 search", obj, format, explicitFormat, transform)
 }

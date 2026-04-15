@@ -171,8 +171,9 @@ func handleVoiceTranscriptionCreate(ctx context.Context, cmd *cli.Command) error
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "voice:transcription create", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "voice:transcription create", obj, format, explicitFormat, transform)
 }
 
 func handleVoiceTranscriptionRetrieve(ctx context.Context, cmd *cli.Command) error {
@@ -213,8 +214,9 @@ func handleVoiceTranscriptionRetrieve(ctx context.Context, cmd *cli.Command) err
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "voice:transcription retrieve", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "voice:transcription retrieve", obj, format, explicitFormat, transform)
 }
 
 func handleVoiceTranscriptionDelete(ctx context.Context, cmd *cli.Command) error {

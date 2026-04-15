@@ -92,8 +92,9 @@ func handleVaultGraphragGetStats(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "vault:graphrag get-stats", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "vault:graphrag get-stats", obj, format, explicitFormat, transform)
 }
 
 func handleVaultGraphragInit(ctx context.Context, cmd *cli.Command) error {
@@ -127,8 +128,9 @@ func handleVaultGraphragInit(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "vault:graphrag init", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "vault:graphrag init", obj, format, explicitFormat, transform)
 }
 
 func handleVaultGraphragProcessObject(ctx context.Context, cmd *cli.Command) error {
@@ -171,6 +173,7 @@ func handleVaultGraphragProcessObject(ctx context.Context, cmd *cli.Command) err
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "vault:graphrag process-object", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "vault:graphrag process-object", obj, format, explicitFormat, transform)
 }

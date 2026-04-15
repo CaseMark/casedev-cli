@@ -279,8 +279,9 @@ func handleVaultObjectsRetrieve(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "vault:objects retrieve", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "vault:objects retrieve", obj, format, explicitFormat, transform)
 }
 
 func handleVaultObjectsUpdate(ctx context.Context, cmd *cli.Command) error {
@@ -326,8 +327,9 @@ func handleVaultObjectsUpdate(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "vault:objects update", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "vault:objects update", obj, format, explicitFormat, transform)
 }
 
 func handleVaultObjectsList(ctx context.Context, cmd *cli.Command) error {
@@ -361,8 +363,9 @@ func handleVaultObjectsList(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "vault:objects list", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "vault:objects list", obj, format, explicitFormat, transform)
 }
 
 func handleVaultObjectsDelete(ctx context.Context, cmd *cli.Command) error {
@@ -408,8 +411,9 @@ func handleVaultObjectsDelete(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "vault:objects delete", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "vault:objects delete", obj, format, explicitFormat, transform)
 }
 
 func handleVaultObjectsCreatePresignedURL(ctx context.Context, cmd *cli.Command) error {
@@ -455,8 +459,9 @@ func handleVaultObjectsCreatePresignedURL(ctx context.Context, cmd *cli.Command)
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "vault:objects create-presigned-url", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "vault:objects create-presigned-url", obj, format, explicitFormat, transform)
 }
 
 func handleVaultObjectsDownload(ctx context.Context, cmd *cli.Command) error {
@@ -544,8 +549,9 @@ func handleVaultObjectsGetOcrWords(ctx context.Context, cmd *cli.Command) error 
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "vault:objects get-ocr-words", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "vault:objects get-ocr-words", obj, format, explicitFormat, transform)
 }
 
 func handleVaultObjectsGetSummarizeJob(ctx context.Context, cmd *cli.Command) error {
@@ -593,8 +599,9 @@ func handleVaultObjectsGetSummarizeJob(ctx context.Context, cmd *cli.Command) er
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "vault:objects get-summarize-job", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "vault:objects get-summarize-job", obj, format, explicitFormat, transform)
 }
 
 func handleVaultObjectsGetText(ctx context.Context, cmd *cli.Command) error {
@@ -637,6 +644,7 @@ func handleVaultObjectsGetText(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "vault:objects get-text", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "vault:objects get-text", obj, format, explicitFormat, transform)
 }
