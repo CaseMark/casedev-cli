@@ -26,6 +26,11 @@ var agentV2ChatCreate = cli.Command{
 			BodyPath: "idleTimeoutMs",
 		},
 		&requestflag.Flag[any]{
+			Name:     "instructions",
+			Usage:    "Optional hidden app instructions merged into the chat runtime bootstrap and never exposed as a user message. Only accepted for privileged C3 system keys.",
+			BodyPath: "instructions",
+		},
+		&requestflag.Flag[any]{
 			Name:     "model",
 			Usage:    "Optional model override for the OpenCode session",
 			BodyPath: "model",

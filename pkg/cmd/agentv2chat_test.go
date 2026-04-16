@@ -16,6 +16,7 @@ func TestAgentV2ChatCreate(t *testing.T) {
 			"--api-key", "string",
 			"agent:v2:chat", "create",
 			"--idle-timeout-ms", "0",
+			"--instructions", "instructions",
 			"--model", "model",
 			"--title", "title",
 			"--vault-id", "[string]",
@@ -26,6 +27,7 @@ func TestAgentV2ChatCreate(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("" +
 			"idleTimeoutMs: 0\n" +
+			"instructions: instructions\n" +
 			"model: model\n" +
 			"title: title\n" +
 			"vaultIds:\n" +
