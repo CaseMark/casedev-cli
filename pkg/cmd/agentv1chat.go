@@ -16,7 +16,7 @@ import (
 
 var agentV1ChatCreate = cli.Command{
 	Name:    "create",
-	Usage:   "Creates a persistent OpenCode chat session in a Modal sandbox. Session state is\nretained and can be resumed across requests.",
+	Usage:   "Creates a persistent OpenCode chat session backed by a Daytona or Vercel\nruntime. Session state is retained and can be resumed or recovered across\nrequests.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
