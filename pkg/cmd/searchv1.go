@@ -5,7 +5,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/CaseMark/casedev-cli/internal/apiquery"
 	"github.com/CaseMark/casedev-cli/internal/requestflag"
@@ -388,8 +387,14 @@ func handleSearchV1Answer(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "search:v1 answer", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "search:v1 answer",
+		Transform:      transform,
+	})
 }
 
 func handleSearchV1Contents(ctx context.Context, cmd *cli.Command) error {
@@ -422,8 +427,14 @@ func handleSearchV1Contents(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "search:v1 contents", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "search:v1 contents",
+		Transform:      transform,
+	})
 }
 
 func handleSearchV1Research(ctx context.Context, cmd *cli.Command) error {
@@ -456,8 +467,14 @@ func handleSearchV1Research(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "search:v1 research", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "search:v1 research",
+		Transform:      transform,
+	})
 }
 
 func handleSearchV1RetrieveResearch(ctx context.Context, cmd *cli.Command) error {
@@ -498,8 +515,14 @@ func handleSearchV1RetrieveResearch(ctx context.Context, cmd *cli.Command) error
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "search:v1 retrieve-research", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "search:v1 retrieve-research",
+		Transform:      transform,
+	})
 }
 
 func handleSearchV1Search(ctx context.Context, cmd *cli.Command) error {
@@ -532,8 +555,14 @@ func handleSearchV1Search(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "search:v1 search", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "search:v1 search",
+		Transform:      transform,
+	})
 }
 
 func handleSearchV1Similar(ctx context.Context, cmd *cli.Command) error {
@@ -566,6 +595,12 @@ func handleSearchV1Similar(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "search:v1 similar", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "search:v1 similar",
+		Transform:      transform,
+	})
 }

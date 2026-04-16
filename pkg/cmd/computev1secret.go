@@ -5,7 +5,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/CaseMark/casedev-cli/internal/apiquery"
 	"github.com/CaseMark/casedev-cli/internal/requestflag"
@@ -154,8 +153,14 @@ func handleComputeV1SecretsCreate(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "compute:v1:secrets create", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "compute:v1:secrets create",
+		Transform:      transform,
+	})
 }
 
 func handleComputeV1SecretsList(ctx context.Context, cmd *cli.Command) error {
@@ -188,8 +193,14 @@ func handleComputeV1SecretsList(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "compute:v1:secrets list", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "compute:v1:secrets list",
+		Transform:      transform,
+	})
 }
 
 func handleComputeV1SecretsDeleteGroup(ctx context.Context, cmd *cli.Command) error {
@@ -230,8 +241,14 @@ func handleComputeV1SecretsDeleteGroup(ctx context.Context, cmd *cli.Command) er
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "compute:v1:secrets delete-group", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "compute:v1:secrets delete-group",
+		Transform:      transform,
+	})
 }
 
 func handleComputeV1SecretsRetrieveGroup(ctx context.Context, cmd *cli.Command) error {
@@ -272,8 +289,14 @@ func handleComputeV1SecretsRetrieveGroup(ctx context.Context, cmd *cli.Command) 
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "compute:v1:secrets retrieve-group", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "compute:v1:secrets retrieve-group",
+		Transform:      transform,
+	})
 }
 
 func handleComputeV1SecretsUpdateGroup(ctx context.Context, cmd *cli.Command) error {
@@ -314,6 +337,12 @@ func handleComputeV1SecretsUpdateGroup(ctx context.Context, cmd *cli.Command) er
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "compute:v1:secrets update-group", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "compute:v1:secrets update-group",
+		Transform:      transform,
+	})
 }

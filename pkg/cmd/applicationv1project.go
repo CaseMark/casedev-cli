@@ -5,7 +5,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/CaseMark/casedev-cli/internal/apiquery"
 	"github.com/CaseMark/casedev-cli/internal/requestflag"
@@ -98,7 +97,7 @@ var applicationsV1ProjectsCreate = requestflag.WithInnerFlags(cli.Command{
 
 var applicationsV1ProjectsRetrieve = cli.Command{
 	Name:    "retrieve",
-	Usage:   "Returns project details, domains, and recent deployment information for one\napplication project or deployed Thurgood app. Use this endpoint when you need a\nsingle record with hosting metadata for a details view.",
+	Usage:   "Returns project details, domains, and recent deployment information for one\napplication project. Use this endpoint when you need a single record with\nhosting metadata for a details view.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -112,7 +111,7 @@ var applicationsV1ProjectsRetrieve = cli.Command{
 
 var applicationsV1ProjectsList = cli.Command{
 	Name:    "list",
-	Usage:   "Lists application projects and deployed Thurgood apps for the authenticated\norganization. Use enrich=true to include additional hosting metadata for\nprojects linked to Vercel.",
+	Usage:   "Lists application projects for the authenticated organization. Use enrich=true\nto include additional hosting metadata for projects linked to Vercel.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[bool]{
@@ -134,7 +133,7 @@ var applicationsV1ProjectsList = cli.Command{
 
 var applicationsV1ProjectsDelete = cli.Command{
 	Name:    "delete",
-	Usage:   "Soft-deletes an application project or deployed Thurgood app from Case.dev. By\ndefault it also removes the linked hosting project; set deleteFromHosting=false\nto keep the external hosting resources intact.",
+	Usage:   "Soft-deletes an application project from Case.dev. By default it also removes\nthe linked hosting project; set deleteFromHosting=false to keep the external\nhosting resources intact.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -461,8 +460,14 @@ func handleApplicationsV1ProjectsList(ctx context.Context, cmd *cli.Command) err
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "applications:v1:projects list", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "applications:v1:projects list",
+		Transform:      transform,
+	})
 }
 
 func handleApplicationsV1ProjectsDelete(ctx context.Context, cmd *cli.Command) error {

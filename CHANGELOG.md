@@ -1,5 +1,35 @@
 # Changelog
 
+## 0.27.0 (2026-04-16)
+
+Full Changelog: [v0.26.0...v0.27.0](https://github.com/CaseMark/casedev-cli/compare/v0.26.0...v0.27.0)
+
+### Features
+
+* **api:** api update ([5df5861](https://github.com/CaseMark/casedev-cli/commit/5df58613c3c2d8890bb925dac033dd5d83f0b610))
+* **api:** api update ([aa38633](https://github.com/CaseMark/casedev-cli/commit/aa3863330c12e906e28a2924078bcda9c3a74c22))
+* **api:** api update ([6f734a6](https://github.com/CaseMark/casedev-cli/commit/6f734a6ebb00a3152cfd4f82892159bb9b2d35d2))
+* **api:** api update ([0a67827](https://github.com/CaseMark/casedev-cli/commit/0a678277deb88c37eddf4e88b0298be6a9687f6d))
+* **cli:** alias parameters in data with `x-stainless-cli-data-alias` ([7c7dc28](https://github.com/CaseMark/casedev-cli/commit/7c7dc285b4339a283b724275dcbeabf94e2577c2))
+
+
+### Bug Fixes
+
+* bump casedev-go to v0.34.0 (adds NewStreamToken method) ([#67](https://github.com/CaseMark/casedev-cli/issues/67)) ([157a024](https://github.com/CaseMark/casedev-cli/commit/157a024615cf5ae0e190e56c7eb849f529575e75))
+* **cli:** fix incompatible Go types for flag generated as array of maps ([c9b58c7](https://github.com/CaseMark/casedev-cli/commit/c9b58c724783266a77a4688f580b9013099b1af9))
+* fix for failing to drop invalid module replace in link script ([1aa0569](https://github.com/CaseMark/casedev-cli/commit/1aa05699f63a8ee22ec823fb9dd2aade44a19ef2))
+* remove OcrV1GetParams usage to match Go SDK v0.34.0 signature ([#68](https://github.com/CaseMark/casedev-cli/issues/68)) ([0602203](https://github.com/CaseMark/casedev-cli/commit/0602203689c6df14953f6796ca283d378e655f1f))
+
+
+### Chores
+
+* add documentation for ./scripts/link ([ce980aa](https://github.com/CaseMark/casedev-cli/commit/ce980aa23f7a0eaeacd2abfdcc593c55136420ac))
+* **cli:** additional test cases for `ShowJSONIterator` ([b0c1672](https://github.com/CaseMark/casedev-cli/commit/b0c1672f1ae7a45e3439fd4aced32f8c92215802))
+* **cli:** fall back to JSON when using default "explore" with non-TTY ([8f8f2da](https://github.com/CaseMark/casedev-cli/commit/8f8f2da23887ad4c3b77fb3365cbe0a5c8baad2a))
+* **cli:** let `--format raw` be used in conjunction with `--transform` ([e02b71b](https://github.com/CaseMark/casedev-cli/commit/e02b71be52fdd17569497fa24a0df956603262b0))
+* **cli:** switch long lists of positional args over to param structs ([4c3cb47](https://github.com/CaseMark/casedev-cli/commit/4c3cb4732234e8a728b8a5633a2affbb1e07548e))
+* **internal:** codegen related update ([e2c8adb](https://github.com/CaseMark/casedev-cli/commit/e2c8adbf914e90dbc44c155f6c5cae3719fbc570))
+
 ## 0.26.0 (2026-04-07)
 
 Full Changelog: [v0.25.2...v0.26.0](https://github.com/CaseMark/casedev-cli/compare/v0.25.2...v0.26.0)

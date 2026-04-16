@@ -5,7 +5,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/CaseMark/casedev-cli/internal/apiquery"
 	"github.com/CaseMark/casedev-cli/internal/requestflag"
@@ -24,6 +23,11 @@ var agentV2ChatCreate = cli.Command{
 			Name:     "idle-timeout-ms",
 			Usage:    "Idle timeout before the runtime is eligible to stop. Defaults to 15 minutes.",
 			BodyPath: "idleTimeoutMs",
+		},
+		&requestflag.Flag[any]{
+			Name:     "instructions",
+			Usage:    "Optional hidden app instructions merged into the chat runtime bootstrap and never exposed as a user message. Only accepted for privileged C3 system keys.",
+			BodyPath: "instructions",
 		},
 		&requestflag.Flag[any]{
 			Name:     "model",
@@ -70,6 +74,20 @@ var agentV2ChatCancel = cli.Command{
 		},
 	},
 	Action:          handleAgentV2ChatCancel,
+	HideHelpCommand: true,
+}
+
+var agentV2ChatCreateStreamToken = cli.Command{
+	Name:    "create-stream-token",
+	Usage:   "Returns a short-lived token that allows browser clients to connect directly to\nthe agent chat SSE stream without exposing the underlying org API key.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:     "id",
+			Required: true,
+		},
+	},
+	Action:          handleAgentV2ChatCreateStreamToken,
 	HideHelpCommand: true,
 }
 
@@ -177,12 +195,17 @@ var agentV2ChatSendMessage = requestflag.WithInnerFlags(cli.Command{
 
 var agentV2ChatStream = cli.Command{
 	Name:    "stream",
-	Usage:   "Relays OpenCode SSE events for this Daytona-backed chat runtime. Supports replay\nfrom buffered events using Last-Event-ID and transparently reconnects stopped or\narchived runtimes.",
+	Usage:   "Relays OpenCode SSE events for this Daytona-backed chat runtime. Supports replay\nfrom buffered events using Last-Event-ID and transparently reconnects stopped or\narchived runtimes. Accepts either Bearer token auth or a short-lived stream\ntoken via query parameter. When both are provided, Bearer auth takes precedence.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "id",
 			Required: true,
+		},
+		&requestflag.Flag[string]{
+			Name:      "token",
+			Usage:     "Short-lived stream token from POST /agent/v2/chat/:id/stream-token. If provided, Bearer auth is not required.",
+			QueryPath: "token",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "last-event-id",
@@ -228,8 +251,14 @@ func handleAgentV2ChatCreate(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "agent:v2:chat create", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "agent:v2:chat create",
+		Transform:      transform,
+	})
 }
 
 func handleAgentV2ChatDelete(ctx context.Context, cmd *cli.Command) error {
@@ -263,8 +292,14 @@ func handleAgentV2ChatDelete(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "agent:v2:chat delete", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "agent:v2:chat delete",
+		Transform:      transform,
+	})
 }
 
 func handleAgentV2ChatCancel(ctx context.Context, cmd *cli.Command) error {
@@ -298,8 +333,55 @@ func handleAgentV2ChatCancel(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "agent:v2:chat cancel", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "agent:v2:chat cancel",
+		Transform:      transform,
+	})
+}
+
+func handleAgentV2ChatCreateStreamToken(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
+		cmd.Set("id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		EmptyBody,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Agent.V2.Chat.NewStreamToken(ctx, cmd.Value("id").(string), options...)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "agent:v2:chat create-stream-token",
+		Transform:      transform,
+	})
 }
 
 func handleAgentV2ChatReplyToQuestion(ctx context.Context, cmd *cli.Command) error {
@@ -364,6 +446,7 @@ func handleAgentV2ChatRespond(ctx context.Context, cmd *cli.Command) error {
 	}
 
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
 	stream := client.Agent.V2.Chat.RespondStreaming(
 		ctx,
@@ -375,7 +458,12 @@ func handleAgentV2ChatRespond(ctx context.Context, cmd *cli.Command) error {
 	if cmd.IsSet("max-items") {
 		maxItems = cmd.Value("max-items").(int64)
 	}
-	return ShowJSONIterator(os.Stdout, "agent:v2:chat respond", stream, format, transform, maxItems)
+	return ShowJSONIterator(stream, maxItems, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "agent:v2:chat respond",
+		Transform:      transform,
+	})
 }
 
 func handleAgentV2ChatSendMessage(ctx context.Context, cmd *cli.Command) error {
@@ -435,6 +523,7 @@ func handleAgentV2ChatStream(ctx context.Context, cmd *cli.Command) error {
 	}
 
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
 	stream := client.Agent.V2.Chat.StreamStreaming(
 		ctx,
@@ -446,5 +535,10 @@ func handleAgentV2ChatStream(ctx context.Context, cmd *cli.Command) error {
 	if cmd.IsSet("max-items") {
 		maxItems = cmd.Value("max-items").(int64)
 	}
-	return ShowJSONIterator(os.Stdout, "agent:v2:chat stream", stream, format, transform, maxItems)
+	return ShowJSONIterator(stream, maxItems, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "agent:v2:chat stream",
+		Transform:      transform,
+	})
 }

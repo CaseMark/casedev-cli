@@ -5,7 +5,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/CaseMark/casedev-cli/internal/apiquery"
 	"github.com/CaseMark/casedev-cli/internal/requestflag"
@@ -56,7 +55,7 @@ var agentV1ExecuteCreate = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "Scope this run to specific vault object IDs. The agent will only access these objects.",
 			BodyPath: "objectIds",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[map[string]any]{
 			Name:     "sandbox",
 			Usage:    "Custom sandbox resources (cpu, memoryMiB)",
 			BodyPath: "sandbox",
@@ -114,6 +113,12 @@ func handleAgentV1ExecuteCreate(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "agent:v1:execute create", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "agent:v1:execute create",
+		Transform:      transform,
+	})
 }

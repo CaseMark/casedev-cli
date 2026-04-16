@@ -5,7 +5,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/CaseMark/casedev-cli/internal/apiquery"
 	"github.com/CaseMark/casedev-cli/internal/requestflag"
@@ -112,8 +111,14 @@ func handleComputeV1EnvironmentsCreate(ctx context.Context, cmd *cli.Command) er
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "compute:v1:environments create", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "compute:v1:environments create",
+		Transform:      transform,
+	})
 }
 
 func handleComputeV1EnvironmentsRetrieve(ctx context.Context, cmd *cli.Command) error {
@@ -147,8 +152,14 @@ func handleComputeV1EnvironmentsRetrieve(ctx context.Context, cmd *cli.Command) 
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "compute:v1:environments retrieve", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "compute:v1:environments retrieve",
+		Transform:      transform,
+	})
 }
 
 func handleComputeV1EnvironmentsList(ctx context.Context, cmd *cli.Command) error {
@@ -179,8 +190,14 @@ func handleComputeV1EnvironmentsList(ctx context.Context, cmd *cli.Command) erro
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "compute:v1:environments list", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "compute:v1:environments list",
+		Transform:      transform,
+	})
 }
 
 func handleComputeV1EnvironmentsDelete(ctx context.Context, cmd *cli.Command) error {
@@ -214,8 +231,14 @@ func handleComputeV1EnvironmentsDelete(ctx context.Context, cmd *cli.Command) er
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "compute:v1:environments delete", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "compute:v1:environments delete",
+		Transform:      transform,
+	})
 }
 
 func handleComputeV1EnvironmentsSetDefault(ctx context.Context, cmd *cli.Command) error {
@@ -249,6 +272,12 @@ func handleComputeV1EnvironmentsSetDefault(ctx context.Context, cmd *cli.Command
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "compute:v1:environments set-default", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "compute:v1:environments set-default",
+		Transform:      transform,
+	})
 }

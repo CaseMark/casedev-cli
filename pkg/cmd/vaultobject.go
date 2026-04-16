@@ -279,8 +279,14 @@ func handleVaultObjectsRetrieve(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "vault:objects retrieve", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "vault:objects retrieve",
+		Transform:      transform,
+	})
 }
 
 func handleVaultObjectsUpdate(ctx context.Context, cmd *cli.Command) error {
@@ -326,8 +332,14 @@ func handleVaultObjectsUpdate(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "vault:objects update", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "vault:objects update",
+		Transform:      transform,
+	})
 }
 
 func handleVaultObjectsList(ctx context.Context, cmd *cli.Command) error {
@@ -361,8 +373,14 @@ func handleVaultObjectsList(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "vault:objects list", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "vault:objects list",
+		Transform:      transform,
+	})
 }
 
 func handleVaultObjectsDelete(ctx context.Context, cmd *cli.Command) error {
@@ -408,8 +426,14 @@ func handleVaultObjectsDelete(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "vault:objects delete", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "vault:objects delete",
+		Transform:      transform,
+	})
 }
 
 func handleVaultObjectsCreatePresignedURL(ctx context.Context, cmd *cli.Command) error {
@@ -455,8 +479,14 @@ func handleVaultObjectsCreatePresignedURL(ctx context.Context, cmd *cli.Command)
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "vault:objects create-presigned-url", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "vault:objects create-presigned-url",
+		Transform:      transform,
+	})
 }
 
 func handleVaultObjectsDownload(ctx context.Context, cmd *cli.Command) error {
@@ -544,8 +574,14 @@ func handleVaultObjectsGetOcrWords(ctx context.Context, cmd *cli.Command) error 
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "vault:objects get-ocr-words", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "vault:objects get-ocr-words",
+		Transform:      transform,
+	})
 }
 
 func handleVaultObjectsGetSummarizeJob(ctx context.Context, cmd *cli.Command) error {
@@ -593,8 +629,14 @@ func handleVaultObjectsGetSummarizeJob(ctx context.Context, cmd *cli.Command) er
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "vault:objects get-summarize-job", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "vault:objects get-summarize-job",
+		Transform:      transform,
+	})
 }
 
 func handleVaultObjectsGetText(ctx context.Context, cmd *cli.Command) error {
@@ -637,6 +679,12 @@ func handleVaultObjectsGetText(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "vault:objects get-text", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "vault:objects get-text",
+		Transform:      transform,
+	})
 }

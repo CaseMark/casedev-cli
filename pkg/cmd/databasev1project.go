@@ -5,7 +5,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/CaseMark/casedev-cli/internal/apiquery"
 	"github.com/CaseMark/casedev-cli/internal/requestflag"
@@ -58,7 +57,7 @@ var databaseV1ProjectsRetrieve = cli.Command{
 
 var databaseV1ProjectsList = cli.Command{
 	Name:            "list",
-	Usage:           "Retrieves all serverless Postgres database projects for the authenticated\norganization. Includes storage and compute metrics, plus linked deployments from\nThurgood apps and Compute instances.",
+	Usage:           "Retrieves all serverless Postgres database projects for the authenticated\norganization. Includes storage and compute metrics, plus linked application\ndeployments and Compute instances.",
 	Suggest:         true,
 	Flags:           []cli.Flag{},
 	Action:          handleDatabaseV1ProjectsList,
@@ -172,8 +171,14 @@ func handleDatabaseV1ProjectsCreate(ctx context.Context, cmd *cli.Command) error
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "database:v1:projects create", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "database:v1:projects create",
+		Transform:      transform,
+	})
 }
 
 func handleDatabaseV1ProjectsRetrieve(ctx context.Context, cmd *cli.Command) error {
@@ -207,8 +212,14 @@ func handleDatabaseV1ProjectsRetrieve(ctx context.Context, cmd *cli.Command) err
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "database:v1:projects retrieve", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "database:v1:projects retrieve",
+		Transform:      transform,
+	})
 }
 
 func handleDatabaseV1ProjectsList(ctx context.Context, cmd *cli.Command) error {
@@ -239,8 +250,14 @@ func handleDatabaseV1ProjectsList(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "database:v1:projects list", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "database:v1:projects list",
+		Transform:      transform,
+	})
 }
 
 func handleDatabaseV1ProjectsDelete(ctx context.Context, cmd *cli.Command) error {
@@ -274,8 +291,14 @@ func handleDatabaseV1ProjectsDelete(ctx context.Context, cmd *cli.Command) error
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "database:v1:projects delete", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "database:v1:projects delete",
+		Transform:      transform,
+	})
 }
 
 func handleDatabaseV1ProjectsCreateBranch(ctx context.Context, cmd *cli.Command) error {
@@ -316,8 +339,14 @@ func handleDatabaseV1ProjectsCreateBranch(ctx context.Context, cmd *cli.Command)
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "database:v1:projects create-branch", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "database:v1:projects create-branch",
+		Transform:      transform,
+	})
 }
 
 func handleDatabaseV1ProjectsGetConnection(ctx context.Context, cmd *cli.Command) error {
@@ -358,8 +387,14 @@ func handleDatabaseV1ProjectsGetConnection(ctx context.Context, cmd *cli.Command
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "database:v1:projects get-connection", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "database:v1:projects get-connection",
+		Transform:      transform,
+	})
 }
 
 func handleDatabaseV1ProjectsListBranches(ctx context.Context, cmd *cli.Command) error {
@@ -393,6 +428,12 @@ func handleDatabaseV1ProjectsListBranches(ctx context.Context, cmd *cli.Command)
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "database:v1:projects list-branches", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "database:v1:projects list-branches",
+		Transform:      transform,
+	})
 }

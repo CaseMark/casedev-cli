@@ -16,6 +16,7 @@ func TestAgentV2ChatCreate(t *testing.T) {
 			"--api-key", "string",
 			"agent:v2:chat", "create",
 			"--idle-timeout-ms", "0",
+			"--instructions", "instructions",
 			"--model", "model",
 			"--title", "title",
 			"--vault-id", "[string]",
@@ -26,6 +27,7 @@ func TestAgentV2ChatCreate(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("" +
 			"idleTimeoutMs: 0\n" +
+			"instructions: instructions\n" +
 			"model: model\n" +
 			"title: title\n" +
 			"vaultIds:\n" +
@@ -55,6 +57,17 @@ func TestAgentV2ChatCancel(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"agent:v2:chat", "cancel",
+			"--id", "id",
+		)
+	})
+}
+
+func TestAgentV2ChatCreateStreamToken(t *testing.T) {
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"agent:v2:chat", "create-stream-token",
 			"--id", "id",
 		)
 	})
@@ -188,6 +201,7 @@ func TestAgentV2ChatStream(t *testing.T) {
 			"agent:v2:chat", "stream",
 			"--max-items", "10",
 			"--id", "id",
+			"--token", "token",
 			"--last-event-id", "0",
 		)
 	})

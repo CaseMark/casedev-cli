@@ -24,6 +24,11 @@ var ocrV1Retrieve = cli.Command{
 			Name:     "id",
 			Required: true,
 		},
+		&requestflag.Flag[string]{
+			Name:      "include-text",
+			Usage:     "Include full OCR text in completed responses (default: true)",
+			QueryPath: "include_text",
+		},
 	},
 	Action:          handleOcrV1Retrieve,
 	HideHelpCommand: true,
@@ -142,15 +147,25 @@ func handleOcrV1Retrieve(ctx context.Context, cmd *cli.Command) error {
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Ocr.V1.Get(ctx, cmd.Value("id").(string), options...)
+	_, err = client.Ocr.V1.Get(
+		ctx,
+		cmd.Value("id").(string),
+		options...,
+	)
 	if err != nil {
 		return err
 	}
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "ocr:v1 retrieve", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "ocr:v1 retrieve",
+		Transform:      transform,
+	})
 }
 
 func handleOcrV1Download(ctx context.Context, cmd *cli.Command) error {
@@ -225,6 +240,12 @@ func handleOcrV1Process(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "ocr:v1 process", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "ocr:v1 process",
+		Transform:      transform,
+	})
 }

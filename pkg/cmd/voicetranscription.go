@@ -5,7 +5,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/CaseMark/casedev-cli/internal/apiquery"
 	"github.com/CaseMark/casedev-cli/internal/requestflag"
@@ -171,8 +170,14 @@ func handleVoiceTranscriptionCreate(ctx context.Context, cmd *cli.Command) error
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "voice:transcription create", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "voice:transcription create",
+		Transform:      transform,
+	})
 }
 
 func handleVoiceTranscriptionRetrieve(ctx context.Context, cmd *cli.Command) error {
@@ -213,8 +218,14 @@ func handleVoiceTranscriptionRetrieve(ctx context.Context, cmd *cli.Command) err
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "voice:transcription retrieve", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "voice:transcription retrieve",
+		Transform:      transform,
+	})
 }
 
 func handleVoiceTranscriptionDelete(ctx context.Context, cmd *cli.Command) error {

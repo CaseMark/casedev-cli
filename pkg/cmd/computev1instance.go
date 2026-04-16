@@ -5,7 +5,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/CaseMark/casedev-cli/internal/apiquery"
 	"github.com/CaseMark/casedev-cli/internal/requestflag"
@@ -120,8 +119,14 @@ func handleComputeV1InstancesCreate(ctx context.Context, cmd *cli.Command) error
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "compute:v1:instances create", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "compute:v1:instances create",
+		Transform:      transform,
+	})
 }
 
 func handleComputeV1InstancesRetrieve(ctx context.Context, cmd *cli.Command) error {
@@ -155,8 +160,14 @@ func handleComputeV1InstancesRetrieve(ctx context.Context, cmd *cli.Command) err
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "compute:v1:instances retrieve", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "compute:v1:instances retrieve",
+		Transform:      transform,
+	})
 }
 
 func handleComputeV1InstancesList(ctx context.Context, cmd *cli.Command) error {
@@ -187,8 +198,14 @@ func handleComputeV1InstancesList(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "compute:v1:instances list", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "compute:v1:instances list",
+		Transform:      transform,
+	})
 }
 
 func handleComputeV1InstancesDelete(ctx context.Context, cmd *cli.Command) error {
@@ -222,6 +239,12 @@ func handleComputeV1InstancesDelete(ctx context.Context, cmd *cli.Command) error
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "compute:v1:instances delete", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "compute:v1:instances delete",
+		Transform:      transform,
+	})
 }

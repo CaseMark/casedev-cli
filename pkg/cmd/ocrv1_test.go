@@ -16,6 +16,7 @@ func TestOcrV1Retrieve(t *testing.T) {
 			"--api-key", "string",
 			"ocr:v1", "retrieve",
 			"--id", "id",
+			"--include-text", "true",
 		)
 	})
 }
