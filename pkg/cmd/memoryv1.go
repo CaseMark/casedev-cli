@@ -5,7 +5,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/CaseMark/casedev-cli/internal/apiquery"
 	"github.com/CaseMark/casedev-cli/internal/requestflag"
@@ -429,7 +428,12 @@ func handleMemoryV1Create(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "memory:v1 create", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "memory:v1 create",
+		Transform:      transform,
+	})
 }
 
 func handleMemoryV1Retrieve(ctx context.Context, cmd *cli.Command) error {
@@ -465,7 +469,12 @@ func handleMemoryV1Retrieve(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "memory:v1 retrieve", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "memory:v1 retrieve",
+		Transform:      transform,
+	})
 }
 
 func handleMemoryV1List(ctx context.Context, cmd *cli.Command) error {
@@ -500,7 +509,12 @@ func handleMemoryV1List(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "memory:v1 list", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "memory:v1 list",
+		Transform:      transform,
+	})
 }
 
 func handleMemoryV1Delete(ctx context.Context, cmd *cli.Command) error {
@@ -536,7 +550,12 @@ func handleMemoryV1Delete(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "memory:v1 delete", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "memory:v1 delete",
+		Transform:      transform,
+	})
 }
 
 func handleMemoryV1DeleteAll(ctx context.Context, cmd *cli.Command) error {
@@ -571,7 +590,12 @@ func handleMemoryV1DeleteAll(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "memory:v1 delete-all", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "memory:v1 delete-all",
+		Transform:      transform,
+	})
 }
 
 func handleMemoryV1Search(ctx context.Context, cmd *cli.Command) error {
@@ -606,5 +630,10 @@ func handleMemoryV1Search(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "memory:v1 search", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "memory:v1 search",
+		Transform:      transform,
+	})
 }

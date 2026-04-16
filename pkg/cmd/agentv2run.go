@@ -5,7 +5,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/CaseMark/casedev-cli/internal/apiquery"
 	"github.com/CaseMark/casedev-cli/internal/requestflag"
@@ -147,7 +146,12 @@ func handleAgentV2RunCreate(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "agent:v2:run create", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "agent:v2:run create",
+		Transform:      transform,
+	})
 }
 
 func handleAgentV2RunEvents(ctx context.Context, cmd *cli.Command) error {
@@ -187,7 +191,12 @@ func handleAgentV2RunEvents(ctx context.Context, cmd *cli.Command) error {
 	if cmd.IsSet("max-items") {
 		maxItems = cmd.Value("max-items").(int64)
 	}
-	return ShowJSONIterator(os.Stdout, os.Stderr, "agent:v2:run events", stream, format, explicitFormat, transform, maxItems)
+	return ShowJSONIterator(stream, maxItems, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "agent:v2:run events",
+		Transform:      transform,
+	})
 }
 
 func handleAgentV2RunExec(ctx context.Context, cmd *cli.Command) error {
@@ -223,7 +232,12 @@ func handleAgentV2RunExec(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "agent:v2:run exec", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "agent:v2:run exec",
+		Transform:      transform,
+	})
 }
 
 func handleAgentV2RunGetDetails(ctx context.Context, cmd *cli.Command) error {
@@ -259,7 +273,12 @@ func handleAgentV2RunGetDetails(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "agent:v2:run get-details", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "agent:v2:run get-details",
+		Transform:      transform,
+	})
 }
 
 func handleAgentV2RunGetStatus(ctx context.Context, cmd *cli.Command) error {
@@ -295,5 +314,10 @@ func handleAgentV2RunGetStatus(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "agent:v2:run get-status", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "agent:v2:run get-status",
+		Transform:      transform,
+	})
 }

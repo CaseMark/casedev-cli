@@ -5,7 +5,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/CaseMark/casedev-cli/internal/apiquery"
 	"github.com/CaseMark/casedev-cli/internal/requestflag"
@@ -173,7 +172,12 @@ func handleVoiceTranscriptionCreate(ctx context.Context, cmd *cli.Command) error
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "voice:transcription create", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "voice:transcription create",
+		Transform:      transform,
+	})
 }
 
 func handleVoiceTranscriptionRetrieve(ctx context.Context, cmd *cli.Command) error {
@@ -216,7 +220,12 @@ func handleVoiceTranscriptionRetrieve(ctx context.Context, cmd *cli.Command) err
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "voice:transcription retrieve", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "voice:transcription retrieve",
+		Transform:      transform,
+	})
 }
 
 func handleVoiceTranscriptionDelete(ctx context.Context, cmd *cli.Command) error {
