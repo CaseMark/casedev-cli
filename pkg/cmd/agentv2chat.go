@@ -5,7 +5,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/CaseMark/casedev-cli/internal/apiquery"
 	"github.com/CaseMark/casedev-cli/internal/requestflag"
@@ -254,7 +253,12 @@ func handleAgentV2ChatCreate(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "agent:v2:chat create", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "agent:v2:chat create",
+		Transform:      transform,
+	})
 }
 
 func handleAgentV2ChatDelete(ctx context.Context, cmd *cli.Command) error {
@@ -290,7 +294,12 @@ func handleAgentV2ChatDelete(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "agent:v2:chat delete", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "agent:v2:chat delete",
+		Transform:      transform,
+	})
 }
 
 func handleAgentV2ChatCancel(ctx context.Context, cmd *cli.Command) error {
@@ -326,7 +335,12 @@ func handleAgentV2ChatCancel(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "agent:v2:chat cancel", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "agent:v2:chat cancel",
+		Transform:      transform,
+	})
 }
 
 func handleAgentV2ChatCreateStreamToken(ctx context.Context, cmd *cli.Command) error {
@@ -362,7 +376,12 @@ func handleAgentV2ChatCreateStreamToken(ctx context.Context, cmd *cli.Command) e
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "agent:v2:chat create-stream-token", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "agent:v2:chat create-stream-token",
+		Transform:      transform,
+	})
 }
 
 func handleAgentV2ChatReplyToQuestion(ctx context.Context, cmd *cli.Command) error {
@@ -439,7 +458,12 @@ func handleAgentV2ChatRespond(ctx context.Context, cmd *cli.Command) error {
 	if cmd.IsSet("max-items") {
 		maxItems = cmd.Value("max-items").(int64)
 	}
-	return ShowJSONIterator(os.Stdout, os.Stderr, "agent:v2:chat respond", stream, format, explicitFormat, transform, maxItems)
+	return ShowJSONIterator(stream, maxItems, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "agent:v2:chat respond",
+		Transform:      transform,
+	})
 }
 
 func handleAgentV2ChatSendMessage(ctx context.Context, cmd *cli.Command) error {
@@ -511,5 +535,10 @@ func handleAgentV2ChatStream(ctx context.Context, cmd *cli.Command) error {
 	if cmd.IsSet("max-items") {
 		maxItems = cmd.Value("max-items").(int64)
 	}
-	return ShowJSONIterator(os.Stdout, os.Stderr, "agent:v2:chat stream", stream, format, explicitFormat, transform, maxItems)
+	return ShowJSONIterator(stream, maxItems, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "agent:v2:chat stream",
+		Transform:      transform,
+	})
 }

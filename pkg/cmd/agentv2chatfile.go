@@ -85,7 +85,12 @@ func handleAgentV2ChatFilesList(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "agent:v2:chat:files list", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "agent:v2:chat:files list",
+		Transform:      transform,
+	})
 }
 
 func handleAgentV2ChatFilesDownload(ctx context.Context, cmd *cli.Command) error {

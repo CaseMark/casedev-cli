@@ -5,7 +5,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/CaseMark/casedev-cli/internal/apiquery"
 	"github.com/CaseMark/casedev-cli/internal/requestflag"
@@ -174,7 +173,12 @@ func handleDatabaseV1ProjectsCreate(ctx context.Context, cmd *cli.Command) error
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "database:v1:projects create", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "database:v1:projects create",
+		Transform:      transform,
+	})
 }
 
 func handleDatabaseV1ProjectsRetrieve(ctx context.Context, cmd *cli.Command) error {
@@ -210,7 +214,12 @@ func handleDatabaseV1ProjectsRetrieve(ctx context.Context, cmd *cli.Command) err
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "database:v1:projects retrieve", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "database:v1:projects retrieve",
+		Transform:      transform,
+	})
 }
 
 func handleDatabaseV1ProjectsList(ctx context.Context, cmd *cli.Command) error {
@@ -243,7 +252,12 @@ func handleDatabaseV1ProjectsList(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "database:v1:projects list", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "database:v1:projects list",
+		Transform:      transform,
+	})
 }
 
 func handleDatabaseV1ProjectsDelete(ctx context.Context, cmd *cli.Command) error {
@@ -279,7 +293,12 @@ func handleDatabaseV1ProjectsDelete(ctx context.Context, cmd *cli.Command) error
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "database:v1:projects delete", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "database:v1:projects delete",
+		Transform:      transform,
+	})
 }
 
 func handleDatabaseV1ProjectsCreateBranch(ctx context.Context, cmd *cli.Command) error {
@@ -322,7 +341,12 @@ func handleDatabaseV1ProjectsCreateBranch(ctx context.Context, cmd *cli.Command)
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "database:v1:projects create-branch", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "database:v1:projects create-branch",
+		Transform:      transform,
+	})
 }
 
 func handleDatabaseV1ProjectsGetConnection(ctx context.Context, cmd *cli.Command) error {
@@ -365,7 +389,12 @@ func handleDatabaseV1ProjectsGetConnection(ctx context.Context, cmd *cli.Command
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "database:v1:projects get-connection", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "database:v1:projects get-connection",
+		Transform:      transform,
+	})
 }
 
 func handleDatabaseV1ProjectsListBranches(ctx context.Context, cmd *cli.Command) error {
@@ -401,5 +430,10 @@ func handleDatabaseV1ProjectsListBranches(ctx context.Context, cmd *cli.Command)
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, os.Stderr, "database:v1:projects list-branches", obj, format, explicitFormat, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		Title:          "database:v1:projects list-branches",
+		Transform:      transform,
+	})
 }
