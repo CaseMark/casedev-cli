@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.28.0 (2026-04-17)
+
+Full Changelog: [v0.27.0...v0.28.0](https://github.com/CaseMark/casedev-cli/compare/v0.27.0...v0.28.0)
+
+### Features
+
+* **api:** api update ([d41f6b9](https://github.com/CaseMark/casedev-cli/commit/d41f6b977a9bd7d9df4cdb4e224352d5b9ef635d))
+* **api:** api update ([aeaa8f6](https://github.com/CaseMark/casedev-cli/commit/aeaa8f6e18c6b116090769db46926bb9a2e1b421))
+* **cli:** add `--raw-output`/`-r` option to print raw (non-JSON) strings ([e2a4421](https://github.com/CaseMark/casedev-cli/commit/e2a442191225b55453cef19a2df1aa2959af7b8d))
+* **cli:** send filename and content type when reading input from files ([332ceb0](https://github.com/CaseMark/casedev-cli/commit/332ceb0f087f89cd35cacef9b0980771dd469a77))
+
+
+### Chores
+
+* **ci:** support manually triggering release workflow ([5b7282c](https://github.com/CaseMark/casedev-cli/commit/5b7282cc6ba1c69ea0d00b4156db85ef3d5d8f63))
+* **internal:** codegen related update ([eff28ea](https://github.com/CaseMark/casedev-cli/commit/eff28eabba4ec10428cdcae29d78fc4d5986de73))
+
 ## 0.27.0 (2026-04-16)
 
 Full Changelog: [v0.26.0...v0.27.0](https://github.com/CaseMark/casedev-cli/compare/v0.26.0...v0.27.0)
