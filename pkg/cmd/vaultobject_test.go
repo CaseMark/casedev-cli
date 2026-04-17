@@ -119,6 +119,20 @@ func TestVaultObjectsDownload(t *testing.T) {
 	})
 }
 
+func TestVaultObjectsGetChunks(t *testing.T) {
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"vault:objects", "get-chunks",
+			"--id", "id",
+			"--object-id", "objectId",
+			"--end", "0",
+			"--start", "0",
+		)
+	})
+}
+
 func TestVaultObjectsGetOcrWords(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(

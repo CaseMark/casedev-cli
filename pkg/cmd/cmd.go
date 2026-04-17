@@ -647,6 +647,7 @@ func init() {
 					&vaultObjectsDelete,
 					&vaultObjectsCreatePresignedURL,
 					&vaultObjectsDownload,
+					&vaultObjectsGetChunks,
 					&vaultObjectsGetOcrWords,
 					&vaultObjectsGetSummarizeJob,
 					&vaultObjectsGetText,
