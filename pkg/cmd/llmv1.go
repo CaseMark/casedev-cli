@@ -96,6 +96,7 @@ func handleLlmV1CreateEmbedding(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "llm:v1 create-embedding",
 		Transform:      transform,
 	})
@@ -134,6 +135,7 @@ func handleLlmV1ListModels(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "llm:v1 list-models",
 		Transform:      transform,
 	})

@@ -284,6 +284,7 @@ func handleVaultObjectsRetrieve(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "vault:objects retrieve",
 		Transform:      transform,
 	})
@@ -337,6 +338,7 @@ func handleVaultObjectsUpdate(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "vault:objects update",
 		Transform:      transform,
 	})
@@ -378,6 +380,7 @@ func handleVaultObjectsList(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "vault:objects list",
 		Transform:      transform,
 	})
@@ -431,6 +434,7 @@ func handleVaultObjectsDelete(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "vault:objects delete",
 		Transform:      transform,
 	})
@@ -484,6 +488,7 @@ func handleVaultObjectsCreatePresignedURL(ctx context.Context, cmd *cli.Command)
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "vault:objects create-presigned-url",
 		Transform:      transform,
 	})
@@ -579,6 +584,7 @@ func handleVaultObjectsGetOcrWords(ctx context.Context, cmd *cli.Command) error 
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "vault:objects get-ocr-words",
 		Transform:      transform,
 	})
@@ -634,6 +640,7 @@ func handleVaultObjectsGetSummarizeJob(ctx context.Context, cmd *cli.Command) er
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "vault:objects get-summarize-job",
 		Transform:      transform,
 	})
@@ -684,6 +691,7 @@ func handleVaultObjectsGetText(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "vault:objects get-text",
 		Transform:      transform,
 	})

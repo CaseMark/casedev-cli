@@ -586,6 +586,7 @@ func handleLegalV1Docket(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "legal:v1 docket",
 		Transform:      transform,
 	})
@@ -626,6 +627,7 @@ func handleLegalV1Draft(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "legal:v1 draft",
 		Transform:      transform,
 	})
@@ -666,6 +668,7 @@ func handleLegalV1Find(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "legal:v1 find",
 		Transform:      transform,
 	})
@@ -706,6 +709,7 @@ func handleLegalV1GetCitations(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "legal:v1 get-citations",
 		Transform:      transform,
 	})
@@ -746,6 +750,7 @@ func handleLegalV1GetCitationsFromURL(ctx context.Context, cmd *cli.Command) err
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "legal:v1 get-citations-from-url",
 		Transform:      transform,
 	})
@@ -786,6 +791,7 @@ func handleLegalV1GetFullText(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "legal:v1 get-full-text",
 		Transform:      transform,
 	})
@@ -826,6 +832,7 @@ func handleLegalV1ListCourts(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "legal:v1 list-courts",
 		Transform:      transform,
 	})
@@ -866,6 +873,7 @@ func handleLegalV1ListJurisdictions(ctx context.Context, cmd *cli.Command) error
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "legal:v1 list-jurisdictions",
 		Transform:      transform,
 	})
@@ -906,6 +914,7 @@ func handleLegalV1PatentSearch(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "legal:v1 patent-search",
 		Transform:      transform,
 	})
@@ -946,6 +955,7 @@ func handleLegalV1Research(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "legal:v1 research",
 		Transform:      transform,
 	})
@@ -986,6 +996,7 @@ func handleLegalV1SecFiling(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "legal:v1 sec-filing",
 		Transform:      transform,
 	})
@@ -1026,6 +1037,7 @@ func handleLegalV1Similar(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "legal:v1 similar",
 		Transform:      transform,
 	})
@@ -1066,6 +1078,7 @@ func handleLegalV1TrademarkSearch(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "legal:v1 trademark-search",
 		Transform:      transform,
 	})
@@ -1106,6 +1119,7 @@ func handleLegalV1Verify(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "legal:v1 verify",
 		Transform:      transform,
 	})

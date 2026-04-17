@@ -118,6 +118,7 @@ func handleAgentV1ExecuteCreate(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "agent:v1:execute create",
 		Transform:      transform,
 	})

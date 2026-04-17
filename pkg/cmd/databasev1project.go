@@ -176,6 +176,7 @@ func handleDatabaseV1ProjectsCreate(ctx context.Context, cmd *cli.Command) error
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "database:v1:projects create",
 		Transform:      transform,
 	})
@@ -217,6 +218,7 @@ func handleDatabaseV1ProjectsRetrieve(ctx context.Context, cmd *cli.Command) err
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "database:v1:projects retrieve",
 		Transform:      transform,
 	})
@@ -255,6 +257,7 @@ func handleDatabaseV1ProjectsList(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "database:v1:projects list",
 		Transform:      transform,
 	})
@@ -296,6 +299,7 @@ func handleDatabaseV1ProjectsDelete(ctx context.Context, cmd *cli.Command) error
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "database:v1:projects delete",
 		Transform:      transform,
 	})
@@ -344,6 +348,7 @@ func handleDatabaseV1ProjectsCreateBranch(ctx context.Context, cmd *cli.Command)
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "database:v1:projects create-branch",
 		Transform:      transform,
 	})
@@ -392,6 +397,7 @@ func handleDatabaseV1ProjectsGetConnection(ctx context.Context, cmd *cli.Command
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "database:v1:projects get-connection",
 		Transform:      transform,
 	})
@@ -433,6 +439,7 @@ func handleDatabaseV1ProjectsListBranches(ctx context.Context, cmd *cli.Command)
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "database:v1:projects list-branches",
 		Transform:      transform,
 	})

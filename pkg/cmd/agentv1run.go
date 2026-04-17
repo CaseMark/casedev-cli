@@ -221,6 +221,7 @@ func handleAgentV1RunCreate(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "agent:v1:run create",
 		Transform:      transform,
 	})
@@ -261,6 +262,7 @@ func handleAgentV1RunList(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "agent:v1:run list",
 		Transform:      transform,
 	})
@@ -302,6 +304,7 @@ func handleAgentV1RunCancel(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "agent:v1:run cancel",
 		Transform:      transform,
 	})
@@ -347,6 +350,7 @@ func handleAgentV1RunEvents(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSONIterator(stream, maxItems, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "agent:v1:run events",
 		Transform:      transform,
 	})
@@ -388,6 +392,7 @@ func handleAgentV1RunExec(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "agent:v1:run exec",
 		Transform:      transform,
 	})
@@ -429,6 +434,7 @@ func handleAgentV1RunGetDetails(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "agent:v1:run get-details",
 		Transform:      transform,
 	})
@@ -470,6 +476,7 @@ func handleAgentV1RunGetStatus(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "agent:v1:run get-status",
 		Transform:      transform,
 	})
@@ -518,6 +525,7 @@ func handleAgentV1RunWatch(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "agent:v1:run watch",
 		Transform:      transform,
 	})

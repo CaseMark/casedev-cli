@@ -55,6 +55,7 @@ func handleComputeV1InstanceTypesList(ctx context.Context, cmd *cli.Command) err
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "compute:v1:instance-types list",
 		Transform:      transform,
 	})
