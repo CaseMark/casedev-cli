@@ -55,6 +55,7 @@ func handleDatabaseV1GetUsage(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "database:v1 get-usage",
 		Transform:      transform,
 	})

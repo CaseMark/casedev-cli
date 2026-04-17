@@ -222,6 +222,7 @@ func handleAgentV1ChatCreate(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "agent:v1:chat create",
 		Transform:      transform,
 	})
@@ -263,6 +264,7 @@ func handleAgentV1ChatDelete(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "agent:v1:chat delete",
 		Transform:      transform,
 	})
@@ -304,6 +306,7 @@ func handleAgentV1ChatCancel(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "agent:v1:chat cancel",
 		Transform:      transform,
 	})
@@ -386,6 +389,7 @@ func handleAgentV1ChatRespond(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSONIterator(stream, maxItems, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "agent:v1:chat respond",
 		Transform:      transform,
 	})
@@ -463,6 +467,7 @@ func handleAgentV1ChatStream(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSONIterator(stream, maxItems, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "agent:v1:chat stream",
 		Transform:      transform,
 	})

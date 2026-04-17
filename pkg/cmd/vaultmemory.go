@@ -184,6 +184,7 @@ func handleVaultMemoryCreate(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "vault:memory create",
 		Transform:      transform,
 	})
@@ -262,6 +263,7 @@ func handleVaultMemoryList(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "vault:memory list",
 		Transform:      transform,
 	})
@@ -344,6 +346,7 @@ func handleVaultMemorySearch(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "vault:memory search",
 		Transform:      transform,
 	})

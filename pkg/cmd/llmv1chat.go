@@ -118,6 +118,7 @@ func handleLlmV1ChatCreateCompletion(ctx context.Context, cmd *cli.Command) erro
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "llm:v1:chat create-completion",
 		Transform:      transform,
 	})

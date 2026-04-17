@@ -158,6 +158,7 @@ func handleComputeV1SecretsCreate(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "compute:v1:secrets create",
 		Transform:      transform,
 	})
@@ -198,6 +199,7 @@ func handleComputeV1SecretsList(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "compute:v1:secrets list",
 		Transform:      transform,
 	})
@@ -246,6 +248,7 @@ func handleComputeV1SecretsDeleteGroup(ctx context.Context, cmd *cli.Command) er
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "compute:v1:secrets delete-group",
 		Transform:      transform,
 	})
@@ -294,6 +297,7 @@ func handleComputeV1SecretsRetrieveGroup(ctx context.Context, cmd *cli.Command) 
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "compute:v1:secrets retrieve-group",
 		Transform:      transform,
 	})
@@ -342,6 +346,7 @@ func handleComputeV1SecretsUpdateGroup(ctx context.Context, cmd *cli.Command) er
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "compute:v1:secrets update-group",
 		Transform:      transform,
 	})

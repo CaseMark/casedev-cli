@@ -166,6 +166,7 @@ func handleOcrV1Retrieve(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "ocr:v1 retrieve",
 		Transform:      transform,
 	})
@@ -248,6 +249,7 @@ func handleOcrV1Process(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "ocr:v1 process",
 		Transform:      transform,
 	})

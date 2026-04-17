@@ -107,6 +107,7 @@ func handleVoiceV1ListVoices(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "voice:v1 list-voices",
 		Transform:      transform,
 	})

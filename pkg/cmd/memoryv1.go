@@ -431,6 +431,7 @@ func handleMemoryV1Create(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "memory:v1 create",
 		Transform:      transform,
 	})
@@ -472,6 +473,7 @@ func handleMemoryV1Retrieve(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "memory:v1 retrieve",
 		Transform:      transform,
 	})
@@ -512,6 +514,7 @@ func handleMemoryV1List(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "memory:v1 list",
 		Transform:      transform,
 	})
@@ -553,6 +556,7 @@ func handleMemoryV1Delete(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "memory:v1 delete",
 		Transform:      transform,
 	})
@@ -593,6 +597,7 @@ func handleMemoryV1DeleteAll(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "memory:v1 delete-all",
 		Transform:      transform,
 	})
@@ -633,6 +638,7 @@ func handleMemoryV1Search(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "memory:v1 search",
 		Transform:      transform,
 	})

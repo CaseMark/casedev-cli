@@ -124,6 +124,7 @@ func handleTranslateV1Detect(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "translate:v1 detect",
 		Transform:      transform,
 	})
@@ -164,6 +165,7 @@ func handleTranslateV1ListLanguages(ctx context.Context, cmd *cli.Command) error
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "translate:v1 list-languages",
 		Transform:      transform,
 	})
@@ -204,6 +206,7 @@ func handleTranslateV1Translate(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "translate:v1 translate",
 		Transform:      transform,
 	})
