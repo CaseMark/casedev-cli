@@ -166,6 +166,35 @@ var vaultObjectsDownload = cli.Command{
 	HideHelpCommand: true,
 }
 
+var vaultObjectsGetChunks = cli.Command{
+	Name:    "get-chunks",
+	Usage:   "Retrieves full extracted chunk text for a processed vault object. Use this after\nsearch when a truncated preview is not enough and you need the exact chunk text\nor adjacent chunks for surrounding context such as tables, exhibit lists, or\nmulti-part passages.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:     "id",
+			Required: true,
+		},
+		&requestflag.Flag[string]{
+			Name:     "object-id",
+			Required: true,
+		},
+		&requestflag.Flag[int64]{
+			Name:      "end",
+			Usage:     "The last chunk index to return (inclusive). If omitted, only the `start` chunk is returned. Ranges are limited to 10 chunks.",
+			QueryPath: "end",
+		},
+		&requestflag.Flag[int64]{
+			Name:      "start",
+			Usage:     "The first chunk index to return (0-based). Defaults to 0.",
+			Default:   0,
+			QueryPath: "start",
+		},
+	},
+	Action:          handleVaultObjectsGetChunks,
+	HideHelpCommand: true,
+}
+
 var vaultObjectsGetOcrWords = cli.Command{
 	Name:    "get-ocr-words",
 	Usage:   "Retrieves word-level OCR bounding box data for a processed PDF document. Each\nword includes its text, normalized bounding box coordinates (0-1 range),\nconfidence score, and global word index. Use this data to highlight specific\ntext ranges in a PDF viewer based on word indices from search results.",
@@ -284,6 +313,7 @@ func handleVaultObjectsRetrieve(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "vault:objects retrieve",
 		Transform:      transform,
 	})
@@ -337,6 +367,7 @@ func handleVaultObjectsUpdate(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "vault:objects update",
 		Transform:      transform,
 	})
@@ -378,6 +409,7 @@ func handleVaultObjectsList(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "vault:objects list",
 		Transform:      transform,
 	})
@@ -431,6 +463,7 @@ func handleVaultObjectsDelete(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "vault:objects delete",
 		Transform:      transform,
 	})
@@ -484,6 +517,7 @@ func handleVaultObjectsCreatePresignedURL(ctx context.Context, cmd *cli.Command)
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "vault:objects create-presigned-url",
 		Transform:      transform,
 	})
@@ -529,6 +563,60 @@ func handleVaultObjectsDownload(ctx context.Context, cmd *cli.Command) error {
 		fmt.Println(message)
 	}
 	return err
+}
+
+func handleVaultObjectsGetChunks(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
+		cmd.Set("id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if !cmd.IsSet("object-id") && len(unusedArgs) > 0 {
+		cmd.Set("object-id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	params := githubcomcasemarkcasedevgo.VaultObjectGetChunksParams{}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		EmptyBody,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Vault.Objects.GetChunks(
+		ctx,
+		cmd.Value("id").(string),
+		cmd.Value("object-id").(string),
+		params,
+		options...,
+	)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "vault:objects get-chunks",
+		Transform:      transform,
+	})
 }
 
 func handleVaultObjectsGetOcrWords(ctx context.Context, cmd *cli.Command) error {
@@ -579,6 +667,7 @@ func handleVaultObjectsGetOcrWords(ctx context.Context, cmd *cli.Command) error 
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "vault:objects get-ocr-words",
 		Transform:      transform,
 	})
@@ -634,6 +723,7 @@ func handleVaultObjectsGetSummarizeJob(ctx context.Context, cmd *cli.Command) er
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "vault:objects get-summarize-job",
 		Transform:      transform,
 	})
@@ -684,6 +774,7 @@ func handleVaultObjectsGetText(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "vault:objects get-text",
 		Transform:      transform,
 	})

@@ -116,6 +116,7 @@ func handleComputeV1EnvironmentsCreate(ctx context.Context, cmd *cli.Command) er
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "compute:v1:environments create",
 		Transform:      transform,
 	})
@@ -157,6 +158,7 @@ func handleComputeV1EnvironmentsRetrieve(ctx context.Context, cmd *cli.Command) 
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "compute:v1:environments retrieve",
 		Transform:      transform,
 	})
@@ -195,6 +197,7 @@ func handleComputeV1EnvironmentsList(ctx context.Context, cmd *cli.Command) erro
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "compute:v1:environments list",
 		Transform:      transform,
 	})
@@ -236,6 +239,7 @@ func handleComputeV1EnvironmentsDelete(ctx context.Context, cmd *cli.Command) er
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "compute:v1:environments delete",
 		Transform:      transform,
 	})
@@ -277,6 +281,7 @@ func handleComputeV1EnvironmentsSetDefault(ctx context.Context, cmd *cli.Command
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "compute:v1:environments set-default",
 		Transform:      transform,
 	})

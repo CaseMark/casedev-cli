@@ -134,6 +134,8 @@ func handleOcrV1Retrieve(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
+
+	params := githubcomcasemarkcasedevgo.OcrV1GetParams{}
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -150,6 +152,7 @@ func handleOcrV1Retrieve(ctx context.Context, cmd *cli.Command) error {
 	_, err = client.Ocr.V1.Get(
 		ctx,
 		cmd.Value("id").(string),
+		params,
 		options...,
 	)
 	if err != nil {
@@ -163,6 +166,7 @@ func handleOcrV1Retrieve(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "ocr:v1 retrieve",
 		Transform:      transform,
 	})
@@ -245,6 +249,7 @@ func handleOcrV1Process(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "ocr:v1 process",
 		Transform:      transform,
 	})

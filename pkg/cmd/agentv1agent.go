@@ -227,6 +227,7 @@ func handleAgentV1AgentsCreate(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "agent:v1:agents create",
 		Transform:      transform,
 	})
@@ -268,6 +269,7 @@ func handleAgentV1AgentsRetrieve(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "agent:v1:agents retrieve",
 		Transform:      transform,
 	})
@@ -316,6 +318,7 @@ func handleAgentV1AgentsUpdate(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "agent:v1:agents update",
 		Transform:      transform,
 	})
@@ -356,6 +359,7 @@ func handleAgentV1AgentsList(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "agent:v1:agents list",
 		Transform:      transform,
 	})
@@ -397,6 +401,7 @@ func handleAgentV1AgentsDelete(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "agent:v1:agents delete",
 		Transform:      transform,
 	})

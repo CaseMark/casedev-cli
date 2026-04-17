@@ -96,6 +96,7 @@ func handleVaultGraphragGetStats(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "vault:graphrag get-stats",
 		Transform:      transform,
 	})
@@ -137,6 +138,7 @@ func handleVaultGraphragInit(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "vault:graphrag init",
 		Transform:      transform,
 	})
@@ -187,6 +189,7 @@ func handleVaultGraphragProcessObject(ctx context.Context, cmd *cli.Command) err
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "vault:graphrag process-object",
 		Transform:      transform,
 	})

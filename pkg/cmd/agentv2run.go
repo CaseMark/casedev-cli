@@ -149,6 +149,7 @@ func handleAgentV2RunCreate(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "agent:v2:run create",
 		Transform:      transform,
 	})
@@ -194,6 +195,7 @@ func handleAgentV2RunEvents(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSONIterator(stream, maxItems, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "agent:v2:run events",
 		Transform:      transform,
 	})
@@ -235,6 +237,7 @@ func handleAgentV2RunExec(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "agent:v2:run exec",
 		Transform:      transform,
 	})
@@ -276,6 +279,7 @@ func handleAgentV2RunGetDetails(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "agent:v2:run get-details",
 		Transform:      transform,
 	})
@@ -317,6 +321,7 @@ func handleAgentV2RunGetStatus(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "agent:v2:run get-status",
 		Transform:      transform,
 	})

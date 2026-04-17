@@ -124,6 +124,7 @@ func handleComputeV1InstancesCreate(ctx context.Context, cmd *cli.Command) error
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "compute:v1:instances create",
 		Transform:      transform,
 	})
@@ -165,6 +166,7 @@ func handleComputeV1InstancesRetrieve(ctx context.Context, cmd *cli.Command) err
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "compute:v1:instances retrieve",
 		Transform:      transform,
 	})
@@ -203,6 +205,7 @@ func handleComputeV1InstancesList(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "compute:v1:instances list",
 		Transform:      transform,
 	})
@@ -244,6 +247,7 @@ func handleComputeV1InstancesDelete(ctx context.Context, cmd *cli.Command) error
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "compute:v1:instances delete",
 		Transform:      transform,
 	})

@@ -126,6 +126,7 @@ func handleFormatV1TemplatesCreate(ctx context.Context, cmd *cli.Command) error 
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "format:v1:templates create",
 		Transform:      transform,
 	})
@@ -167,6 +168,7 @@ func handleFormatV1TemplatesRetrieve(ctx context.Context, cmd *cli.Command) erro
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "format:v1:templates retrieve",
 		Transform:      transform,
 	})
@@ -207,6 +209,7 @@ func handleFormatV1TemplatesList(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "format:v1:templates list",
 		Transform:      transform,
 	})

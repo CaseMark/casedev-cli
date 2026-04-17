@@ -160,6 +160,7 @@ func handleVaultMultipartGetPartURLs(ctx context.Context, cmd *cli.Command) erro
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "vault:multipart get-part-urls",
 		Transform:      transform,
 	})

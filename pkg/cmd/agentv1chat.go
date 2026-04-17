@@ -16,7 +16,7 @@ import (
 
 var agentV1ChatCreate = cli.Command{
 	Name:    "create",
-	Usage:   "Creates a persistent OpenCode chat session in a Modal sandbox. Session state is\nretained and can be resumed across requests.",
+	Usage:   "Creates a persistent OpenCode chat session backed by a Daytona or Vercel\nruntime. Session state is retained and can be resumed or recovered across\nrequests.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
@@ -222,6 +222,7 @@ func handleAgentV1ChatCreate(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "agent:v1:chat create",
 		Transform:      transform,
 	})
@@ -263,6 +264,7 @@ func handleAgentV1ChatDelete(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "agent:v1:chat delete",
 		Transform:      transform,
 	})
@@ -304,6 +306,7 @@ func handleAgentV1ChatCancel(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSON(obj, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "agent:v1:chat cancel",
 		Transform:      transform,
 	})
@@ -386,6 +389,7 @@ func handleAgentV1ChatRespond(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSONIterator(stream, maxItems, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "agent:v1:chat respond",
 		Transform:      transform,
 	})
@@ -463,6 +467,7 @@ func handleAgentV1ChatStream(ctx context.Context, cmd *cli.Command) error {
 	return ShowJSONIterator(stream, maxItems, ShowJSONOpts{
 		ExplicitFormat: explicitFormat,
 		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "agent:v1:chat stream",
 		Transform:      transform,
 	})
