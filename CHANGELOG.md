@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.28.1 (2026-04-20)
+
+Full Changelog: [v0.28.0...v0.28.1](https://github.com/CaseMark/casedev-cli/compare/v0.28.0...v0.28.1)
+
+### Chores
+
+* **cli:** use `ShowJSONOpts` as argument to `formatJSON` instead of many positionals ([9f0a6f1](https://github.com/CaseMark/casedev-cli/commit/9f0a6f1d7e0276290e672a0e59fe74dd71a386e6))
+* **internal:** codegen related update ([9e4700d](https://github.com/CaseMark/casedev-cli/commit/9e4700d47b65159cdff104348b487dea54492705))
+* **tests:** bump steady to v0.22.1 ([c990cdb](https://github.com/CaseMark/casedev-cli/commit/c990cdb2cbaf4c5f9d91ba787a044c9c0f14d02f))
+
 ## 0.28.0 (2026-04-17)
 
 Full Changelog: [v0.27.0...v0.28.0](https://github.com/CaseMark/casedev-cli/compare/v0.27.0...v0.28.0)
