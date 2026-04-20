@@ -19,7 +19,7 @@ func TestLlmV1ChatCreateCompletion(t *testing.T) {
 			"--casemark-show-reasoning=false",
 			"--frequency-penalty", "0",
 			"--max-tokens", "1000",
-			"--model", "casemark/casemark-core-6",
+			"--model", "casemark/core-large",
 			"--presence-penalty", "0",
 			"--stream=false",
 			"--temperature", "0.7",
@@ -41,7 +41,7 @@ func TestLlmV1ChatCreateCompletion(t *testing.T) {
 			"--casemark-show-reasoning=false",
 			"--frequency-penalty", "0",
 			"--max-tokens", "1000",
-			"--model", "casemark/casemark-core-6",
+			"--model", "casemark/core-large",
 			"--presence-penalty", "0",
 			"--stream=false",
 			"--temperature", "0.7",
@@ -58,7 +58,7 @@ func TestLlmV1ChatCreateCompletion(t *testing.T) {
 			"casemark_show_reasoning: false\n" +
 			"frequency_penalty: 0\n" +
 			"max_tokens: 1000\n" +
-			"model: casemark/casemark-core-6\n" +
+			"model: casemark/core-large\n" +
 			"presence_penalty: 0\n" +
 			"stream: false\n" +
 			"temperature: 0.7\n" +

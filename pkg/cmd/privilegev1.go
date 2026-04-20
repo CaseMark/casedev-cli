@@ -49,7 +49,7 @@ var privilegeV1Detect = cli.Command{
 		&requestflag.Flag[string]{
 			Name:     "model",
 			Usage:    "LLM model to use for analysis",
-			Default:  "casemark/casemark-core-1",
+			Default:  "casemark/core-large",
 			BodyPath: "model",
 		},
 		&requestflag.Flag[string]{
