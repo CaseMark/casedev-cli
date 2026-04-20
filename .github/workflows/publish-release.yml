@@ -38,3 +38,23 @@ jobs:
         MACOS_NOTARY_KEY: ${{ secrets.MACOS_NOTARY_KEY }}
         MACOS_NOTARY_KEY_ID: ${{ secrets.MACOS_NOTARY_KEY_ID }}
         MACOS_NOTARY_ISSUER_ID: ${{ secrets.MACOS_NOTARY_ISSUER_ID }}
+
+  notify-casedotdev-mono:
+    name: Trigger casedotdev-mono snapshot rebuild
+    needs: goreleaser
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch casedev-cli-released event
+        env:
+          GH_TOKEN: ${{ secrets.CASEDOTDEV_MONO_DISPATCH_TOKEN }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::warning::CASEDOTDEV_MONO_DISPATCH_TOKEN is not set — skipping mono snapshot-rebuild dispatch"
+            exit 0
+          fi
+
+          echo "Dispatching casedev-cli-released to CaseMark/casedotdev-mono for tag $TAG"
+          gh api repos/CaseMark/casedotdev-mono/dispatches \
+            -f "event_type=casedev-cli-released" \
+            -f "client_payload[tag]=$TAG"
