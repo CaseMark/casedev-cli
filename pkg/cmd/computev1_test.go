@@ -8,16 +8,6 @@ import (
 	"github.com/CaseMark/casedev-cli/internal/mocktest"
 )
 
-func TestComputeV1GetPricing(t *testing.T) {
-	t.Run("regular flags", func(t *testing.T) {
-		mocktest.TestRunMockTestWithFlags(
-			t,
-			"--api-key", "string",
-			"compute:v1", "get-pricing",
-		)
-	})
-}
-
 func TestComputeV1GetUsage(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(

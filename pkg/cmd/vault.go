@@ -30,6 +30,12 @@ var vaultCreate = cli.Command{
 			Usage:    "Optional description of the vault's purpose",
 			BodyPath: "description",
 		},
+		&requestflag.Flag[string]{
+			Name:     "embedding-model",
+			Usage:    "Optional embedding model for this vault. Defaults to openai/text-embedding-3-small. Determines the S3 Vectors index dimension and which model is used at both ingest and search time. The vault is locked to this model after creation — use a re-embed flow to change later. Ignored when enableIndexing is false.",
+			Default:  "openai/text-embedding-3-small",
+			BodyPath: "embeddingModel",
+		},
 		&requestflag.Flag[bool]{
 			Name:     "enable-graph",
 			Usage:    "Enable knowledge graph for entity relationship mapping. Only applies when enableIndexing is true.",
