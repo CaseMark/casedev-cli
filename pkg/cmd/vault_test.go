@@ -17,6 +17,7 @@ func TestVaultCreate(t *testing.T) {
 			"vault", "create",
 			"--name", "Contract Review Archive",
 			"--description", "Repository for all client contract reviews and analysis",
+			"--embedding-model", "casemark/llama-nemotron-embed-vl-1b-v2",
 			"--enable-graph=true",
 			"--enable-indexing=true",
 			"--group-id", "grp_abc123",
@@ -29,6 +30,7 @@ func TestVaultCreate(t *testing.T) {
 		pipeData := []byte("" +
 			"name: Contract Review Archive\n" +
 			"description: Repository for all client contract reviews and analysis\n" +
+			"embeddingModel: casemark/llama-nemotron-embed-vl-1b-v2\n" +
 			"enableGraph: true\n" +
 			"enableIndexing: true\n" +
 			"groupId: grp_abc123\n" +
