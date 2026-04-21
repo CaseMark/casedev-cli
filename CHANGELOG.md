@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.29.1 (2026-04-21)
+
+Full Changelog: [v0.29.0...v0.29.1](https://github.com/CaseMark/casedev-cli/compare/v0.29.0...v0.29.1)
+
 ## 0.29.0 (2026-04-21)
 
 Full Changelog: [v0.28.1...v0.29.0](https://github.com/CaseMark/casedev-cli/compare/v0.28.1...v0.29.0)
