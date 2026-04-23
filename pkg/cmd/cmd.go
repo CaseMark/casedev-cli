@@ -658,6 +658,38 @@ func init() {
 				},
 			},
 			{
+				Name:     "webhooks:v1:endpoints",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&webhooksV1EndpointsCreate,
+					&webhooksV1EndpointsRetrieve,
+					&webhooksV1EndpointsUpdate,
+					&webhooksV1EndpointsList,
+					&webhooksV1EndpointsDelete,
+					&webhooksV1EndpointsRotateSecret,
+					&webhooksV1EndpointsTest,
+				},
+			},
+			{
+				Name:     "webhooks:v1:deliveries",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&webhooksV1DeliveriesRetrieve,
+					&webhooksV1DeliveriesList,
+					&webhooksV1DeliveriesReplay,
+				},
+			},
+			{
+				Name:     "webhooks:v1:event-types",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&webhooksV1EventTypesList,
+				},
+			},
+			{
 				Name:            "@manpages",
 				Usage:           "Generate documentation for 'man'",
 				UsageText:       "casedev @manpages [-o casedev.1] [--gzip]",
