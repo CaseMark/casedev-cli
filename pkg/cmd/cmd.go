@@ -160,6 +160,7 @@ func init() {
 				Category: "API RESOURCE",
 				Suggest:  true,
 				Commands: []*cli.Command{
+					&computeV1GetPricing,
 					&computeV1GetUsage,
 				},
 			},
@@ -173,6 +174,25 @@ func init() {
 					&computeV1EnvironmentsList,
 					&computeV1EnvironmentsDelete,
 					&computeV1EnvironmentsSetDefault,
+				},
+			},
+			{
+				Name:     "compute:v1:instance-types",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&computeV1InstanceTypesList,
+				},
+			},
+			{
+				Name:     "compute:v1:instances",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&computeV1InstancesCreate,
+					&computeV1InstancesRetrieve,
+					&computeV1InstancesList,
+					&computeV1InstancesDelete,
 				},
 			},
 			{
