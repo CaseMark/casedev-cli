@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.31.1 (2026-04-23)
+
+Full Changelog: [v0.31.0...v0.31.1](https://github.com/CaseMark/casedev-cli/compare/v0.31.0...v0.31.1)
+
+### Chores
+
+* **internal:** more robust bootstrap script ([54a25f7](https://github.com/CaseMark/casedev-cli/commit/54a25f79b2d6c8ccdce93a9ba0a2c2093daf4e6d))
+
 ## 0.31.0 (2026-04-22)
 
 Full Changelog: [v0.30.0...v0.31.0](https://github.com/CaseMark/casedev-cli/compare/v0.30.0...v0.31.0)
