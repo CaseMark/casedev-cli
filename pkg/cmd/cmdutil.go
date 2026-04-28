@@ -16,6 +16,7 @@ import (
 	"strings"
 	"syscall"
 
+	"github.com/CaseMark/casedev-cli/internal/baseurl"
 	"github.com/CaseMark/casedev-cli/internal/jsonview"
 	"github.com/CaseMark/casedev-go/option"
 
@@ -31,11 +32,13 @@ var OutputFormats = []string{"auto", "explore", "json", "jsonl", "pretty", "raw"
 
 // ValidateBaseURL checks that a base URL is correctly prefixed with a protocol scheme and produces a better
 // error message than the person would see otherwise if it doesn't.
+//
+// The implementation lives in internal/baseurl so that hand-written CLI
+// extension subpackages can reuse it without importing pkg/cmd. This
+// wrapper is kept so the generated callers (cmd.go, main.go) and the
+// existing tests continue to work unchanged.
 func ValidateBaseURL(value, source string) error {
-	if value != "" && !strings.HasPrefix(value, "http://") && !strings.HasPrefix(value, "https://") {
-		return fmt.Errorf("%s %q is missing a scheme (expected http:// or https://)", source, value)
-	}
-	return nil
+	return baseurl.Validate(value, source)
 }
 
 func getDefaultRequestOptions(cmd *cli.Command) []option.RequestOption {
