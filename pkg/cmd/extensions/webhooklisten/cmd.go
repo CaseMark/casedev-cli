@@ -53,6 +53,10 @@ var runCmd = cli.Command{
 			Name:  "tunnel-port",
 			Usage: "Local port for the ngrok tunnel (default: auto-assign)",
 		},
+		&cli.BoolFlag{
+			Name:  "show-secret",
+			Usage: "Print the webhook signing secret to stderr after endpoint registration. Off by default to avoid leaks via shell history or scrollback; opt in only when you need the secret for signature verification.",
+		},
 		&cli.StringFlag{
 			Name:  "print",
 			Usage: "Output format for received webhooks (pretty, raw)",

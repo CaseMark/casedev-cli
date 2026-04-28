@@ -79,9 +79,7 @@ func parseCreateEndpointResponse(body []byte) (endpointCreateResponse, error) {
 
 type ngrokTunnelListResponse struct {
 	Tunnels []struct {
-		Name      string `json:"name"`
 		PublicURL string `json:"public_url"`
-		Proto     string `json:"proto"`
 	} `json:"tunnels"`
 }
 
@@ -151,7 +149,7 @@ func handleRun(ctx context.Context, cmd *cli.Command) error {
 	if forwardTo != "" {
 		fmt.Fprintf(cmd.ErrWriter, "  Forwarding to: %s\n", forwardTo)
 	}
-	if endpoint.SigningSecret != "" {
+	if endpoint.SigningSecret != "" && cmd.Bool("show-secret") {
 		fmt.Fprintf(cmd.ErrWriter, "  Signing secret: %s\n", endpoint.SigningSecret)
 	}
 	fmt.Fprintln(cmd.ErrWriter)
