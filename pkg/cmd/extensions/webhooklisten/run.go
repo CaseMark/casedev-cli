@@ -28,11 +28,53 @@ type endpointCreateRequest struct {
 }
 
 type endpointCreateResponse struct {
-	ID            string   `json:"id"`
-	SigningSecret string   `json:"signingSecret"`
-	URL           string   `json:"url"`
-	Description   string   `json:"description"`
-	EventTypes    []string `json:"eventTypeFilters"`
+	ID            string
+	SigningSecret string
+}
+
+// parseCreateEndpointResponse extracts the endpoint id and signing
+// secret from the API response. It tolerates the two response shapes
+// the casedev API has historically used — fields at the top level, or
+// wrapped inside a "data" object — and accepts either "id" or
+// "endpointId" as the identifier key. The webhook delivery payloads
+// already use the latter (data.endpointId), so the create response
+// likely follows the same convention.
+//
+// Returns an error containing the raw body when no id can be located,
+// so an unfamiliar response shape surfaces in the user-visible error
+// rather than silently producing a broken cleanup URL.
+func parseCreateEndpointResponse(body []byte) (endpointCreateResponse, error) {
+	var raw map[string]any
+	if err := json.Unmarshal(body, &raw); err != nil {
+		return endpointCreateResponse{}, fmt.Errorf("decode create response: %w (body: %s)", err, strings.TrimSpace(string(body)))
+	}
+
+	sources := []map[string]any{raw}
+	for _, wrapper := range []string{"data", "endpoint", "result", "payload"} {
+		if nested, ok := raw[wrapper].(map[string]any); ok {
+			sources = append(sources, nested)
+		}
+	}
+
+	pick := func(keys ...string) string {
+		for _, src := range sources {
+			for _, key := range keys {
+				if v, ok := src[key].(string); ok && v != "" {
+					return v
+				}
+			}
+		}
+		return ""
+	}
+
+	out := endpointCreateResponse{
+		ID:            pick("id", "endpointId"),
+		SigningSecret: pick("signingSecret", "secret"),
+	}
+	if out.ID == "" {
+		return out, fmt.Errorf("create webhook endpoint: response missing id field (body: %s)", strings.TrimSpace(string(body)))
+	}
+	return out, nil
 }
 
 type ngrokTunnelListResponse struct {
@@ -60,6 +102,8 @@ func handleRun(ctx context.Context, cmd *cli.Command) error {
 	if _, err := exec.LookPath("ngrok"); err != nil {
 		return fmt.Errorf("ngrok not found in PATH. Install it first (for example: brew install ngrok)")
 	}
+
+	cleanupOrphanEndpoints(ctx, cmd)
 
 	cfg, err := loadConfig(false)
 	if err != nil && !errors.Is(err, errConfigNotFound) {
@@ -185,34 +229,6 @@ func (s *server) handleWebhook(w http.ResponseWriter, r *http.Request) {
 	_, _ = w.Write([]byte("ok"))
 }
 
-func printEvent(rt runtime, body []byte) {
-	if rt.printMode == "silent" {
-		return
-	}
-	if rt.printMode == "json" {
-		fmt.Fprintln(rt.stderr, string(body))
-		return
-	}
-
-	var payload struct {
-		Type       string `json:"type"`
-		OccurredAt string `json:"occurred_at"`
-	}
-	if err := json.Unmarshal(body, &payload); err != nil {
-		fmt.Fprintf(rt.stderr, "%s\n", string(body))
-		return
-	}
-	if payload.Type == "" {
-		fmt.Fprintf(rt.stderr, "%s\n", string(body))
-		return
-	}
-	if payload.OccurredAt != "" {
-		fmt.Fprintf(rt.stderr, "%s → %s\n", payload.OccurredAt, payload.Type)
-		return
-	}
-	fmt.Fprintf(rt.stderr, "%s\n", payload.Type)
-}
-
 func forwardRequest(rt runtime, incoming *http.Request, body []byte) string {
 	req, err := http.NewRequestWithContext(incoming.Context(), incoming.Method, rt.forwardTo, bytes.NewReader(body))
 	if err != nil {
@@ -309,18 +325,20 @@ func createEndpoint(ctx context.Context, cmd *cli.Command, tunnelURL string, eve
 		return endpointCreateResponse{}, err
 	}
 	defer resp.Body.Close()
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return endpointCreateResponse{}, fmt.Errorf("read create response: %w", err)
+	}
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-		data, _ := io.ReadAll(resp.Body)
-		return endpointCreateResponse{}, fmt.Errorf("create webhook endpoint: %s: %s", resp.Status, strings.TrimSpace(string(data)))
+		return endpointCreateResponse{}, fmt.Errorf("create webhook endpoint: %s: %s", resp.Status, strings.TrimSpace(string(respBody)))
 	}
-	var endpoint endpointCreateResponse
-	if err := json.NewDecoder(resp.Body).Decode(&endpoint); err != nil {
-		return endpointCreateResponse{}, err
-	}
-	return endpoint, nil
+	return parseCreateEndpointResponse(respBody)
 }
 
 func deleteEndpoint(ctx context.Context, cmd *cli.Command, endpointID string) error {
+	if endpointID = strings.TrimSpace(endpointID); endpointID == "" {
+		return fmt.Errorf("delete webhook endpoint: missing endpoint id (cleanup skipped)")
+	}
 	client := &http.Client{Timeout: 15 * time.Second}
 	baseURL := strings.TrimRight(cmd.String("base-url"), "/")
 	if baseURL == "" {
@@ -341,6 +359,138 @@ func deleteEndpoint(ctx context.Context, cmd *cli.Command, endpointID string) er
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
 		data, _ := io.ReadAll(resp.Body)
 		return fmt.Errorf("delete webhook endpoint: %s: %s", resp.Status, strings.TrimSpace(string(data)))
+	}
+	return nil
+}
+
+// cleanupOrphanEndpoints lists existing webhook endpoints and removes
+// any whose description matches the marker this tool writes. This
+// undoes accumulated orphans from prior runs that exited without a
+// successful DELETE (SIGKILL, network failure during cleanup, the
+// pre-fix 405-on-cleanup bug, etc.).
+//
+// Best-effort: any failure here is reported as a warning and does not
+// block the run. Single-host scope: the matcher is a description
+// prefix, so a future multi-host setup would benefit from a
+// host/PID-stamped description to avoid cleaning up other machines'
+// active runs.
+func cleanupOrphanEndpoints(ctx context.Context, cmd *cli.Command) {
+	w := cmd.ErrWriter
+	ids, err := listMatchingEndpointIDs(ctx, cmd, defaultDescription)
+	if err != nil {
+		fmt.Fprintf(w, "warning: could not list existing webhook endpoints (%v); continuing\n", err)
+		return
+	}
+	if len(ids) == 0 {
+		return
+	}
+	deleted := 0
+	for _, id := range ids {
+		if err := deleteEndpoint(ctx, cmd, id); err != nil {
+			fmt.Fprintf(w, "warning: failed to delete stale endpoint %s: %v\n", id, err)
+			continue
+		}
+		deleted++
+	}
+	if deleted > 0 {
+		suffix := ""
+		if deleted != 1 {
+			suffix = "s"
+		}
+		fmt.Fprintf(w, "✓ Cleaned up %d stale webhook endpoint%s from prior runs\n", deleted, suffix)
+	}
+}
+
+func listMatchingEndpointIDs(ctx context.Context, cmd *cli.Command, descriptionMatch string) ([]string, error) {
+	client := &http.Client{Timeout: 15 * time.Second}
+	baseURL := strings.TrimRight(cmd.String("base-url"), "/")
+	if baseURL == "" {
+		baseURL = "https://api.case.dev"
+	}
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, baseURL+"/webhooks/v1/endpoints", nil)
+	if err != nil {
+		return nil, err
+	}
+	if apiKey := cmd.String("api-key"); apiKey != "" {
+		req.Header.Set("Authorization", "Bearer "+apiKey)
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("read list response: %w", err)
+	}
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		return nil, fmt.Errorf("%s: %s", resp.Status, strings.TrimSpace(string(body)))
+	}
+	return parseListEndpointsResponse(body, descriptionMatch)
+}
+
+// parseListEndpointsResponse extracts ids from a list-endpoints
+// response, restricted to entries whose description matches
+// descriptionMatch. It tolerates the same wrapper variations as
+// parseCreateEndpointResponse: the array can be top-level or nested
+// under "endpoints", "data", "results", or "items".
+func parseListEndpointsResponse(body []byte, descriptionMatch string) ([]string, error) {
+	var raw any
+	if err := json.Unmarshal(body, &raw); err != nil {
+		return nil, fmt.Errorf("decode list response: %w (body: %s)", err, strings.TrimSpace(string(body)))
+	}
+	items := findEndpointsArray(raw)
+	if items == nil {
+		return nil, nil
+	}
+	var ids []string
+	for _, item := range items {
+		entry, ok := item.(map[string]any)
+		if !ok {
+			continue
+		}
+		// The list response may put endpoint fields directly on the
+		// entry, or nested under "endpoint" (mirroring the create shape).
+		sources := []map[string]any{entry}
+		if nested, ok := entry["endpoint"].(map[string]any); ok {
+			sources = append(sources, nested)
+		}
+		desc := ""
+		for _, src := range sources {
+			if v, ok := src["description"].(string); ok {
+				desc = v
+				break
+			}
+		}
+		if desc != descriptionMatch {
+			continue
+		}
+		for _, src := range sources {
+			if id, ok := src["id"].(string); ok && id != "" {
+				ids = append(ids, id)
+				break
+			}
+			if id, ok := src["endpointId"].(string); ok && id != "" {
+				ids = append(ids, id)
+				break
+			}
+		}
+	}
+	return ids, nil
+}
+
+func findEndpointsArray(raw any) []any {
+	if arr, ok := raw.([]any); ok {
+		return arr
+	}
+	m, ok := raw.(map[string]any)
+	if !ok {
+		return nil
+	}
+	for _, key := range []string{"endpoints", "data", "results", "items"} {
+		if arr, ok := m[key].([]any); ok {
+			return arr
+		}
 	}
 	return nil
 }

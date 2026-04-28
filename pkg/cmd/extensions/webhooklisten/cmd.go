@@ -55,14 +55,14 @@ var runCmd = cli.Command{
 		},
 		&cli.StringFlag{
 			Name:  "print",
-			Usage: "Output format for received webhooks (pretty, json, silent)",
+			Usage: "Output format for received webhooks (pretty, raw)",
 			Value: "pretty",
 			Validator: func(value string) error {
 				switch strings.ToLower(strings.TrimSpace(value)) {
-				case "pretty", "json", "silent":
+				case "pretty", "raw":
 					return nil
 				default:
-					return fmt.Errorf("--print must be one of: pretty, json, silent")
+					return fmt.Errorf("--print must be one of: pretty, raw")
 				}
 			},
 		},
