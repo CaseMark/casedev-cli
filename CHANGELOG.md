@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.33.0 (2026-04-28)
+
+Full Changelog: [v0.32.0...v0.33.0](https://github.com/CaseMark/casedev-cli/compare/v0.32.0...v0.33.0)
+
+### Features
+
+* **webhook-listen:** add ngrok-backed webhook:listen tunnel (CD-1032) ([#79](https://github.com/CaseMark/casedev-cli/issues/79)) ([9713aaa](https://github.com/CaseMark/casedev-cli/commit/9713aaa60b0b6d54fa8f0f51bddf2ea8db347661))
+
 ## 0.32.0 (2026-04-28)
 
 Full Changelog: [v0.31.1...v0.32.0](https://github.com/CaseMark/casedev-cli/compare/v0.31.1...v0.32.0)
