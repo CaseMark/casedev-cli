@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.32.0 (2026-04-28)
+
+Full Changelog: [v0.31.1...v0.32.0](https://github.com/CaseMark/casedev-cli/compare/v0.31.1...v0.32.0)
+
+### Features
+
+* **api:** api update ([4dd3a3f](https://github.com/CaseMark/casedev-cli/commit/4dd3a3fd1989327e0b2519fd0d93de11b9d28957))
+* **api:** api update ([a6b311c](https://github.com/CaseMark/casedev-cli/commit/a6b311cd6c76656822d9485d49ebd85bdf9f7dc0))
+
+
+### Chores
+
+* **internal:** codegen related update ([2027ac6](https://github.com/CaseMark/casedev-cli/commit/2027ac606db53e721267e8deb1326d33f9187e6d))
+* **internal:** codegen related update ([25c0272](https://github.com/CaseMark/casedev-cli/commit/25c0272a7a97c12d053fdcbc9feb3d42e0dc5d05))
+
 ## 0.31.1 (2026-04-23)
 
 Full Changelog: [v0.31.0...v0.31.1](https://github.com/CaseMark/casedev-cli/compare/v0.31.0...v0.31.1)
