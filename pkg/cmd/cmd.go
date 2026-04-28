@@ -473,19 +473,6 @@ func init() {
 				},
 			},
 			{
-				Name:     "webhook:listen",
-				Category: "TOOLS",
-				Usage:    "Stream platform webhooks to your local machine via ngrok tunnel",
-				Suggest:  true,
-				Flags:    webhookListenRun.Flags,
-				Action:   handleWebhookListenRun,
-				Commands: []*cli.Command{
-					&webhookListenRun,
-					&webhookListenInit,
-					&webhookListenShow,
-				},
-			},
-			{
 				Name:     "search:v1",
 				Category: "API RESOURCE",
 				Suggest:  true,
