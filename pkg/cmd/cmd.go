@@ -160,6 +160,7 @@ func init() {
 				Category: "API RESOURCE",
 				Suggest:  true,
 				Commands: []*cli.Command{
+					&computeV1GetPricing,
 					&computeV1GetUsage,
 				},
 			},
@@ -173,6 +174,25 @@ func init() {
 					&computeV1EnvironmentsList,
 					&computeV1EnvironmentsDelete,
 					&computeV1EnvironmentsSetDefault,
+				},
+			},
+			{
+				Name:     "compute:v1:instance-types",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&computeV1InstanceTypesList,
+				},
+			},
+			{
+				Name:     "compute:v1:instances",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&computeV1InstancesCreate,
+					&computeV1InstancesRetrieve,
+					&computeV1InstancesList,
+					&computeV1InstancesDelete,
 				},
 			},
 			{
@@ -591,6 +611,38 @@ func init() {
 				Suggest:  true,
 				Commands: []*cli.Command{
 					&voiceV1ListVoices,
+				},
+			},
+			{
+				Name:     "webhooks:v1:endpoints",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&webhooksV1EndpointsCreate,
+					&webhooksV1EndpointsRetrieve,
+					&webhooksV1EndpointsUpdate,
+					&webhooksV1EndpointsList,
+					&webhooksV1EndpointsDelete,
+					&webhooksV1EndpointsRotateSecret,
+					&webhooksV1EndpointsTest,
+				},
+			},
+			{
+				Name:     "webhooks:v1:deliveries",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&webhooksV1DeliveriesRetrieve,
+					&webhooksV1DeliveriesList,
+					&webhooksV1DeliveriesReplay,
+				},
+			},
+			{
+				Name:     "webhooks:v1:event-types",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&webhooksV1EventTypesList,
 				},
 			},
 			{
