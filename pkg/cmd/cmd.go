@@ -148,50 +148,6 @@ func init() {
 				},
 			},
 			{
-				Name:     "agent:v2:run",
-				Category: "API RESOURCE",
-				Suggest:  true,
-				Commands: []*cli.Command{
-					&agentV2RunCreate,
-					&agentV2RunEvents,
-					&agentV2RunExec,
-					&agentV2RunGetDetails,
-					&agentV2RunGetStatus,
-				},
-			},
-			{
-				Name:     "agent:v2:execute",
-				Category: "API RESOURCE",
-				Suggest:  true,
-				Commands: []*cli.Command{
-					&agentV2ExecuteCreate,
-				},
-			},
-			{
-				Name:     "agent:v2:chat",
-				Category: "API RESOURCE",
-				Suggest:  true,
-				Commands: []*cli.Command{
-					&agentV2ChatCreate,
-					&agentV2ChatDelete,
-					&agentV2ChatCancel,
-					&agentV2ChatCreateStreamToken,
-					&agentV2ChatReplyToQuestion,
-					&agentV2ChatRespond,
-					&agentV2ChatSendMessage,
-					&agentV2ChatStream,
-				},
-			},
-			{
-				Name:     "agent:v2:chat:files",
-				Category: "API RESOURCE",
-				Suggest:  true,
-				Commands: []*cli.Command{
-					&agentV2ChatFilesList,
-					&agentV2ChatFilesDownload,
-				},
-			},
-			{
 				Name:     "system",
 				Category: "API RESOURCE",
 				Suggest:  true,
