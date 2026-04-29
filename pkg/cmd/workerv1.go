@@ -49,6 +49,20 @@ var workerV1Delete = cli.Command{
 	HideHelpCommand: true,
 }
 
+var workerV1Boot = cli.Command{
+	Name:    "boot",
+	Usage:   "Starts or resumes the worker sandbox and OpenCode server. Native\n/worker/v1/:id/\\* proxy routes require this lifecycle primitive to have\ncompleted first.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:     "id",
+			Required: true,
+		},
+	},
+	Action:          handleWorkerV1Boot,
+	HideHelpCommand: true,
+}
+
 var workerV1ProxyDelete = cli.Command{
 	Name:    "proxy-delete",
 	Usage:   "Forwards a DELETE request to the worker runtime without translating response\nshapes.",
@@ -209,6 +223,31 @@ func handleWorkerV1Delete(ctx context.Context, cmd *cli.Command) error {
 	}
 
 	return client.Worker.V1.Delete(ctx, cmd.Value("id").(string), options...)
+}
+
+func handleWorkerV1Boot(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
+		cmd.Set("id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		EmptyBody,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	return client.Worker.V1.Boot(ctx, cmd.Value("id").(string), options...)
 }
 
 func handleWorkerV1ProxyDelete(ctx context.Context, cmd *cli.Command) error {

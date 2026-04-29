@@ -40,6 +40,17 @@ func TestWorkerV1Delete(t *testing.T) {
 	})
 }
 
+func TestWorkerV1Boot(t *testing.T) {
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"worker:v1", "boot",
+			"--id", "id",
+		)
+	})
+}
+
 func TestWorkerV1ProxyDelete(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(

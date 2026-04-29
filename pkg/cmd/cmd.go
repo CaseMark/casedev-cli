@@ -163,6 +163,7 @@ func init() {
 					&workerV1Create,
 					&workerV1Retrieve,
 					&workerV1Delete,
+					&workerV1Boot,
 					&workerV1ProxyDelete,
 					&workerV1ProxyGet,
 					&workerV1ProxyPatch,
