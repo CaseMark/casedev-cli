@@ -52,7 +52,7 @@ var webhooksV1DeliveriesList = cli.Command{
 
 var webhooksV1DeliveriesReplay = cli.Command{
 	Name:    "replay",
-	Usage:   "Re-sends the original event to its endpoint. The payload is reconstructed from\nthe delivery record (same eventId, eventType, and occurred_at). The signature\nheader includes `svix-delivery-attempt: replay` so receivers can distinguish\nreplays from first-time deliveries. Uses the endpoint's current signing secret —\nnot the one in force at the original delivery time.",
+	Usage:   "Re-sends the original event to its endpoint. The payload is reconstructed from\nthe delivery record (same eventId, eventType, and occurred_at). Replay\ndeliveries include a Case.dev replay marker header so receivers can distinguish\nreplays from first-time deliveries. Uses the endpoint's current signing secret —\nnot the one in force at the original delivery time.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
