@@ -1,4 +1,4 @@
-configured_endpoints: 207
+configured_endpoints: 208
 openapi_spec_url: https://storage.googleapis.com/stainless-sdk-openapi-specs/casemark%2Frouter-5eea06e66903b4e74ad4a1c17836dad2a8cf3f134d2f662921f1af3385af1f34.yml
-openapi_spec_hash: 09958b36831d2ba846724f27c361da6b
-config_hash: a47ec2569f7137534b97674242d31abc
+openapi_spec_hash: 79ecbcea8346c728375a89a6cc307802
+config_hash: dbb27b1a0d4c23775887884f8753c357
