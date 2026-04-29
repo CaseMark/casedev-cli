@@ -16,7 +16,7 @@ import (
 
 var agentV1ChatCreate = cli.Command{
 	Name:    "create",
-	Usage:   "Creates a persistent OpenCode chat session backed by a Daytona or Vercel\nruntime. Session state is retained and can be resumed or recovered across\nrequests.",
+	Usage:   "Creates a persistent chat session backed by a Daytona or Vercel runtime. Session\nstate is retained and can be resumed or recovered across requests.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
@@ -26,7 +26,7 @@ var agentV1ChatCreate = cli.Command{
 		},
 		&requestflag.Flag[any]{
 			Name:     "model",
-			Usage:    "Optional model override for the OpenCode session",
+			Usage:    "Optional model override for the chat runtime session",
 			BodyPath: "model",
 		},
 		&requestflag.Flag[string]{
@@ -60,7 +60,7 @@ var agentV1ChatDelete = cli.Command{
 
 var agentV1ChatCancel = cli.Command{
 	Name:    "cancel",
-	Usage:   "Aborts the active OpenCode generation for this chat session.",
+	Usage:   "Aborts the active generation for this chat session.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -74,7 +74,7 @@ var agentV1ChatCancel = cli.Command{
 
 var agentV1ChatReplyToQuestion = cli.Command{
 	Name:    "reply-to-question",
-	Usage:   "Answers a pending OpenCode question for the chat session bound to this agent\nchat.",
+	Usage:   "Answers a pending runtime question for the chat session bound to this agent\nchat.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -166,7 +166,7 @@ var agentV1ChatSendMessage = requestflag.WithInnerFlags(cli.Command{
 
 var agentV1ChatStream = cli.Command{
 	Name:    "stream",
-	Usage:   "Relays OpenCode SSE events for this chat. Supports replay from buffered events\nusing Last-Event-ID.",
+	Usage:   "Relays runtime SSE events for this chat. Supports replay from buffered events\nusing Last-Event-ID.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{

@@ -156,6 +156,21 @@ func init() {
 				},
 			},
 			{
+				Name:     "worker:v1",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&workerV1Create,
+					&workerV1Retrieve,
+					&workerV1Delete,
+					&workerV1ProxyDelete,
+					&workerV1ProxyGet,
+					&workerV1ProxyPatch,
+					&workerV1ProxyPost,
+					&workerV1ProxyPut,
+				},
+			},
+			{
 				Name:     "compute:v1",
 				Category: "API RESOURCE",
 				Suggest:  true,
