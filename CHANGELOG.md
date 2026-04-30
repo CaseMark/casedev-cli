@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.36.0 (2026-04-30)
+
+Full Changelog: [v0.35.0...v0.36.0](https://github.com/CaseMark/casedev-cli/compare/v0.35.0...v0.36.0)
+
+### Features
+
+* **api:** api update ([1424201](https://github.com/CaseMark/casedev-cli/commit/14242013338a0b77ab8bd4f2d77a64fce75ceb47))
+* **api:** api update ([9143f6b](https://github.com/CaseMark/casedev-cli/commit/9143f6ba94b08d8e38cfc6ed85a215b8e8fdd3cd))
+* **api:** api update ([f47954b](https://github.com/CaseMark/casedev-cli/commit/f47954b053fd2308c408b72e50da436e7bcd5fb8))
+
+
+### Bug Fixes
+
+* **cli:** correctly load zsh autocompletion ([4e234b9](https://github.com/CaseMark/casedev-cli/commit/4e234b9bce0fdaa4d15f1c9d473354f6b3d1b8c9))
+
+
+### Chores
+
+* **internal:** codegen related update ([821253a](https://github.com/CaseMark/casedev-cli/commit/821253ad321c035fb4bbfb00e7ba86309ec4237f))
+* **internal:** codegen related update ([cc2a845](https://github.com/CaseMark/casedev-cli/commit/cc2a845ed8be9d5fd9fa9bf091956a214bcd630b))
+
 ## 0.35.0 (2026-04-29)
 
 Full Changelog: [v0.34.0...v0.35.0](https://github.com/CaseMark/casedev-cli/compare/v0.34.0...v0.35.0)
