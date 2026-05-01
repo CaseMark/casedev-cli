@@ -103,7 +103,7 @@ var mattersV1TypesUpdate = cli.Command{
 			Name:     "id",
 			Required: true,
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*string]{
 			Name:     "default-agent-type-id",
 			BodyPath: "default_agent_type_id",
 		},
@@ -115,7 +115,7 @@ var mattersV1TypesUpdate = cli.Command{
 			Name:     "default-work-item",
 			BodyPath: "default_work_items",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*string]{
 			Name:     "description",
 			BodyPath: "description",
 		},
@@ -123,7 +123,7 @@ var mattersV1TypesUpdate = cli.Command{
 			Name:     "exit-criterion",
 			BodyPath: "exit_criteria",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*string]{
 			Name:     "instructions",
 			BodyPath: "instructions",
 		},
@@ -144,7 +144,7 @@ var mattersV1TypesUpdate = cli.Command{
 			Usage:    `Allowed values: "auto", "human".`,
 			BodyPath: "orchestration_mode",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*string]{
 			Name:     "review-agent-type-id",
 			BodyPath: "review_agent_type_id",
 		},

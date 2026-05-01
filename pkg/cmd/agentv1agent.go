@@ -107,7 +107,7 @@ var agentV1AgentsUpdate = cli.Command{
 			Name:     "id",
 			Required: true,
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*string]{
 			Name:     "description",
 			Usage:    "Updated agent description. Pass null to clear if supported by the client.",
 			BodyPath: "description",

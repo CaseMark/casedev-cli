@@ -56,7 +56,7 @@ var vaultObjectsUpdate = cli.Command{
 			Usage:    "Additional metadata to merge with existing metadata",
 			BodyPath: "metadata",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*string]{
 			Name:     "path",
 			Usage:    "Folder path for hierarchy preservation (e.g., '/Discovery/Depositions'). Set to null or empty string to remove.",
 			BodyPath: "path",

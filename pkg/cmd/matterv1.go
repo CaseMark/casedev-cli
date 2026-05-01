@@ -30,7 +30,7 @@ var mattersV1Create = requestflag.WithInnerFlags(cli.Command{
 			Name:     "client-name",
 			BodyPath: "client_name",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*string]{
 			Name:     "client-party-id",
 			BodyPath: "client_party_id",
 		},
@@ -146,7 +146,7 @@ var mattersV1Update = cli.Command{
 			Name:     "client-name",
 			BodyPath: "client_name",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*string]{
 			Name:     "client-party-id",
 			BodyPath: "client_party_id",
 		},
