@@ -46,8 +46,6 @@ func handleUsageV1Retrieve(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.UsageV1GetParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -58,6 +56,8 @@ func handleUsageV1Retrieve(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.UsageV1GetParams{}
 
 	return client.Usage.V1.Get(ctx, params, options...)
 }

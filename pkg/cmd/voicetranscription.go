@@ -113,8 +113,9 @@ var voiceTranscriptionRetrieve = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
 			Name:      "include-text",
@@ -132,8 +133,9 @@ var voiceTranscriptionDelete = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 	},
 	Action:          handleVoiceTranscriptionDelete,
@@ -148,8 +150,6 @@ func handleVoiceTranscriptionCreate(ctx context.Context, cmd *cli.Command) error
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.VoiceTranscriptionNewParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -160,6 +160,8 @@ func handleVoiceTranscriptionCreate(ctx context.Context, cmd *cli.Command) error
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.VoiceTranscriptionNewParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -192,8 +194,6 @@ func handleVoiceTranscriptionRetrieve(ctx context.Context, cmd *cli.Command) err
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.VoiceTranscriptionGetParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -204,6 +204,8 @@ func handleVoiceTranscriptionRetrieve(ctx context.Context, cmd *cli.Command) err
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.VoiceTranscriptionGetParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))

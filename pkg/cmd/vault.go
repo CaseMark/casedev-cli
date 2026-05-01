@@ -69,8 +69,9 @@ var vaultRetrieve = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 	},
 	Action:          handleVaultRetrieve,
@@ -83,8 +84,9 @@ var vaultUpdate = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[*string]{
 			Name:     "description",
@@ -126,8 +128,9 @@ var vaultDelete = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[bool]{
 			Name:      "async",
@@ -146,12 +149,14 @@ var vaultConfirmUpload = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
-			Name:     "object-id",
-			Required: true,
+			Name:      "object-id",
+			Required:  true,
+			PathParam: "objectId",
 		},
 		&requestflag.Flag[int64]{
 			Name:     "size-bytes",
@@ -193,12 +198,14 @@ var vaultIngest = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
-			Name:     "object-id",
-			Required: true,
+			Name:      "object-id",
+			Required:  true,
+			PathParam: "objectId",
 		},
 	},
 	Action:          handleVaultIngest,
@@ -211,8 +218,9 @@ var vaultSearch = requestflag.WithInnerFlags(cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
 			Name:     "query",
@@ -256,8 +264,9 @@ var vaultUpload = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
 			Name:     "content-type",
@@ -305,8 +314,6 @@ func handleVaultCreate(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.VaultNewParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -317,6 +324,8 @@ func handleVaultCreate(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.VaultNewParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -391,8 +400,6 @@ func handleVaultUpdate(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.VaultUpdateParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -403,6 +410,8 @@ func handleVaultUpdate(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.VaultUpdateParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -479,8 +488,6 @@ func handleVaultDelete(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.VaultDeleteParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -491,6 +498,8 @@ func handleVaultDelete(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.VaultDeleteParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -532,8 +541,6 @@ func handleVaultConfirmUpload(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.VaultConfirmUploadParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -544,6 +551,8 @@ func handleVaultConfirmUpload(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.VaultConfirmUploadParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -633,8 +642,6 @@ func handleVaultSearch(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.VaultSearchParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -645,6 +652,8 @@ func handleVaultSearch(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.VaultSearchParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -682,8 +691,6 @@ func handleVaultUpload(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.VaultUploadParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -694,6 +701,8 @@ func handleVaultUpload(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.VaultUploadParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))

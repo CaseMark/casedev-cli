@@ -18,8 +18,9 @@ var webhooksV1DeliveriesRetrieve = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 	},
 	Action:          handleWebhooksV1DeliveriesRetrieve,
@@ -56,8 +57,9 @@ var webhooksV1DeliveriesReplay = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[any]{
 			Name:     "payload",
@@ -102,8 +104,6 @@ func handleWebhooksV1DeliveriesList(ctx context.Context, cmd *cli.Command) error
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.WebhookV1DeliveryListParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -114,6 +114,8 @@ func handleWebhooksV1DeliveriesList(ctx context.Context, cmd *cli.Command) error
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.WebhookV1DeliveryListParams{}
 
 	return client.Webhooks.V1.Deliveries.List(ctx, params, options...)
 }
@@ -129,8 +131,6 @@ func handleWebhooksV1DeliveriesReplay(ctx context.Context, cmd *cli.Command) err
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.WebhookV1DeliveryReplayParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -141,6 +141,8 @@ func handleWebhooksV1DeliveriesReplay(ctx context.Context, cmd *cli.Command) err
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.WebhookV1DeliveryReplayParams{}
 
 	return client.Webhooks.V1.Deliveries.Replay(
 		ctx,

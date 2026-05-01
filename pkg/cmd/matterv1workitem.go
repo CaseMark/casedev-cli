@@ -18,8 +18,9 @@ var mattersV1WorkItemsCreate = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
 			Name:     "title",
@@ -71,12 +72,14 @@ var mattersV1WorkItemsRetrieve = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
-			Name:     "work-item-id",
-			Required: true,
+			Name:      "work-item-id",
+			Required:  true,
+			PathParam: "workItemId",
 		},
 	},
 	Action:          handleMattersV1WorkItemsRetrieve,
@@ -89,12 +92,14 @@ var mattersV1WorkItemsUpdate = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
-			Name:     "work-item-id",
-			Required: true,
+			Name:      "work-item-id",
+			Required:  true,
+			PathParam: "workItemId",
 		},
 		&requestflag.Flag[*string]{
 			Name:     "assignee-id",
@@ -158,8 +163,9 @@ var mattersV1WorkItemsList = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
 			Name:      "assignee-id",
@@ -180,12 +186,14 @@ var mattersV1WorkItemsDecide = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
-			Name:     "work-item-id",
-			Required: true,
+			Name:      "work-item-id",
+			Required:  true,
+			PathParam: "workItemId",
 		},
 		&requestflag.Flag[string]{
 			Name:     "decision",
@@ -216,12 +224,14 @@ var mattersV1WorkItemsListExecutions = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
-			Name:     "work-item-id",
-			Required: true,
+			Name:      "work-item-id",
+			Required:  true,
+			PathParam: "workItemId",
 		},
 	},
 	Action:          handleMattersV1WorkItemsListExecutions,
@@ -239,8 +249,6 @@ func handleMattersV1WorkItemsCreate(ctx context.Context, cmd *cli.Command) error
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.MatterV1WorkItemNewParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -251,6 +259,8 @@ func handleMattersV1WorkItemsCreate(ctx context.Context, cmd *cli.Command) error
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.MatterV1WorkItemNewParams{}
 
 	return client.Matters.V1.WorkItems.New(
 		ctx,
@@ -309,8 +319,6 @@ func handleMattersV1WorkItemsUpdate(ctx context.Context, cmd *cli.Command) error
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.MatterV1WorkItemUpdateParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -321,6 +329,8 @@ func handleMattersV1WorkItemsUpdate(ctx context.Context, cmd *cli.Command) error
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.MatterV1WorkItemUpdateParams{}
 
 	return client.Matters.V1.WorkItems.Update(
 		ctx,
@@ -342,8 +352,6 @@ func handleMattersV1WorkItemsList(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.MatterV1WorkItemListParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -354,6 +362,8 @@ func handleMattersV1WorkItemsList(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.MatterV1WorkItemListParams{}
 
 	return client.Matters.V1.WorkItems.List(
 		ctx,
@@ -378,8 +388,6 @@ func handleMattersV1WorkItemsDecide(ctx context.Context, cmd *cli.Command) error
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.MatterV1WorkItemDecideParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -390,6 +398,8 @@ func handleMattersV1WorkItemsDecide(ctx context.Context, cmd *cli.Command) error
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.MatterV1WorkItemDecideParams{}
 
 	return client.Matters.V1.WorkItems.Decide(
 		ctx,

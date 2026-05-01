@@ -20,8 +20,9 @@ var vaultGraphragGetStats = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 	},
 	Action:          handleVaultGraphragGetStats,
@@ -34,8 +35,9 @@ var vaultGraphragInit = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 	},
 	Action:          handleVaultGraphragInit,
@@ -48,12 +50,14 @@ var vaultGraphragProcessObject = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
-			Name:     "object-id",
-			Required: true,
+			Name:      "object-id",
+			Required:  true,
+			PathParam: "objectId",
 		},
 	},
 	Action:          handleVaultGraphragProcessObject,

@@ -90,8 +90,6 @@ func handleMattersV1AgentTypesCreate(ctx context.Context, cmd *cli.Command) erro
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.MatterV1AgentTypeNewParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -102,6 +100,8 @@ func handleMattersV1AgentTypesCreate(ctx context.Context, cmd *cli.Command) erro
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.MatterV1AgentTypeNewParams{}
 
 	return client.Matters.V1.AgentTypes.New(ctx, params, options...)
 }
@@ -114,8 +114,6 @@ func handleMattersV1AgentTypesList(ctx context.Context, cmd *cli.Command) error 
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.MatterV1AgentTypeListParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -126,6 +124,8 @@ func handleMattersV1AgentTypesList(ctx context.Context, cmd *cli.Command) error 
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.MatterV1AgentTypeListParams{}
 
 	return client.Matters.V1.AgentTypes.List(ctx, params, options...)
 }

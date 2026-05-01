@@ -36,8 +36,9 @@ var computeV1EnvironmentsRetrieve = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "name",
-			Required: true,
+			Name:      "name",
+			Required:  true,
+			PathParam: "name",
 		},
 	},
 	Action:          handleComputeV1EnvironmentsRetrieve,
@@ -59,8 +60,9 @@ var computeV1EnvironmentsDelete = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "name",
-			Required: true,
+			Name:      "name",
+			Required:  true,
+			PathParam: "name",
 		},
 	},
 	Action:          handleComputeV1EnvironmentsDelete,
@@ -73,8 +75,9 @@ var computeV1EnvironmentsSetDefault = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "name",
-			Required: true,
+			Name:      "name",
+			Required:  true,
+			PathParam: "name",
 		},
 	},
 	Action:          handleComputeV1EnvironmentsSetDefault,
@@ -89,8 +92,6 @@ func handleComputeV1EnvironmentsCreate(ctx context.Context, cmd *cli.Command) er
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.ComputeV1EnvironmentNewParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -101,6 +102,8 @@ func handleComputeV1EnvironmentsCreate(ctx context.Context, cmd *cli.Command) er
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.ComputeV1EnvironmentNewParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))

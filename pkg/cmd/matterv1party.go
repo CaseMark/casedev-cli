@@ -62,8 +62,9 @@ var mattersV1PartiesRetrieve = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "party-id",
-			Required: true,
+			Name:      "party-id",
+			Required:  true,
+			PathParam: "partyId",
 		},
 	},
 	Action:          handleMattersV1PartiesRetrieve,
@@ -76,8 +77,9 @@ var mattersV1PartiesUpdate = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "party-id",
-			Required: true,
+			Name:      "party-id",
+			Required:  true,
+			PathParam: "partyId",
 		},
 	},
 	Action:          handleMattersV1PartiesUpdate,
@@ -115,8 +117,6 @@ func handleMattersV1PartiesCreate(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.MatterV1PartyNewParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -127,6 +127,8 @@ func handleMattersV1PartiesCreate(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.MatterV1PartyNewParams{}
 
 	return client.Matters.V1.Parties.New(ctx, params, options...)
 }
@@ -189,8 +191,6 @@ func handleMattersV1PartiesList(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.MatterV1PartyListParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -201,6 +201,8 @@ func handleMattersV1PartiesList(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.MatterV1PartyListParams{}
 
 	return client.Matters.V1.Parties.List(ctx, params, options...)
 }

@@ -21,8 +21,9 @@ var agentV1ChatFilesList = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 	},
 	Action:          handleAgentV1ChatFilesList,
@@ -35,12 +36,14 @@ var agentV1ChatFilesDownload = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
-			Name:     "file-path",
-			Required: true,
+			Name:      "file-path",
+			Required:  true,
+			PathParam: "filePath",
 		},
 		&requestflag.Flag[string]{
 			Name:    "output",

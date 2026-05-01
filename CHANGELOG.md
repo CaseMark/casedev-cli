@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.37.0 (2026-05-01)
+
+Full Changelog: [v0.36.1...v0.37.0](https://github.com/CaseMark/casedev-cli/compare/v0.36.1...v0.37.0)
+
+### Features
+
+* support passing path and query params over stdin ([74c0191](https://github.com/CaseMark/casedev-cli/commit/74c0191c34889b9cb5ba072aa07609c3775c5b42))
+
 ## 0.36.1 (2026-05-01)
 
 Full Changelog: [v0.36.0...v0.36.1](https://github.com/CaseMark/casedev-cli/compare/v0.36.0...v0.36.1)
