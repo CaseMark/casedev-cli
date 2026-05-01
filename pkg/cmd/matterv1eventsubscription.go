@@ -18,8 +18,9 @@ var mattersV1EventsSubscriptionsCreate = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
 			Name:     "callback-url",
@@ -45,8 +46,9 @@ var mattersV1EventsSubscriptionsList = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 	},
 	Action:          handleMattersV1EventsSubscriptionsList,
@@ -59,12 +61,14 @@ var mattersV1EventsSubscriptionsDelete = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
-			Name:     "subscription-id",
-			Required: true,
+			Name:      "subscription-id",
+			Required:  true,
+			PathParam: "subscriptionId",
 		},
 	},
 	Action:          handleMattersV1EventsSubscriptionsDelete,
@@ -82,8 +86,6 @@ func handleMattersV1EventsSubscriptionsCreate(ctx context.Context, cmd *cli.Comm
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.MatterV1EventSubscriptionNewParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -94,6 +96,8 @@ func handleMattersV1EventsSubscriptionsCreate(ctx context.Context, cmd *cli.Comm
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.MatterV1EventSubscriptionNewParams{}
 
 	return client.Matters.V1.Events.Subscriptions.New(
 		ctx,

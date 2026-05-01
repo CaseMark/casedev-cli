@@ -91,8 +91,6 @@ func handleLlmV1ChatCreateCompletion(ctx context.Context, cmd *cli.Command) erro
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.LlmV1ChatNewCompletionParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -103,6 +101,8 @@ func handleLlmV1ChatCreateCompletion(ctx context.Context, cmd *cli.Command) erro
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.LlmV1ChatNewCompletionParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))

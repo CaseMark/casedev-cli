@@ -97,8 +97,6 @@ func handleTranslateV1Detect(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.TranslateV1DetectParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -109,6 +107,8 @@ func handleTranslateV1Detect(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.TranslateV1DetectParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -138,8 +138,6 @@ func handleTranslateV1ListLanguages(ctx context.Context, cmd *cli.Command) error
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.TranslateV1ListLanguagesParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -150,6 +148,8 @@ func handleTranslateV1ListLanguages(ctx context.Context, cmd *cli.Command) error
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.TranslateV1ListLanguagesParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -179,8 +179,6 @@ func handleTranslateV1Translate(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.TranslateV1TranslateParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -191,6 +189,8 @@ func handleTranslateV1Translate(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.TranslateV1TranslateParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))

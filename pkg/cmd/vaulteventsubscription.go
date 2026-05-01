@@ -18,8 +18,9 @@ var vaultEventsSubscriptionsCreate = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
 			Name:     "callback-url",
@@ -53,12 +54,14 @@ var vaultEventsSubscriptionsUpdate = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
-			Name:     "subscription-id",
-			Required: true,
+			Name:      "subscription-id",
+			Required:  true,
+			PathParam: "subscriptionId",
 		},
 		&requestflag.Flag[string]{
 			Name:     "callback-url",
@@ -101,8 +104,9 @@ var vaultEventsSubscriptionsList = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 	},
 	Action:          handleVaultEventsSubscriptionsList,
@@ -115,12 +119,14 @@ var vaultEventsSubscriptionsDelete = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
-			Name:     "subscription-id",
-			Required: true,
+			Name:      "subscription-id",
+			Required:  true,
+			PathParam: "subscriptionId",
 		},
 	},
 	Action:          handleVaultEventsSubscriptionsDelete,
@@ -133,12 +139,14 @@ var vaultEventsSubscriptionsTest = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
-			Name:     "subscription-id",
-			Required: true,
+			Name:      "subscription-id",
+			Required:  true,
+			PathParam: "subscriptionId",
 		},
 		&requestflag.Flag[string]{
 			Name:     "event-type",
@@ -171,8 +179,6 @@ func handleVaultEventsSubscriptionsCreate(ctx context.Context, cmd *cli.Command)
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.VaultEventSubscriptionNewParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -183,6 +189,8 @@ func handleVaultEventsSubscriptionsCreate(ctx context.Context, cmd *cli.Command)
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.VaultEventSubscriptionNewParams{}
 
 	return client.Vault.Events.Subscriptions.New(
 		ctx,
@@ -207,8 +215,6 @@ func handleVaultEventsSubscriptionsUpdate(ctx context.Context, cmd *cli.Command)
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.VaultEventSubscriptionUpdateParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -219,6 +225,8 @@ func handleVaultEventsSubscriptionsUpdate(ctx context.Context, cmd *cli.Command)
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.VaultEventSubscriptionUpdateParams{}
 
 	return client.Vault.Events.Subscriptions.Update(
 		ctx,
@@ -303,8 +311,6 @@ func handleVaultEventsSubscriptionsTest(ctx context.Context, cmd *cli.Command) e
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.VaultEventSubscriptionTestParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -315,6 +321,8 @@ func handleVaultEventsSubscriptionsTest(ctx context.Context, cmd *cli.Command) e
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.VaultEventSubscriptionTestParams{}
 
 	return client.Vault.Events.Subscriptions.Test(
 		ctx,

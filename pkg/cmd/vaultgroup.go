@@ -39,8 +39,9 @@ var vaultGroupsUpdate = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "group-id",
-			Required: true,
+			Name:      "group-id",
+			Required:  true,
+			PathParam: "groupId",
 		},
 		&requestflag.Flag[*string]{
 			Name:     "description",
@@ -72,8 +73,9 @@ var vaultGroupsDelete = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "group-id",
-			Required: true,
+			Name:      "group-id",
+			Required:  true,
+			PathParam: "groupId",
 		},
 	},
 	Action:          handleVaultGroupsDelete,
@@ -88,8 +90,6 @@ func handleVaultGroupsCreate(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.VaultGroupNewParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -100,6 +100,8 @@ func handleVaultGroupsCreate(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.VaultGroupNewParams{}
 
 	return client.Vault.Groups.New(ctx, params, options...)
 }
@@ -115,8 +117,6 @@ func handleVaultGroupsUpdate(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.VaultGroupUpdateParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -127,6 +127,8 @@ func handleVaultGroupsUpdate(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.VaultGroupUpdateParams{}
 
 	return client.Vault.Groups.Update(
 		ctx,
