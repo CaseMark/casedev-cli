@@ -117,8 +117,9 @@ var mattersV1Retrieve = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 	},
 	Action:          handleMattersV1Retrieve,
@@ -131,8 +132,9 @@ var mattersV1Update = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[any]{
 			Name:     "archived-at",
@@ -238,8 +240,6 @@ func handleMattersV1Create(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.MatterV1NewParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -250,6 +250,8 @@ func handleMattersV1Create(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.MatterV1NewParams{}
 
 	return client.Matters.V1.New(ctx, params, options...)
 }
@@ -290,8 +292,6 @@ func handleMattersV1Update(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.MatterV1UpdateParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -302,6 +302,8 @@ func handleMattersV1Update(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.MatterV1UpdateParams{}
 
 	return client.Matters.V1.Update(
 		ctx,
@@ -319,8 +321,6 @@ func handleMattersV1List(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.MatterV1ListParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -331,6 +331,8 @@ func handleMattersV1List(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.MatterV1ListParams{}
 
 	return client.Matters.V1.List(ctx, params, options...)
 }

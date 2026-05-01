@@ -20,8 +20,9 @@ var vaultMultipartAbort = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
 			Name:     "object-id",
@@ -46,8 +47,9 @@ var vaultMultipartGetPartURLs = requestflag.WithInnerFlags(cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
 			Name:     "object-id",
@@ -96,8 +98,6 @@ func handleVaultMultipartAbort(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.VaultMultipartAbortParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -108,6 +108,8 @@ func handleVaultMultipartAbort(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.VaultMultipartAbortParams{}
 
 	return client.Vault.Multipart.Abort(
 		ctx,
@@ -128,8 +130,6 @@ func handleVaultMultipartGetPartURLs(ctx context.Context, cmd *cli.Command) erro
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.VaultMultipartGetPartURLsParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -140,6 +140,8 @@ func handleVaultMultipartGetPartURLs(ctx context.Context, cmd *cli.Command) erro
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.VaultMultipartGetPartURLsParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))

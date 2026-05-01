@@ -61,8 +61,9 @@ var computeV1SecretsDeleteGroup = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "group",
-			Required: true,
+			Name:      "group",
+			Required:  true,
+			PathParam: "group",
 		},
 		&requestflag.Flag[string]{
 			Name:      "env",
@@ -85,8 +86,9 @@ var computeV1SecretsRetrieveGroup = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "group",
-			Required: true,
+			Name:      "group",
+			Required:  true,
+			PathParam: "group",
 		},
 		&requestflag.Flag[string]{
 			Name:      "env",
@@ -104,8 +106,9 @@ var computeV1SecretsUpdateGroup = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "group",
-			Required: true,
+			Name:      "group",
+			Required:  true,
+			PathParam: "group",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "secrets",
@@ -131,8 +134,6 @@ func handleComputeV1SecretsCreate(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.ComputeV1SecretNewParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -143,6 +144,8 @@ func handleComputeV1SecretsCreate(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.ComputeV1SecretNewParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -172,8 +175,6 @@ func handleComputeV1SecretsList(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.ComputeV1SecretListParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -184,6 +185,8 @@ func handleComputeV1SecretsList(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.ComputeV1SecretListParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -216,8 +219,6 @@ func handleComputeV1SecretsDeleteGroup(ctx context.Context, cmd *cli.Command) er
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.ComputeV1SecretDeleteGroupParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -228,6 +229,8 @@ func handleComputeV1SecretsDeleteGroup(ctx context.Context, cmd *cli.Command) er
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.ComputeV1SecretDeleteGroupParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -265,8 +268,6 @@ func handleComputeV1SecretsRetrieveGroup(ctx context.Context, cmd *cli.Command) 
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.ComputeV1SecretGetGroupParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -277,6 +278,8 @@ func handleComputeV1SecretsRetrieveGroup(ctx context.Context, cmd *cli.Command) 
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.ComputeV1SecretGetGroupParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -314,8 +317,6 @@ func handleComputeV1SecretsUpdateGroup(ctx context.Context, cmd *cli.Command) er
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.ComputeV1SecretUpdateGroupParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -326,6 +327,8 @@ func handleComputeV1SecretsUpdateGroup(ctx context.Context, cmd *cli.Command) er
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.ComputeV1SecretUpdateGroupParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))

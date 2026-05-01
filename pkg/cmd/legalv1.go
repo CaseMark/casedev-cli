@@ -559,8 +559,6 @@ func handleLegalV1Docket(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.LegalV1DocketParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -571,6 +569,8 @@ func handleLegalV1Docket(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.LegalV1DocketParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -600,8 +600,6 @@ func handleLegalV1Draft(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.LegalV1DraftParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -612,6 +610,8 @@ func handleLegalV1Draft(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.LegalV1DraftParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -641,8 +641,6 @@ func handleLegalV1Find(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.LegalV1FindParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -653,6 +651,8 @@ func handleLegalV1Find(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.LegalV1FindParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -682,8 +682,6 @@ func handleLegalV1GetCitations(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.LegalV1GetCitationsParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -694,6 +692,8 @@ func handleLegalV1GetCitations(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.LegalV1GetCitationsParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -723,8 +723,6 @@ func handleLegalV1GetCitationsFromURL(ctx context.Context, cmd *cli.Command) err
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.LegalV1GetCitationsFromURLParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -735,6 +733,8 @@ func handleLegalV1GetCitationsFromURL(ctx context.Context, cmd *cli.Command) err
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.LegalV1GetCitationsFromURLParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -764,8 +764,6 @@ func handleLegalV1GetFullText(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.LegalV1GetFullTextParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -776,6 +774,8 @@ func handleLegalV1GetFullText(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.LegalV1GetFullTextParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -805,8 +805,6 @@ func handleLegalV1ListCourts(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.LegalV1ListCourtsParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -817,6 +815,8 @@ func handleLegalV1ListCourts(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.LegalV1ListCourtsParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -846,8 +846,6 @@ func handleLegalV1ListJurisdictions(ctx context.Context, cmd *cli.Command) error
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.LegalV1ListJurisdictionsParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -858,6 +856,8 @@ func handleLegalV1ListJurisdictions(ctx context.Context, cmd *cli.Command) error
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.LegalV1ListJurisdictionsParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -887,8 +887,6 @@ func handleLegalV1PatentSearch(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.LegalV1PatentSearchParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -899,6 +897,8 @@ func handleLegalV1PatentSearch(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.LegalV1PatentSearchParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -928,8 +928,6 @@ func handleLegalV1Research(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.LegalV1ResearchParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -940,6 +938,8 @@ func handleLegalV1Research(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.LegalV1ResearchParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -969,8 +969,6 @@ func handleLegalV1SecFiling(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.LegalV1SecFilingParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -981,6 +979,8 @@ func handleLegalV1SecFiling(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.LegalV1SecFilingParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -1010,8 +1010,6 @@ func handleLegalV1Similar(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.LegalV1SimilarParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -1022,6 +1020,8 @@ func handleLegalV1Similar(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.LegalV1SimilarParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -1051,8 +1051,6 @@ func handleLegalV1TrademarkSearch(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.LegalV1TrademarkSearchParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -1063,6 +1061,8 @@ func handleLegalV1TrademarkSearch(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.LegalV1TrademarkSearchParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -1092,8 +1092,6 @@ func handleLegalV1Verify(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.LegalV1VerifyParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -1104,6 +1102,8 @@ func handleLegalV1Verify(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.LegalV1VerifyParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))

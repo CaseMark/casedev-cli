@@ -21,8 +21,9 @@ var ocrV1Retrieve = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
 			Name:      "include-text",
@@ -40,13 +41,15 @@ var ocrV1Download = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
-			Name:     "type",
-			Usage:    `Allowed values: "text", "json", "pdf", "original".`,
-			Required: true,
+			Name:      "type",
+			Usage:     `Allowed values: "text", "json", "pdf", "original".`,
+			Required:  true,
+			PathParam: "type",
 		},
 		&requestflag.Flag[string]{
 			Name:    "output",
@@ -134,8 +137,6 @@ func handleOcrV1Retrieve(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-
-	params := githubcomcasemarkcasedevgo.OcrV1GetParams{}
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -146,6 +147,8 @@ func handleOcrV1Retrieve(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.OcrV1GetParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -222,8 +225,6 @@ func handleOcrV1Process(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.OcrV1ProcessParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -234,6 +235,8 @@ func handleOcrV1Process(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.OcrV1ProcessParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))

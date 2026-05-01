@@ -80,8 +80,6 @@ func handleVoiceV1ListVoices(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.VoiceV1ListVoicesParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -92,6 +90,8 @@ func handleVoiceV1ListVoices(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.VoiceV1ListVoicesParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))

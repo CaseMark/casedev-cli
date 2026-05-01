@@ -73,8 +73,6 @@ func handleComputeV1GetUsage(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.ComputeV1GetUsageParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -85,6 +83,8 @@ func handleComputeV1GetUsage(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.ComputeV1GetUsageParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))

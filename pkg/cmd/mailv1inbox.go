@@ -36,8 +36,9 @@ var mailV1InboxesRetrieve = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "inbox-id",
-			Required: true,
+			Name:      "inbox-id",
+			Required:  true,
+			PathParam: "inboxId",
 		},
 	},
 	Action:          handleMailV1InboxesRetrieve,
@@ -59,8 +60,9 @@ var mailV1InboxesDelete = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "inbox-id",
-			Required: true,
+			Name:      "inbox-id",
+			Required:  true,
+			PathParam: "inboxId",
 		},
 	},
 	Action:          handleMailV1InboxesDelete,
@@ -73,16 +75,19 @@ var mailV1InboxesGetAttachment = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "inbox-id",
-			Required: true,
+			Name:      "inbox-id",
+			Required:  true,
+			PathParam: "inboxId",
 		},
 		&requestflag.Flag[string]{
-			Name:     "message-id",
-			Required: true,
+			Name:      "message-id",
+			Required:  true,
+			PathParam: "messageId",
 		},
 		&requestflag.Flag[string]{
-			Name:     "attachment-id",
-			Required: true,
+			Name:      "attachment-id",
+			Required:  true,
+			PathParam: "attachmentId",
 		},
 	},
 	Action:          handleMailV1InboxesGetAttachment,
@@ -95,12 +100,14 @@ var mailV1InboxesGetMessage = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "inbox-id",
-			Required: true,
+			Name:      "inbox-id",
+			Required:  true,
+			PathParam: "inboxId",
 		},
 		&requestflag.Flag[string]{
-			Name:     "message-id",
-			Required: true,
+			Name:      "message-id",
+			Required:  true,
+			PathParam: "messageId",
 		},
 	},
 	Action:          handleMailV1InboxesGetMessage,
@@ -113,8 +120,9 @@ var mailV1InboxesGetPolicy = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "inbox-id",
-			Required: true,
+			Name:      "inbox-id",
+			Required:  true,
+			PathParam: "inboxId",
 		},
 	},
 	Action:          handleMailV1InboxesGetPolicy,
@@ -127,8 +135,9 @@ var mailV1InboxesListMessages = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "inbox-id",
-			Required: true,
+			Name:      "inbox-id",
+			Required:  true,
+			PathParam: "inboxId",
 		},
 	},
 	Action:          handleMailV1InboxesListMessages,
@@ -141,12 +150,14 @@ var mailV1InboxesReply = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "inbox-id",
-			Required: true,
+			Name:      "inbox-id",
+			Required:  true,
+			PathParam: "inboxId",
 		},
 		&requestflag.Flag[string]{
-			Name:     "message-id",
-			Required: true,
+			Name:      "message-id",
+			Required:  true,
+			PathParam: "messageId",
 		},
 	},
 	Action:          handleMailV1InboxesReply,
@@ -159,8 +170,9 @@ var mailV1InboxesSend = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "inbox-id",
-			Required: true,
+			Name:      "inbox-id",
+			Required:  true,
+			PathParam: "inboxId",
 		},
 	},
 	Action:          handleMailV1InboxesSend,
@@ -173,8 +185,9 @@ var mailV1InboxesSetPolicy = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "inbox-id",
-			Required: true,
+			Name:      "inbox-id",
+			Required:  true,
+			PathParam: "inboxId",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "allowed-sender-pattern",
@@ -213,8 +226,6 @@ func handleMailV1InboxesCreate(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.MailV1InboxNewParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -225,6 +236,8 @@ func handleMailV1InboxesCreate(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.MailV1InboxNewParams{}
 
 	return client.Mail.V1.Inboxes.New(ctx, params, options...)
 }
@@ -494,8 +507,6 @@ func handleMailV1InboxesSetPolicy(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.MailV1InboxSetPolicyParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -506,6 +517,8 @@ func handleMailV1InboxesSetPolicy(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.MailV1InboxSetPolicyParams{}
 
 	return client.Mail.V1.Inboxes.SetPolicy(
 		ctx,

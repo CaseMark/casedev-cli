@@ -62,8 +62,9 @@ var skillsUpdate = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "slug",
-			Required: true,
+			Name:      "slug",
+			Required:  true,
+			PathParam: "slug",
 		},
 		&requestflag.Flag[string]{
 			Name:     "content",
@@ -101,8 +102,9 @@ var skillsDelete = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "slug",
-			Required: true,
+			Name:      "slug",
+			Required:  true,
+			PathParam: "slug",
 		},
 	},
 	Action:          handleSkillsDelete,
@@ -115,8 +117,9 @@ var skillsRead = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "slug",
-			Required: true,
+			Name:      "slug",
+			Required:  true,
+			PathParam: "slug",
 		},
 	},
 	Action:          handleSkillsRead,
@@ -153,8 +156,6 @@ func handleSkillsCreate(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.SkillNewParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -165,6 +166,8 @@ func handleSkillsCreate(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.SkillNewParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -197,8 +200,6 @@ func handleSkillsUpdate(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.SkillUpdateParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -209,6 +210,8 @@ func handleSkillsUpdate(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.SkillUpdateParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -327,8 +330,6 @@ func handleSkillsResolve(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.SkillResolveParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -339,6 +340,8 @@ func handleSkillsResolve(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.SkillResolveParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))

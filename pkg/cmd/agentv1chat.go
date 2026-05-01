@@ -50,8 +50,9 @@ var agentV1ChatDelete = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 	},
 	Action:          handleAgentV1ChatDelete,
@@ -64,8 +65,9 @@ var agentV1ChatCancel = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 	},
 	Action:          handleAgentV1ChatCancel,
@@ -78,12 +80,14 @@ var agentV1ChatReplyToQuestion = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
-			Name:     "request-id",
-			Required: true,
+			Name:      "request-id",
+			Required:  true,
+			PathParam: "requestID",
 		},
 		&requestflag.Flag[[]any]{
 			Name:     "answer",
@@ -102,8 +106,9 @@ var agentV1ChatRespond = requestflag.WithInnerFlags(cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[[]map[string]any]{
 			Name:     "part",
@@ -138,8 +143,9 @@ var agentV1ChatSendMessage = requestflag.WithInnerFlags(cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[[]map[string]any]{
 			Name:     "part",
@@ -170,8 +176,9 @@ var agentV1ChatStream = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "last-event-id",
@@ -195,8 +202,6 @@ func handleAgentV1ChatCreate(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.AgentV1ChatNewParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -207,6 +212,8 @@ func handleAgentV1ChatCreate(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.AgentV1ChatNewParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -327,8 +334,6 @@ func handleAgentV1ChatReplyToQuestion(ctx context.Context, cmd *cli.Command) err
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.AgentV1ChatReplyToQuestionParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -339,6 +344,8 @@ func handleAgentV1ChatReplyToQuestion(ctx context.Context, cmd *cli.Command) err
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.AgentV1ChatReplyToQuestionParams{}
 
 	return client.Agent.V1.Chat.ReplyToQuestion(
 		ctx,
@@ -360,8 +367,6 @@ func handleAgentV1ChatRespond(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.AgentV1ChatRespondParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -372,6 +377,8 @@ func handleAgentV1ChatRespond(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.AgentV1ChatRespondParams{}
 
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
@@ -406,8 +413,6 @@ func handleAgentV1ChatSendMessage(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.AgentV1ChatSendMessageParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -418,6 +423,8 @@ func handleAgentV1ChatSendMessage(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.AgentV1ChatSendMessageParams{}
 
 	return client.Agent.V1.Chat.SendMessage(
 		ctx,
@@ -438,8 +445,6 @@ func handleAgentV1ChatStream(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.AgentV1ChatStreamParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -450,6 +455,8 @@ func handleAgentV1ChatStream(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.AgentV1ChatStreamParams{}
 
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")

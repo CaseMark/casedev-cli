@@ -21,12 +21,14 @@ var vaultObjectsRetrieve = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
-			Name:     "object-id",
-			Required: true,
+			Name:      "object-id",
+			Required:  true,
+			PathParam: "objectId",
 		},
 	},
 	Action:          handleVaultObjectsRetrieve,
@@ -39,12 +41,14 @@ var vaultObjectsUpdate = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
-			Name:     "object-id",
-			Required: true,
+			Name:      "object-id",
+			Required:  true,
+			PathParam: "objectId",
 		},
 		&requestflag.Flag[string]{
 			Name:     "filename",
@@ -72,8 +76,9 @@ var vaultObjectsList = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 	},
 	Action:          handleVaultObjectsList,
@@ -86,12 +91,14 @@ var vaultObjectsDelete = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
-			Name:     "object-id",
-			Required: true,
+			Name:      "object-id",
+			Required:  true,
+			PathParam: "objectId",
 		},
 		&requestflag.Flag[string]{
 			Name:      "force",
@@ -109,12 +116,14 @@ var vaultObjectsCreatePresignedURL = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
-			Name:     "object-id",
-			Required: true,
+			Name:      "object-id",
+			Required:  true,
+			PathParam: "objectId",
 		},
 		&requestflag.Flag[string]{
 			Name:     "content-type",
@@ -149,12 +158,14 @@ var vaultObjectsDownload = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
-			Name:     "object-id",
-			Required: true,
+			Name:      "object-id",
+			Required:  true,
+			PathParam: "objectId",
 		},
 		&requestflag.Flag[string]{
 			Name:    "output",
@@ -172,12 +183,14 @@ var vaultObjectsGetChunks = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
-			Name:     "object-id",
-			Required: true,
+			Name:      "object-id",
+			Required:  true,
+			PathParam: "objectId",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "end",
@@ -201,12 +214,14 @@ var vaultObjectsGetOcrWords = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
-			Name:     "object-id",
-			Required: true,
+			Name:      "object-id",
+			Required:  true,
+			PathParam: "objectId",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "page",
@@ -234,16 +249,19 @@ var vaultObjectsGetSummarizeJob = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
-			Name:     "object-id",
-			Required: true,
+			Name:      "object-id",
+			Required:  true,
+			PathParam: "objectId",
 		},
 		&requestflag.Flag[string]{
-			Name:     "job-id",
-			Required: true,
+			Name:      "job-id",
+			Required:  true,
+			PathParam: "jobId",
 		},
 	},
 	Action:          handleVaultObjectsGetSummarizeJob,
@@ -256,12 +274,14 @@ var vaultObjectsGetText = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
-			Name:     "object-id",
-			Required: true,
+			Name:      "object-id",
+			Required:  true,
+			PathParam: "objectId",
 		},
 	},
 	Action:          handleVaultObjectsGetText,
@@ -334,8 +354,6 @@ func handleVaultObjectsUpdate(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.VaultObjectUpdateParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -346,6 +364,8 @@ func handleVaultObjectsUpdate(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.VaultObjectUpdateParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -430,8 +450,6 @@ func handleVaultObjectsDelete(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.VaultObjectDeleteParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -442,6 +460,8 @@ func handleVaultObjectsDelete(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.VaultObjectDeleteParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -484,8 +504,6 @@ func handleVaultObjectsCreatePresignedURL(ctx context.Context, cmd *cli.Command)
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.VaultObjectNewPresignedURLParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -496,6 +514,8 @@ func handleVaultObjectsCreatePresignedURL(ctx context.Context, cmd *cli.Command)
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.VaultObjectNewPresignedURLParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -580,8 +600,6 @@ func handleVaultObjectsGetChunks(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.VaultObjectGetChunksParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -592,6 +610,8 @@ func handleVaultObjectsGetChunks(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.VaultObjectGetChunksParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -634,8 +654,6 @@ func handleVaultObjectsGetOcrWords(ctx context.Context, cmd *cli.Command) error 
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.VaultObjectGetOcrWordsParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -646,6 +664,8 @@ func handleVaultObjectsGetOcrWords(ctx context.Context, cmd *cli.Command) error 
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.VaultObjectGetOcrWordsParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))

@@ -61,8 +61,9 @@ var webhooksV1EndpointsRetrieve = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 	},
 	Action:          handleWebhooksV1EndpointsRetrieve,
@@ -75,8 +76,9 @@ var webhooksV1EndpointsUpdate = requestflag.WithInnerFlags(cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[*string]{
 			Name:     "description",
@@ -141,8 +143,9 @@ var webhooksV1EndpointsDelete = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 	},
 	Action:          handleWebhooksV1EndpointsDelete,
@@ -155,8 +158,9 @@ var webhooksV1EndpointsRotateSecret = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[int64]{
 			Name:     "previous-secret-expires-in-sec",
@@ -174,8 +178,9 @@ var webhooksV1EndpointsTest = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
 			Name:     "event-type",
@@ -200,8 +205,6 @@ func handleWebhooksV1EndpointsCreate(ctx context.Context, cmd *cli.Command) erro
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.WebhookV1EndpointNewParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -212,6 +215,8 @@ func handleWebhooksV1EndpointsCreate(ctx context.Context, cmd *cli.Command) erro
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.WebhookV1EndpointNewParams{}
 
 	return client.Webhooks.V1.Endpoints.New(ctx, params, options...)
 }
@@ -252,8 +257,6 @@ func handleWebhooksV1EndpointsUpdate(ctx context.Context, cmd *cli.Command) erro
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.WebhookV1EndpointUpdateParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -264,6 +267,8 @@ func handleWebhooksV1EndpointsUpdate(ctx context.Context, cmd *cli.Command) erro
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.WebhookV1EndpointUpdateParams{}
 
 	return client.Webhooks.V1.Endpoints.Update(
 		ctx,
@@ -281,8 +286,6 @@ func handleWebhooksV1EndpointsList(ctx context.Context, cmd *cli.Command) error 
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.WebhookV1EndpointListParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -293,6 +296,8 @@ func handleWebhooksV1EndpointsList(ctx context.Context, cmd *cli.Command) error 
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.WebhookV1EndpointListParams{}
 
 	return client.Webhooks.V1.Endpoints.List(ctx, params, options...)
 }
@@ -333,8 +338,6 @@ func handleWebhooksV1EndpointsRotateSecret(ctx context.Context, cmd *cli.Command
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.WebhookV1EndpointRotateSecretParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -345,6 +348,8 @@ func handleWebhooksV1EndpointsRotateSecret(ctx context.Context, cmd *cli.Command
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.WebhookV1EndpointRotateSecretParams{}
 
 	return client.Webhooks.V1.Endpoints.RotateSecret(
 		ctx,
@@ -365,8 +370,6 @@ func handleWebhooksV1EndpointsTest(ctx context.Context, cmd *cli.Command) error 
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := githubcomcasemarkcasedevgo.WebhookV1EndpointTestParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -377,6 +380,8 @@ func handleWebhooksV1EndpointsTest(ctx context.Context, cmd *cli.Command) error 
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.WebhookV1EndpointTestParams{}
 
 	return client.Webhooks.V1.Endpoints.Test(
 		ctx,

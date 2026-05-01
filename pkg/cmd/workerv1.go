@@ -27,8 +27,9 @@ var workerV1Retrieve = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 	},
 	Action:          handleWorkerV1Retrieve,
@@ -41,8 +42,9 @@ var workerV1Delete = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 	},
 	Action:          handleWorkerV1Delete,
@@ -55,8 +57,9 @@ var workerV1Boot = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 	},
 	Action:          handleWorkerV1Boot,
@@ -69,12 +72,14 @@ var workerV1ProxyDelete = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
-			Name:     "worker-path",
-			Required: true,
+			Name:      "worker-path",
+			Required:  true,
+			PathParam: "workerPath",
 		},
 	},
 	Action:          handleWorkerV1ProxyDelete,
@@ -87,12 +92,14 @@ var workerV1ProxyGet = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
-			Name:     "worker-path",
-			Required: true,
+			Name:      "worker-path",
+			Required:  true,
+			PathParam: "workerPath",
 		},
 	},
 	Action:          handleWorkerV1ProxyGet,
@@ -105,12 +112,14 @@ var workerV1ProxyPatch = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
-			Name:     "worker-path",
-			Required: true,
+			Name:      "worker-path",
+			Required:  true,
+			PathParam: "workerPath",
 		},
 	},
 	Action:          handleWorkerV1ProxyPatch,
@@ -123,12 +132,14 @@ var workerV1ProxyPost = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
-			Name:     "worker-path",
-			Required: true,
+			Name:      "worker-path",
+			Required:  true,
+			PathParam: "workerPath",
 		},
 	},
 	Action:          handleWorkerV1ProxyPost,
@@ -141,12 +152,14 @@ var workerV1ProxyPut = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Required: true,
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
 		},
 		&requestflag.Flag[string]{
-			Name:     "worker-path",
-			Required: true,
+			Name:      "worker-path",
+			Required:  true,
+			PathParam: "workerPath",
 		},
 	},
 	Action:          handleWorkerV1ProxyPut,
