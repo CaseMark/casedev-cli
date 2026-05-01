@@ -108,7 +108,7 @@ var legalV1Draft = requestflag.WithInnerFlags(cli.Command{
 			Default:  false,
 			BodyPath: "citations",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*string]{
 			Name:     "format",
 			Usage:    `Court or jurisdiction formatting hint. Triggers a legal-skills search. E.g., "California Superior Court", "SDNY", "federal pleading"`,
 			BodyPath: "format",
@@ -118,7 +118,7 @@ var legalV1Draft = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "Target document length",
 			BodyPath: "length",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*string]{
 			Name:     "model",
 			Usage:    "LLM model override. Defaults to anthropic/claude-sonnet-4.6",
 			BodyPath: "model",
@@ -128,7 +128,7 @@ var legalV1Draft = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "Vault object IDs to use as source/reference documents",
 			BodyPath: "object_ids",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*string]{
 			Name:     "output-name",
 			Usage:    "Filename for the output document. Auto-generated if omitted.",
 			BodyPath: "output_name",

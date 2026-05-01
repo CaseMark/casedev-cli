@@ -42,7 +42,7 @@ var vaultGroupsUpdate = cli.Command{
 			Name:     "group-id",
 			Required: true,
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*string]{
 			Name:     "description",
 			Usage:    "Updated vault group description. Pass null to remove the current description.",
 			BodyPath: "description",

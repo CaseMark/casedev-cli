@@ -31,17 +31,17 @@ var agentV1RunCreate = cli.Command{
 			Required: true,
 			BodyPath: "prompt",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*string]{
 			Name:     "callback-url",
 			Usage:    "HTTPS callback URL to receive a notification when the run completes. Registered atomically with the run — eliminates the race condition of calling /watch after /exec. Additional watchers can still be added via POST /run/:id/watch.",
 			BodyPath: "callbackUrl",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*string]{
 			Name:     "guidance",
 			Usage:    "Additional guidance for this run",
 			BodyPath: "guidance",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*string]{
 			Name:     "model",
 			Usage:    "Override the agent default model for this run",
 			BodyPath: "model",

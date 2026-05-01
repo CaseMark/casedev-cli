@@ -82,7 +82,7 @@ var skillsUpdate = cli.Command{
 			Usage:    "New slug (renames the skill)",
 			BodyPath: "slug",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*string]{
 			Name:     "summary",
 			BodyPath: "summary",
 		},

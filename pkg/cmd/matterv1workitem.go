@@ -96,7 +96,7 @@ var mattersV1WorkItemsUpdate = cli.Command{
 			Name:     "work-item-id",
 			Required: true,
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*string]{
 			Name:     "assignee-id",
 			BodyPath: "assignee_id",
 		},
@@ -116,7 +116,7 @@ var mattersV1WorkItemsUpdate = cli.Command{
 			Name:     "exit-criterion",
 			BodyPath: "exit_criteria",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*string]{
 			Name:     "instructions",
 			BodyPath: "instructions",
 		},
@@ -193,7 +193,7 @@ var mattersV1WorkItemsDecide = cli.Command{
 			Required: true,
 			BodyPath: "decision",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*string]{
 			Name:     "agent-type-id",
 			BodyPath: "agent_type_id",
 		},
@@ -201,7 +201,7 @@ var mattersV1WorkItemsDecide = cli.Command{
 			Name:     "metadata",
 			BodyPath: "metadata",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*string]{
 			Name:     "reason",
 			BodyPath: "reason",
 		},
