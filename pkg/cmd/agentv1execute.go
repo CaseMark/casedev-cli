@@ -35,7 +35,7 @@ var agentV1ExecuteCreate = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "Allowlist of tools the agent can use. Mutually exclusive with disabledTools — set one or the other, not both.",
 			BodyPath: "enabledTools",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*string]{
 			Name:     "guidance",
 			Usage:    "Additional context or constraints for this run",
 			BodyPath: "guidance",

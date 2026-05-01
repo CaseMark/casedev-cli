@@ -44,7 +44,7 @@ var mattersV1MatterPartiesCreate = cli.Command{
 			Name:     "metadata",
 			BodyPath: "metadata",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*string]{
 			Name:     "notes",
 			BodyPath: "notes",
 		},

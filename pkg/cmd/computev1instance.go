@@ -37,7 +37,7 @@ var computeV1InstancesCreate = cli.Command{
 			Required: true,
 			BodyPath: "region",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*int64]{
 			Name:     "auto-shutdown-minutes",
 			Usage:    "Auto-shutdown timer (null = never)",
 			BodyPath: "autoShutdownMinutes",

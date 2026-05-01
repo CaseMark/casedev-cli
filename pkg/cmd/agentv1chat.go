@@ -19,12 +19,12 @@ var agentV1ChatCreate = cli.Command{
 	Usage:   "Creates a persistent chat session backed by a Daytona or Vercel runtime. Session\nstate is retained and can be resumed or recovered across requests.",
 	Suggest: true,
 	Flags: []cli.Flag{
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*int64]{
 			Name:     "idle-timeout-ms",
 			Usage:    "Idle timeout before session is eligible for snapshot/termination. Defaults to 15 minutes.",
 			BodyPath: "idleTimeoutMs",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*string]{
 			Name:     "model",
 			Usage:    "Optional model override for the chat runtime session",
 			BodyPath: "model",

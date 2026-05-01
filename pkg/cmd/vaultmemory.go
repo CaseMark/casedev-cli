@@ -64,7 +64,7 @@ var vaultMemoryUpdate = cli.Command{
 			Name:     "content",
 			BodyPath: "content",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*string]{
 			Name:     "source",
 			BodyPath: "source",
 		},

@@ -86,7 +86,7 @@ var vaultUpdate = cli.Command{
 			Name:     "id",
 			Required: true,
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*string]{
 			Name:     "description",
 			Usage:    "New description for the vault. Set to null to remove.",
 			BodyPath: "description",
@@ -96,7 +96,7 @@ var vaultUpdate = cli.Command{
 			Usage:    "Whether to enable GraphRAG for future document uploads",
 			BodyPath: "enableGraph",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*string]{
 			Name:     "group-id",
 			Usage:    "Move the vault to a different group, or set to null to remove from its current group.",
 			BodyPath: "groupId",
