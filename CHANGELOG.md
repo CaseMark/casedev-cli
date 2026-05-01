@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.36.1 (2026-05-01)
+
+Full Changelog: [v0.36.0...v0.36.1](https://github.com/CaseMark/casedev-cli/compare/v0.36.0...v0.36.1)
+
+### Bug Fixes
+
+* flags for nullable body scalar fields are strictly typed ([e1c5807](https://github.com/CaseMark/casedev-cli/commit/e1c5807e29b5ba4cdc07dc8b5204c78a1cc51167))
+
 ## 0.36.0 (2026-04-30)
 
 Full Changelog: [v0.35.0...v0.36.0](https://github.com/CaseMark/casedev-cli/compare/v0.35.0...v0.36.0)
