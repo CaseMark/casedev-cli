@@ -1,10 +1,5 @@
-<<<<<<< release-please--branches--main--changes--next
-github.com/CaseMark/casedev-go v0.48.1 h1:W/FbOLGfU3s4sMtkTuS3NUDUZFddKgwBECx6PC1Kulk=
-github.com/CaseMark/casedev-go v0.48.1/go.mod h1:4ti/wtx8lQPRzHk7mTSbES4MqvSxUufGHrwPSAPJ0A8=
-=======
 github.com/CaseMark/casedev-go v0.49.0 h1:Q6Am7nL2TqJioyqw2fXz/rLb9RyCXel9BOZts3Q22J4=
 github.com/CaseMark/casedev-go v0.49.0/go.mod h1:4ti/wtx8lQPRzHk7mTSbES4MqvSxUufGHrwPSAPJ0A8=
->>>>>>> main
 github.com/aymanbagabas/go-osc52/v2 v2.0.1 h1:HwpRHbFMcZLEVr42D4p7XBqjyuxQH5SMiErDT4WkJ2k=
 github.com/aymanbagabas/go-osc52/v2 v2.0.1/go.mod h1:uYgXzlJ7ZpABp8OJ+exZzJJhRNQ2ASbcXHWsFqH8hp8=
 github.com/aymanbagabas/go-udiff v0.2.0 h1:TK0fH4MteXUDspT88n8CKzvK0X9O2xu9yQjWpi6yML8=
