@@ -578,6 +578,7 @@ func init() {
 					&vaultObjectsDownload,
 					&vaultObjectsGetChunks,
 					&vaultObjectsGetOcrWords,
+					&vaultObjectsGetPages,
 					&vaultObjectsGetSummarizeJob,
 					&vaultObjectsGetText,
 				},

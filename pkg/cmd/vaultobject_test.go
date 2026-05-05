@@ -148,6 +148,20 @@ func TestVaultObjectsGetOcrWords(t *testing.T) {
 	})
 }
 
+func TestVaultObjectsGetPages(t *testing.T) {
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"vault:objects", "get-pages",
+			"--id", "id",
+			"--object-id", "objectId",
+			"--end", "0",
+			"--start", "0",
+		)
+	})
+}
+
 func TestVaultObjectsGetSummarizeJob(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
