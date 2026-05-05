@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.38.1 (2026-05-05)
+
+Full Changelog: [v0.38.0...v0.38.1](https://github.com/CaseMark/casedev-cli/compare/v0.38.0...v0.38.1)
+
+### Bug Fixes
+
+* remove go.sum conflict markers ([#89](https://github.com/CaseMark/casedev-cli/issues/89)) ([7d90512](https://github.com/CaseMark/casedev-cli/commit/7d905122d398de5204b59fe5625836bdb021f629))
+
 ## 0.38.0 (2026-05-05)
 
 Full Changelog: [v0.37.0...v0.38.0](https://github.com/CaseMark/casedev-cli/compare/v0.37.0...v0.38.0)
