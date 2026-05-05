@@ -243,6 +243,36 @@ var vaultObjectsGetOcrWords = cli.Command{
 	HideHelpCommand: true,
 }
 
+var vaultObjectsGetPages = cli.Command{
+	Name:    "get-pages",
+	Usage:   "Retrieves the raw text of a processed vault object split by page. The object\nmust have completed ingestion before pages can be retrieved — for PDFs this\nrequires the OCR pipeline to have finished writing the per-page sidecar, so\nfreshly uploaded PDFs return 400 with the current `ingestionStatus` until\nprocessing completes. For PDFs this returns the per-page OCR text. For plain\ntext files (txt, md, source code, court reporter transcripts) the text is split\nusing right-aligned page-number markers when present (preserving the original\ndocument numbering, including continuations like Volume 2 starting at page 234),\nfalling back to form-feed (\\f) page-break characters, and finally a single page\nif neither signal is present. Use the optional `start` and `end` query\nparameters to fetch a specific inclusive page range. Pages with no text are\nomitted.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
+		},
+		&requestflag.Flag[string]{
+			Name:      "object-id",
+			Required:  true,
+			PathParam: "objectId",
+		},
+		&requestflag.Flag[int64]{
+			Name:      "end",
+			Usage:     "Last page to return (inclusive, 1-indexed). If omitted, returns through the last page with text.",
+			QueryPath: "end",
+		},
+		&requestflag.Flag[int64]{
+			Name:      "start",
+			Usage:     "First page to return (inclusive, 1-indexed). If omitted, starts at the first page with text.",
+			QueryPath: "start",
+		},
+	},
+	Action:          handleVaultObjectsGetPages,
+	HideHelpCommand: true,
+}
+
 var vaultObjectsGetSummarizeJob = cli.Command{
 	Name:    "get-summarize-job",
 	Usage:   "Get the status of a CaseMark summary workflow job.",
@@ -689,6 +719,60 @@ func handleVaultObjectsGetOcrWords(ctx context.Context, cmd *cli.Command) error 
 		Format:         format,
 		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "vault:objects get-ocr-words",
+		Transform:      transform,
+	})
+}
+
+func handleVaultObjectsGetPages(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
+		cmd.Set("id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if !cmd.IsSet("object-id") && len(unusedArgs) > 0 {
+		cmd.Set("object-id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		EmptyBody,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	params := githubcomcasemarkcasedevgo.VaultObjectGetPagesParams{}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Vault.Objects.GetPages(
+		ctx,
+		cmd.Value("id").(string),
+		cmd.Value("object-id").(string),
+		params,
+		options...,
+	)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "vault:objects get-pages",
 		Transform:      transform,
 	})
 }
