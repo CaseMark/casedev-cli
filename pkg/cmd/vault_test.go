@@ -119,8 +119,6 @@ func TestVaultConfirmUpload(t *testing.T) {
 			"--size-bytes", "1",
 			"--success=true",
 			"--etag", "etag",
-			"--error-code", "errorCode",
-			"--error-message", "errorMessage",
 		)
 	})
 
@@ -129,9 +127,7 @@ func TestVaultConfirmUpload(t *testing.T) {
 		pipeData := []byte("" +
 			"sizeBytes: 1\n" +
 			"success: true\n" +
-			"etag: etag\n" +
-			"errorCode: errorCode\n" +
-			"errorMessage: errorMessage\n")
+			"etag: etag\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",
