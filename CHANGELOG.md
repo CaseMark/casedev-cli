@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.39.1 (2026-05-08)
+
+Full Changelog: [v0.39.0...v0.39.1](https://github.com/CaseMark/casedev-cli/compare/v0.39.0...v0.39.1)
+
+### Chores
+
+* redact api-key headers in debug logs ([91435ff](https://github.com/CaseMark/casedev-cli/commit/91435ffeb774c17f0fafc3543dbe5b0c0686bcd5))
+* **test:** scope body requests to a single variant ([4adf974](https://github.com/CaseMark/casedev-cli/commit/4adf9746632058ff11daff0f35c46dae7d2247d6))
+
 ## 0.39.0 (2026-05-07)
 
 Full Changelog: [v0.38.1...v0.39.0](https://github.com/CaseMark/casedev-cli/compare/v0.38.1...v0.39.0)
