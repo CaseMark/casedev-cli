@@ -161,7 +161,6 @@ var vaultConfirmUpload = cli.Command{
 		&requestflag.Flag[int64]{
 			Name:     "size-bytes",
 			Usage:    "Uploaded file size in bytes",
-			Required: true,
 			BodyPath: "sizeBytes",
 		},
 		&requestflag.Flag[bool]{
@@ -178,13 +177,11 @@ var vaultConfirmUpload = cli.Command{
 		&requestflag.Flag[string]{
 			Name:     "error-code",
 			Usage:    "Client-side error code",
-			Required: true,
 			BodyPath: "errorCode",
 		},
 		&requestflag.Flag[string]{
 			Name:     "error-message",
 			Usage:    "Client-side error message",
-			Required: true,
 			BodyPath: "errorMessage",
 		},
 	},
