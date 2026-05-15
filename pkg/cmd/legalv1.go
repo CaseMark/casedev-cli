@@ -53,7 +53,7 @@ var legalV1Docket = cli.Command{
 		},
 		&requestflag.Flag[bool]{
 			Name:     "include-entries",
-			Usage:    "Include docket entries/filings in lookup responses. Coming soon — currently returns 501. The parameter is accepted for forward compatibility.",
+			Usage:    "Include docket entries/filings in lookup responses.",
 			Default:  false,
 			BodyPath: "includeEntries",
 		},
