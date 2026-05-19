@@ -17,7 +17,6 @@ func TestComputeV1InstancesCreate(t *testing.T) {
 			"--instance-type", "gpu_1x_a10",
 			"--name", "ocr-batch-job",
 			"--region", "us-west-1",
-			"--auto-shutdown-minutes", "120",
 			"--vault-id", "vault_abc123",
 		)
 	})
@@ -28,7 +27,6 @@ func TestComputeV1InstancesCreate(t *testing.T) {
 			"instanceType: gpu_1x_a10\n" +
 			"name: ocr-batch-job\n" +
 			"region: us-west-1\n" +
-			"autoShutdownMinutes: 120\n" +
 			"vaultIds:\n" +
 			"  - vault_abc123\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
