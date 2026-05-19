@@ -16,7 +16,7 @@ import (
 
 var computeV1InstancesCreate = cli.Command{
 	Name:    "create",
-	Usage:   "Launches a new GPU compute instance with automatic SSH key generation. Supports\nmounting Case.dev Vaults as filesystems and configurable auto-shutdown. Instance\nboots in ~2-5 minutes. Perfect for batch OCR processing, AI model training, and\nintensive document analysis workloads.",
+	Usage:   "Launches a new GPU compute instance with automatic SSH key generation. Supports\nmounting Case.dev Vaults as filesystems. Instance boots in ~2-5 minutes. Perfect\nfor batch OCR processing, AI model training, and intensive document analysis\nworkloads.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -36,11 +36,6 @@ var computeV1InstancesCreate = cli.Command{
 			Usage:    "Region (e.g., 'us-west-1')",
 			Required: true,
 			BodyPath: "region",
-		},
-		&requestflag.Flag[*int64]{
-			Name:     "auto-shutdown-minutes",
-			Usage:    "Auto-shutdown timer (null = never)",
-			BodyPath: "autoShutdownMinutes",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "vault-id",
@@ -69,7 +64,7 @@ var computeV1InstancesRetrieve = cli.Command{
 
 var computeV1InstancesList = cli.Command{
 	Name:            "list",
-	Usage:           "Retrieves all GPU compute instances for your organization with real-time status\nupdates from Lambda Labs. Includes pricing, runtime metrics, and auto-shutdown\nconfiguration. Perfect for monitoring AI workloads, document processing jobs,\nand cost tracking.",
+	Usage:           "Retrieves all GPU compute instances for your organization with real-time status\nupdates from Lambda Labs. Includes pricing and runtime metrics. Perfect for\nmonitoring AI workloads, document processing jobs, and cost tracking.",
 	Suggest:         true,
 	Flags:           []cli.Flag{},
 	Action:          handleComputeV1InstancesList,

@@ -90,6 +90,20 @@ func init() {
 		},
 		Commands: []*cli.Command{
 			{
+				Name:     "agent:skills:namespaces",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&agentSkillsNamespacesCreate,
+					&agentSkillsNamespacesRetrieve,
+					&agentSkillsNamespacesList,
+					&agentSkillsNamespacesDelete,
+					&agentSkillsNamespacesPublish,
+					&agentSkillsNamespacesPull,
+					&agentSkillsNamespacesRotateToken,
+				},
+			},
+			{
 				Name:     "agent:v1:agents",
 				Category: "API RESOURCE",
 				Suggest:  true,
@@ -153,22 +167,6 @@ func init() {
 				Suggest:  true,
 				Commands: []*cli.Command{
 					&systemListServices,
-				},
-			},
-			{
-				Name:     "worker:v1",
-				Category: "API RESOURCE",
-				Suggest:  true,
-				Commands: []*cli.Command{
-					&workerV1Create,
-					&workerV1Retrieve,
-					&workerV1Delete,
-					&workerV1Boot,
-					&workerV1ProxyDelete,
-					&workerV1ProxyGet,
-					&workerV1ProxyPatch,
-					&workerV1ProxyPost,
-					&workerV1ProxyPut,
 				},
 			},
 			{
