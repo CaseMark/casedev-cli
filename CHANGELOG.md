@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.41.1 (2026-05-19)
+
+Full Changelog: [v0.41.0...v0.41.1](https://github.com/CaseMark/casedev-cli/compare/v0.41.0...v0.41.1)
+
+### Chores
+
+* **internal:** codegen related update ([9445d30](https://github.com/CaseMark/casedev-cli/commit/9445d30479c10615a1cb203117f277afc4677d60))
+
 ## 0.41.0 (2026-05-15)
 
 Full Changelog: [v0.40.2...v0.41.0](https://github.com/CaseMark/casedev-cli/compare/v0.40.2...v0.41.0)
