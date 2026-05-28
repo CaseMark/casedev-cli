@@ -154,7 +154,7 @@ var vaultObjectsCreatePresignedURL = cli.Command{
 
 var vaultObjectsDownload = cli.Command{
 	Name:    "download",
-	Usage:   "Downloads a file from a vault. Returns the actual file content as a binary\nstream with appropriate headers for file download. Useful for retrieving\ncontracts, depositions, case files, and other legal documents stored in your\nvault.",
+	Usage:   "Downloads a file from a vault by redirecting to a short-lived presigned S3 URL.\nUseful for retrieving contracts, depositions, case files, and other legal\ndocuments stored in your vault.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
