@@ -32,7 +32,7 @@ jobs:
       - name: Fetch production main
         run: |
           git remote add production "https://x-access-token:${GH_TOKEN}@github.com/${PRODUCTION_REPO}.git"
-          git fetch production main
+          git fetch production '+refs/heads/*:refs/remotes/production/*'
 
       - name: Check if production is already in sync
         id: diff
@@ -48,7 +48,7 @@ jobs:
 
       - name: Push staging main to production release branch
         if: steps.diff.outputs.synced == 'false'
-        run: git push production origin/main:refs/heads/stainless/release --force
+        run: git push production origin/main:refs/heads/stainless/release --force-with-lease
 
       - name: Open or update production release PR
         if: steps.diff.outputs.synced == 'false'
@@ -68,5 +68,5 @@ jobs:
               --title "Release SDK updates" \
               --body "$(git log --oneline production/main..origin/main)"
           else
-            echo "Release PR #$EXISTING_PR already exists. Force-push has updated it."
+            echo "Release PR #$EXISTING_PR already exists. Lease-protected push has updated it."
           fi
