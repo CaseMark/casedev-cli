@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.43.0](https://github.com/CaseMark/casedev-cli/compare/v0.42.0...v0.43.0) (2026-06-01)
+
+
+### Features
+
+* **api:** api update ([d32a7b7](https://github.com/CaseMark/casedev-cli/commit/d32a7b7923229c86b36f62937cba15785dba624b))
+* **api:** api update ([7b2d42e](https://github.com/CaseMark/casedev-cli/commit/7b2d42e95ff3d9a37aa89f190f0d26e724a131d3))
+
+
+### Bug Fixes
+
+* update Go SDK dependency to v0.55.0 ([0e1ba5b](https://github.com/CaseMark/casedev-cli/commit/0e1ba5b13219b6001d5f652d6a8bc8b6ff08284f))
+
+
+### Chores
+
+* harden CLI staging Go SDK link ([4e6e032](https://github.com/CaseMark/casedev-cli/commit/4e6e0325a9621a41c6121d7894e52a102825c305))
+* harden CLI staging Go SDK link ([81cc12c](https://github.com/CaseMark/casedev-cli/commit/81cc12c20dda93f0bf76220e57306cee775690cd))
+* keep generated mock spec for CLI custom code ([aff4e8f](https://github.com/CaseMark/casedev-cli/commit/aff4e8f30ebdd06c1c58de0242a94c7e69b8fc65))
+* merge main for stlc custom code ([bb8a3cd](https://github.com/CaseMark/casedev-cli/commit/bb8a3cd405741589608a29e04fe23a47c0642fe5))
+
 ## 0.42.0 (2026-05-20)
 
 Full Changelog: [v0.41.1...v0.42.0](https://github.com/CaseMark/casedev-cli/compare/v0.41.1...v0.42.0)
