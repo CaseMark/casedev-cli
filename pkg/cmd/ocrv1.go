@@ -37,7 +37,7 @@ var ocrV1Retrieve = cli.Command{
 
 var ocrV1Download = cli.Command{
 	Name:    "download",
-	Usage:   "Download OCR processing results in various formats. Returns the processed\ndocument as text extraction, structured JSON with coordinates, searchable PDF\nwith text layer, or the original uploaded document.",
+	Usage:   "Download OCR processing results in various formats by redirecting to the OCR\nservice download URL.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{

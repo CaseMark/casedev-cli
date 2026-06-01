@@ -15,28 +15,43 @@ on:
       - 'stl-preview-base/**'
 
 env:
-  GOPRIVATE: github.com/CaseMark/casedev-go,github.com/stainless-sdks/router-go
+  GOPRIVATE: github.com/CaseMark/casedev-go,github.com/CaseMark/casedev-go-staging
 
 jobs:
   lint:
     timeout-minutes: 10
     name: lint
-    runs-on: ${{ github.repository == 'stainless-sdks/router-cli' && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
-    if: (github.event_name == 'push' || github.event.pull_request.head.repo.fork) && (github.event_name != 'push' || github.event.head_commit.message != 'codegen metadata')
+    runs-on: ubuntu-latest
+    if: github.event_name != 'push' || github.event.head_commit.message != 'codegen metadata'
     env:
       GONOSUMDB: github.com/CaseMark/*
 
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-
-      - uses: ./.github/actions/setup-go
         with:
-          stainless-api-key: ${{ secrets.STAINLESS_API_KEY }}
+          persist-credentials: false
+
+      - name: Authenticate git for the private Go SDK repo
+        shell: bash
+        env:
+          GO_MODULE_REPO: ${{ github.repository == 'CaseMark/casedev-cli-staging' && 'CaseMark/casedev-go-staging' || 'CaseMark/casedev-go' }}
+          GO_REPO_READ_TOKEN: ${{ secrets.GO_REPO_READ_TOKEN }}
+        run: |
+          if [ -z "$GO_REPO_READ_TOKEN" ]; then
+            echo "::error::Missing GO_REPO_READ_TOKEN secret for ${GO_MODULE_REPO}."
+            exit 1
+          fi
+
+          git config --global url."https://x-access-token:${GO_REPO_READ_TOKEN}@github.com/".insteadOf "https://github.com/"
+      - uses: ./.github/actions/setup-go
 
       - name: Link staging branch
-        if: github.repository == 'stainless-sdks/router-cli'
+        if: github.repository == 'CaseMark/casedev-cli-staging'
+        env:
+          GO_BRANCH: ${{ github.ref_name }}
+          GO_MODULE_REPO: CaseMark/casedev-go-staging
         run: |
-          ./scripts/link 'github.com/stainless-sdks/router-go@${{ github.ref_name }}' || true
+          ./scripts/link "github.com/${GO_MODULE_REPO}@${GO_BRANCH}"
 
       - name: Bootstrap
         run: ./scripts/bootstrap
@@ -50,21 +65,36 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    runs-on: ${{ github.repository == 'stainless-sdks/router-cli' && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
-    if: (github.event_name == 'push' || github.event.pull_request.head.repo.fork) && (github.event_name != 'push' || github.event.head_commit.message != 'codegen metadata')
+    runs-on: ubuntu-latest
+    if: github.event_name != 'push' || github.event.head_commit.message != 'codegen metadata'
     env:
       GONOSUMDB: github.com/CaseMark/*
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-
-      - uses: ./.github/actions/setup-go
         with:
-          stainless-api-key: ${{ secrets.STAINLESS_API_KEY }}
+          persist-credentials: false
+
+      - name: Authenticate git for the private Go SDK repo
+        shell: bash
+        env:
+          GO_MODULE_REPO: ${{ github.repository == 'CaseMark/casedev-cli-staging' && 'CaseMark/casedev-go-staging' || 'CaseMark/casedev-go' }}
+          GO_REPO_READ_TOKEN: ${{ secrets.GO_REPO_READ_TOKEN }}
+        run: |
+          if [ -z "$GO_REPO_READ_TOKEN" ]; then
+            echo "::error::Missing GO_REPO_READ_TOKEN secret for ${GO_MODULE_REPO}."
+            exit 1
+          fi
+
+          git config --global url."https://x-access-token:${GO_REPO_READ_TOKEN}@github.com/".insteadOf "https://github.com/"
+      - uses: ./.github/actions/setup-go
 
       - name: Link staging branch
-        if: github.repository == 'stainless-sdks/router-cli'
+        if: github.repository == 'CaseMark/casedev-cli-staging'
+        env:
+          GO_BRANCH: ${{ github.ref_name }}
+          GO_MODULE_REPO: CaseMark/casedev-go-staging
         run: |
-          ./scripts/link 'github.com/stainless-sdks/router-go@${{ github.ref_name }}' || true
+          ./scripts/link "github.com/${GO_MODULE_REPO}@${GO_BRANCH}"
 
       - name: Bootstrap
         run: ./scripts/bootstrap
@@ -77,43 +107,43 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Get GitHub OIDC Token
-        if: |-
-          github.repository == 'stainless-sdks/router-cli' &&
-          !startsWith(github.ref, 'refs/heads/stl/')
-        id: github-oidc
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
-        with:
-          script: core.setOutput('github_token', await core.getIDToken());
 
-      - name: Upload tarball
-        if: |-
-          github.repository == 'stainless-sdks/router-cli' &&
-          !startsWith(github.ref, 'refs/heads/stl/')
-        env:
-          URL: https://pkg.stainless.com/s
-          AUTH: ${{ steps.github-oidc.outputs.github_token }}
-          SHA: ${{ github.sha }}
-        run: ./scripts/utils/upload-artifact.sh
+
+
 
   test:
     timeout-minutes: 10
     name: test
-    runs-on: ${{ github.repository == 'stainless-sdks/router-cli' && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.fork
+    runs-on: ubuntu-latest
+    if: github.event_name != 'push' || github.event.head_commit.message != 'codegen metadata'
     env:
       GONOSUMDB: github.com/CaseMark/*
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-
-      - uses: ./.github/actions/setup-go
         with:
-          stainless-api-key: ${{ secrets.STAINLESS_API_KEY }}
+          persist-credentials: false
+
+      - name: Authenticate git for the private Go SDK repo
+        shell: bash
+        env:
+          GO_MODULE_REPO: ${{ github.repository == 'CaseMark/casedev-cli-staging' && 'CaseMark/casedev-go-staging' || 'CaseMark/casedev-go' }}
+          GO_REPO_READ_TOKEN: ${{ secrets.GO_REPO_READ_TOKEN }}
+        run: |
+          if [ -z "$GO_REPO_READ_TOKEN" ]; then
+            echo "::error::Missing GO_REPO_READ_TOKEN secret for ${GO_MODULE_REPO}."
+            exit 1
+          fi
+
+          git config --global url."https://x-access-token:${GO_REPO_READ_TOKEN}@github.com/".insteadOf "https://github.com/"
+      - uses: ./.github/actions/setup-go
 
       - name: Link staging branch
-        if: github.repository == 'stainless-sdks/router-cli'
+        if: github.repository == 'CaseMark/casedev-cli-staging'
+        env:
+          GO_BRANCH: ${{ github.ref_name }}
+          GO_MODULE_REPO: CaseMark/casedev-go-staging
         run: |
-          ./scripts/link 'github.com/stainless-sdks/router-go@${{ github.ref_name }}' || true
+          ./scripts/link "github.com/${GO_MODULE_REPO}@${GO_BRANCH}"
 
       - name: Bootstrap
         run: ./scripts/bootstrap

@@ -238,7 +238,7 @@ var vaultSearch = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[int64]{
 			Name:     "top-k",
-			Usage:    "Maximum number of results to return",
+			Usage:    "Maximum number of results to return. Hybrid search supports 1 to 50; other methods may support up to 100.",
 			Default:  10,
 			BodyPath: "topK",
 		},
