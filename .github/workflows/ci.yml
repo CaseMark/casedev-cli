@@ -22,7 +22,7 @@ jobs:
     timeout-minutes: 10
     name: lint
     runs-on: ubuntu-latest
-    if: (github.event_name == 'push' || github.event.pull_request.head.repo.fork) && (github.event_name != 'push' || github.event.head_commit.message != 'codegen metadata')
+    if: github.event_name != 'push' || github.event.head_commit.message != 'codegen metadata'
     env:
       GONOSUMDB: github.com/CaseMark/*
 
@@ -66,7 +66,7 @@ jobs:
       contents: read
       id-token: write
     runs-on: ubuntu-latest
-    if: (github.event_name == 'push' || github.event.pull_request.head.repo.fork) && (github.event_name != 'push' || github.event.head_commit.message != 'codegen metadata')
+    if: github.event_name != 'push' || github.event.head_commit.message != 'codegen metadata'
     env:
       GONOSUMDB: github.com/CaseMark/*
     steps:
@@ -115,7 +115,7 @@ jobs:
     timeout-minutes: 10
     name: test
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.fork
+    if: github.event_name != 'push' || github.event.head_commit.message != 'codegen metadata'
     env:
       GONOSUMDB: github.com/CaseMark/*
     steps:
