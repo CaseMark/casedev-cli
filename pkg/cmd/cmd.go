@@ -407,6 +407,23 @@ func init() {
 				},
 			},
 			{
+				Name:     "media:v1:clips",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&mediaV1ClipsCreate,
+					&mediaV1ClipsRetrieve,
+				},
+			},
+			{
+				Name:     "media:v1:transcripts:search",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&mediaV1TranscriptsSearchCreate,
+				},
+			},
+			{
 				Name:     "ocr:v1",
 				Category: "API RESOURCE",
 				Suggest:  true,
