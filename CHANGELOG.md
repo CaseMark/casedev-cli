@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.43.1 (2026-06-02)
+
+Full Changelog: [v0.43.0...v0.43.1](https://github.com/CaseMark/casedev-cli/compare/v0.43.0...v0.43.1)
+
+### Chores
+
+* use stable release metadata ([#101](https://github.com/CaseMark/casedev-cli/issues/101)) ([5bc7dd6](https://github.com/CaseMark/casedev-cli/commit/5bc7dd68e4ae906ea5e19a2238cff45134a94444))
+
 ## [0.43.0](https://github.com/CaseMark/casedev-cli/compare/v0.42.0...v0.43.0) (2026-06-01)
 
 
