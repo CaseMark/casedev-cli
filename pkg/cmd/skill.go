@@ -14,7 +14,7 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-var skillsCreate = cli.Command{
+var skillsCreate = requestflag.WithInnerFlags(cli.Command{
 	Name:    "create",
 	Usage:   "Create an org-scoped custom skill. The skill will be searchable via\n/skills/resolve alongside curated skills.",
 	Suggest: true,
@@ -30,6 +30,11 @@ var skillsCreate = cli.Command{
 			Usage:    "Skill name",
 			Required: true,
 			BodyPath: "name",
+		},
+		&requestflag.Flag[[]map[string]any]{
+			Name:     "file",
+			Usage:    "Optional bundled companion files installed alongside the skill as <slug>/<path> in sandbox skill directories.",
+			BodyPath: "files",
 		},
 		&requestflag.Flag[any]{
 			Name:     "metadata",
@@ -54,9 +59,41 @@ var skillsCreate = cli.Command{
 	},
 	Action:          handleSkillsCreate,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"file": {
+		&requestflag.InnerFlag[string]{
+			Name:       "file.content",
+			InnerField: "content",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "file.path",
+			Usage:      "Relative path inside the skill directory. SKILL.md is reserved for the root skill content.",
+			InnerField: "path",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "file.content-type",
+			InnerField: "contentType",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "file.metadata",
+			InnerField: "metadata",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "file.name",
+			InnerField: "name",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "file.summary",
+			InnerField: "summary",
+		},
+		&requestflag.InnerFlag[[]string]{
+			Name:       "file.tags",
+			InnerField: "tags",
+		},
+	},
+})
 
-var skillsUpdate = cli.Command{
+var skillsUpdate = requestflag.WithInnerFlags(cli.Command{
 	Name:    "update",
 	Usage:   "Update an org-scoped custom skill by slug. Only provided fields are updated.\nVersion is auto-incremented.",
 	Suggest: true,
@@ -69,6 +106,11 @@ var skillsUpdate = cli.Command{
 		&requestflag.Flag[string]{
 			Name:     "content",
 			BodyPath: "content",
+		},
+		&requestflag.Flag[any]{
+			Name:     "file",
+			Usage:    "Optional replacement companion file tree. Omit to leave existing bundled files unchanged; send [] to remove bundled files.",
+			BodyPath: "files",
 		},
 		&requestflag.Flag[any]{
 			Name:     "metadata",
@@ -94,7 +136,45 @@ var skillsUpdate = cli.Command{
 	},
 	Action:          handleSkillsUpdate,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"file": {
+		&requestflag.InnerFlag[string]{
+			Name:                  "file.content",
+			InnerField:            "content",
+			OuterIsArrayOfObjects: true,
+		},
+		&requestflag.InnerFlag[string]{
+			Name:                  "file.path",
+			InnerField:            "path",
+			OuterIsArrayOfObjects: true,
+		},
+		&requestflag.InnerFlag[string]{
+			Name:                  "file.content-type",
+			InnerField:            "contentType",
+			OuterIsArrayOfObjects: true,
+		},
+		&requestflag.InnerFlag[any]{
+			Name:                  "file.metadata",
+			InnerField:            "metadata",
+			OuterIsArrayOfObjects: true,
+		},
+		&requestflag.InnerFlag[string]{
+			Name:                  "file.name",
+			InnerField:            "name",
+			OuterIsArrayOfObjects: true,
+		},
+		&requestflag.InnerFlag[string]{
+			Name:                  "file.summary",
+			InnerField:            "summary",
+			OuterIsArrayOfObjects: true,
+		},
+		&requestflag.InnerFlag[[]string]{
+			Name:                  "file.tags",
+			InnerField:            "tags",
+			OuterIsArrayOfObjects: true,
+		},
+	},
+})
 
 var skillsDelete = cli.Command{
 	Name:    "delete",
@@ -108,6 +188,27 @@ var skillsDelete = cli.Command{
 		},
 	},
 	Action:          handleSkillsDelete,
+	HideHelpCommand: true,
+}
+
+var skillsExport = cli.Command{
+	Name:    "export",
+	Usage:   "Export a skill as an installable filesystem tree for sandbox runtimes.\nAuthenticated org-scoped custom skills are resolved before curated skills.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:      "slug",
+			Required:  true,
+			PathParam: "slug",
+		},
+		&requestflag.Flag[string]{
+			Name:      "target",
+			Usage:     "Agent runtime skill directory convention to export for. Most callers should omit this and pass skillSlugs when creating a runtime.",
+			Default:   "agents",
+			QueryPath: "target",
+		},
+	},
+	Action:          handleSkillsExport,
 	HideHelpCommand: true,
 }
 
@@ -276,6 +377,55 @@ func handleSkillsDelete(ctx context.Context, cmd *cli.Command) error {
 		Format:         format,
 		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "skills delete",
+		Transform:      transform,
+	})
+}
+
+func handleSkillsExport(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("slug") && len(unusedArgs) > 0 {
+		cmd.Set("slug", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		EmptyBody,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	params := githubcomcasemarkcasedevgo.SkillExportParams{}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Skills.Export(
+		ctx,
+		cmd.Value("slug").(string),
+		params,
+		options...,
+	)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "skills export",
 		Transform:      transform,
 	})
 }
