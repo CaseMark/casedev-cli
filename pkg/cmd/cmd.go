@@ -90,20 +90,6 @@ func init() {
 		},
 		Commands: []*cli.Command{
 			{
-				Name:     "agent:skills:namespaces",
-				Category: "API RESOURCE",
-				Suggest:  true,
-				Commands: []*cli.Command{
-					&agentSkillsNamespacesCreate,
-					&agentSkillsNamespacesRetrieve,
-					&agentSkillsNamespacesList,
-					&agentSkillsNamespacesDelete,
-					&agentSkillsNamespacesPublish,
-					&agentSkillsNamespacesPull,
-					&agentSkillsNamespacesRotateToken,
-				},
-			},
-			{
 				Name:     "agent:v1:agents",
 				Category: "API RESOURCE",
 				Suggest:  true,
@@ -136,29 +122,6 @@ func init() {
 				Suggest:  true,
 				Commands: []*cli.Command{
 					&agentV1ExecuteCreate,
-				},
-			},
-			{
-				Name:     "agent:v1:chat",
-				Category: "API RESOURCE",
-				Suggest:  true,
-				Commands: []*cli.Command{
-					&agentV1ChatCreate,
-					&agentV1ChatDelete,
-					&agentV1ChatCancel,
-					&agentV1ChatReplyToQuestion,
-					&agentV1ChatRespond,
-					&agentV1ChatSendMessage,
-					&agentV1ChatStream,
-				},
-			},
-			{
-				Name:     "agent:v1:chat:files",
-				Category: "API RESOURCE",
-				Suggest:  true,
-				Commands: []*cli.Command{
-					&agentV1ChatFilesList,
-					&agentV1ChatFilesDownload,
 				},
 			},
 			{
@@ -467,6 +430,7 @@ func init() {
 					&skillsCreate,
 					&skillsUpdate,
 					&skillsDelete,
+					&skillsExport,
 					&skillsRead,
 					&skillsResolve,
 				},
