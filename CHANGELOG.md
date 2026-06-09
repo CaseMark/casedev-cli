@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.44.0](https://github.com/CaseMark/casedev-cli/compare/v0.43.0...v0.44.0) (2026-06-09)
+
+
+### Features
+
+* **api:** api update ([ee58611](https://github.com/CaseMark/casedev-cli/commit/ee58611dacf19e700e0ab2948ddc65503409bfb3))
+
+
+### Bug Fixes
+
+* bump Go SDK dependency ([14f8b35](https://github.com/CaseMark/casedev-cli/commit/14f8b35696dcbcb87ec8b31da8d758c306250f6a))
+
+
+### Chores
+
+* use stable release metadata ([bdc4b32](https://github.com/CaseMark/casedev-cli/commit/bdc4b32a997c057997d520cc39f74640f8374418))
+* use stable release metadata ([#101](https://github.com/CaseMark/casedev-cli/issues/101)) ([5bc7dd6](https://github.com/CaseMark/casedev-cli/commit/5bc7dd68e4ae906ea5e19a2238cff45134a94444))
+
 ## [0.43.0](https://github.com/CaseMark/casedev-cli/compare/v0.42.0...v0.43.0) (2026-06-01)
 
 
