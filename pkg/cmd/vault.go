@@ -169,6 +169,12 @@ var vaultConfirmUpload = cli.Command{
 			Required: true,
 			BodyPath: "success",
 		},
+		&requestflag.Flag[bool]{
+			Name:     "auto-ingest",
+			Usage:    "When true and the object was uploaded with auto_index, trigger ingestion immediately after a successful confirmation (no separate ingest call needed). The ingest outcome is reported in the `ingest` response field; an ingest failure does not fail the confirmation.",
+			Default:  false,
+			BodyPath: "autoIngest",
+		},
 		&requestflag.Flag[string]{
 			Name:     "etag",
 			Usage:    "S3 ETag for the uploaded object (optional if client cannot access ETag header)",
@@ -191,7 +197,7 @@ var vaultConfirmUpload = cli.Command{
 
 var vaultIngest = cli.Command{
 	Name:    "ingest",
-	Usage:   "Triggers ingestion workflow for a vault object to extract text, generate chunks,\nand create embeddings. For supported file types (PDF, DOCX, PPTX, TXT, RTF, XML,\nHTML, Markdown, CSV/TSV, JSON/YAML/TOML, common source code files, ZIP, audio,\nvideo), processing happens asynchronously. ZIP archives are unpacked recursively\nup to 5 levels, and each extracted file is created as an independent vault\nobject and ingested via the normal pipeline. For unsupported types (images,\netc.), the file is marked as completed immediately without text extraction.\nGraphRAG indexing must be triggered separately via POST\n/vault/:id/graphrag/:objectId.",
+	Usage:   "Triggers ingestion workflow for a vault object to extract text, generate chunks,\nand create embeddings. For supported file types (PDF, DOCX, PPTX, XLSX, TXT,\nRTF, XML, HTML, Markdown, CSV/TSV, JSON/YAML/TOML, common source code files,\nZIP, audio, video), processing happens asynchronously. ZIP archives are unpacked\nrecursively up to 5 levels, and each extracted file is created as an independent\nvault object and ingested via the normal pipeline. For unsupported types\n(images, etc.), the file is marked as completed immediately without text\nextraction. GraphRAG indexing must be triggered separately via POST\n/vault/:id/graphrag/:objectId.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -282,6 +288,12 @@ var vaultUpload = cli.Command{
 			Usage:    "Whether to automatically process and index the file for search",
 			Default:  true,
 			BodyPath: "auto_index",
+		},
+		&requestflag.Flag[bool]{
+			Name:     "is-ai-generated",
+			Usage:    "Marks the file as AI-generated work product (e.g. uploaded by an agent) rather than a user-provided source document. Persisted on the object and returned by object listings so clients can distinguish provenance.",
+			Default:  false,
+			BodyPath: "is_ai_generated",
 		},
 		&requestflag.Flag[any]{
 			Name:     "metadata",

@@ -23,6 +23,16 @@ var usageV1Retrieve = cli.Command{
 			Default:   "summary",
 			QueryPath: "granularity",
 		},
+		&requestflag.Flag[string]{
+			Name:      "group-by",
+			Usage:     "Optionally include usage groups keyed by native Linc session id. Only Linc-session-attributable usage is grouped.",
+			QueryPath: "groupBy",
+		},
+		&requestflag.Flag[string]{
+			Name:      "linc-session-id",
+			Usage:     "Restrict usage to a native Linc session. The session must belong to the authenticated organization.",
+			QueryPath: "lincSessionId",
+		},
 		&requestflag.Flag[any]{
 			Name:      "period-end",
 			Usage:     "Period end date. Defaults to now.",

@@ -80,6 +80,12 @@ var vaultObjectsList = cli.Command{
 			Required:  true,
 			PathParam: "id",
 		},
+		&requestflag.Flag[bool]{
+			Name:      "include-unconfirmed",
+			Usage:     "Include placeholders for uploads that were never completed (awaiting_upload) or were cancelled (aborted). Excluded by default.",
+			Default:   false,
+			QueryPath: "includeUnconfirmed",
+		},
 	},
 	Action:          handleVaultObjectsList,
 	HideHelpCommand: true,
@@ -107,6 +113,50 @@ var vaultObjectsDelete = cli.Command{
 		},
 	},
 	Action:          handleVaultObjectsDelete,
+	HideHelpCommand: true,
+}
+
+var vaultObjectsAppend = cli.Command{
+	Name:    "append",
+	Usage:   "Merges one or more PDF vault objects onto the end of an existing PDF vault\nobject, overwriting the target in place before returning. Optionally rewrites\ncitation links in the original target into internal PDF jumps and adds back\nlinks on appended pages. The target object’s ingestion state is not affected;\nappended pages are not searchable.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
+		},
+		&requestflag.Flag[string]{
+			Name:      "object-id",
+			Required:  true,
+			PathParam: "objectId",
+		},
+		&requestflag.Flag[[]string]{
+			Name:     "append-object-id",
+			Usage:    "Vault object IDs whose pages will be appended onto the target object, in order. Must not include the target object itself.",
+			Required: true,
+			BodyPath: "appendObjectIds",
+		},
+		&requestflag.Flag[bool]{
+			Name:     "back-links",
+			Usage:    "Adds back links on appended pages",
+			Default:  false,
+			BodyPath: "backLinks",
+		},
+		&requestflag.Flag[string]{
+			Name:     "back-links-text",
+			Usage:    "Label text for the back link. Used only when backLinks is true and rendered centered at the bottom of each appended page.",
+			Default:  "Back to Summary",
+			BodyPath: "backLinksText",
+		},
+		&requestflag.Flag[bool]{
+			Name:     "rewrite-links",
+			Usage:    "When true, rewrites links in the target object to internal PDF jumps when the URL contains exactly one appended object ID as a standalone query parameter value or decoded path segment.",
+			Default:  false,
+			BodyPath: "rewriteLinks",
+		},
+	},
+	Action:          handleVaultObjectsAppend,
 	HideHelpCommand: true,
 }
 
@@ -318,6 +368,38 @@ var vaultObjectsGetText = cli.Command{
 	HideHelpCommand: true,
 }
 
+var vaultObjectsSummarize = cli.Command{
+	Name:    "summarize",
+	Usage:   "Triggers a CaseMark AI workflow to summarize or analyze a document stored in the\nvault. The workflow processes the document asynchronously and stores the result\nas a new object in the same vault, linked to the original document.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
+		},
+		&requestflag.Flag[string]{
+			Name:      "object-id",
+			Required:  true,
+			PathParam: "objectId",
+		},
+		&requestflag.Flag[string]{
+			Name:     "output-format",
+			Usage:    "Output format for the summary document",
+			Default:  "PDF",
+			BodyPath: "outputFormat",
+		},
+		&requestflag.Flag[string]{
+			Name:     "workflow-type",
+			Usage:    "Type of CaseMark workflow to run",
+			Default:  "SUMMARIZE_FILES",
+			BodyPath: "workflowType",
+		},
+	},
+	Action:          handleVaultObjectsSummarize,
+	HideHelpCommand: true,
+}
+
 func handleVaultObjectsRetrieve(ctx context.Context, cmd *cli.Command) error {
 	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
@@ -445,9 +527,16 @@ func handleVaultObjectsList(ctx context.Context, cmd *cli.Command) error {
 		return err
 	}
 
+	params := githubcomcasemarkcasedevgo.VaultObjectListParams{}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Vault.Objects.List(ctx, cmd.Value("id").(string), options...)
+	_, err = client.Vault.Objects.List(
+		ctx,
+		cmd.Value("id").(string),
+		params,
+		options...,
+	)
 	if err != nil {
 		return err
 	}
@@ -515,6 +604,60 @@ func handleVaultObjectsDelete(ctx context.Context, cmd *cli.Command) error {
 		Format:         format,
 		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "vault:objects delete",
+		Transform:      transform,
+	})
+}
+
+func handleVaultObjectsAppend(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
+		cmd.Set("id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if !cmd.IsSet("object-id") && len(unusedArgs) > 0 {
+		cmd.Set("object-id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	params := githubcomcasemarkcasedevgo.VaultObjectAppendParams{}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Vault.Objects.Append(
+		ctx,
+		cmd.Value("id").(string),
+		cmd.Value("object-id").(string),
+		params,
+		options...,
+	)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "vault:objects append",
 		Transform:      transform,
 	})
 }
@@ -880,6 +1023,60 @@ func handleVaultObjectsGetText(ctx context.Context, cmd *cli.Command) error {
 		Format:         format,
 		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "vault:objects get-text",
+		Transform:      transform,
+	})
+}
+
+func handleVaultObjectsSummarize(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
+		cmd.Set("id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if !cmd.IsSet("object-id") && len(unusedArgs) > 0 {
+		cmd.Set("object-id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	params := githubcomcasemarkcasedevgo.VaultObjectSummarizeParams{}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Vault.Objects.Summarize(
+		ctx,
+		cmd.Value("id").(string),
+		cmd.Value("object-id").(string),
+		params,
+		options...,
+	)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "vault:objects summarize",
 		Transform:      transform,
 	})
 }

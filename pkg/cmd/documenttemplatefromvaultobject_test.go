@@ -8,17 +8,12 @@ import (
 	"github.com/CaseMark/casedev-cli/internal/mocktest"
 )
 
-func TestUsageV1Retrieve(t *testing.T) {
+func TestDocumentTemplatesFromVaultObjectCreate(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
 			t,
 			"--api-key", "string",
-			"usage:v1", "retrieve",
-			"--granularity", "summary",
-			"--group-by", "lincSessionId",
-			"--linc-session-id", "lincSessionId",
-			"--period-end", "'2019-12-27T18:11:19.117Z'",
-			"--period-start", "'2019-12-27T18:11:19.117Z'",
+			"document-templates:from-vault-object", "create",
 		)
 	})
 }

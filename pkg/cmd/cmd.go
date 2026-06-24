@@ -207,6 +207,27 @@ func init() {
 				},
 			},
 			{
+				Name:     "document-templates",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&documentTemplatesCreate,
+					&documentTemplatesRetrieve,
+					&documentTemplatesUpdate,
+					&documentTemplatesList,
+					&documentTemplatesDelete,
+					&documentTemplatesConfirm,
+				},
+			},
+			{
+				Name:     "document-templates:from-vault-object",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&documentTemplatesFromVaultObjectCreate,
+				},
+			},
+			{
 				Name:     "format:v1:templates",
 				Category: "API RESOURCE",
 				Suggest:  true,
@@ -235,6 +256,21 @@ func init() {
 					&legalV1Similar,
 					&legalV1TrademarkSearch,
 					&legalV1Verify,
+				},
+			},
+			{
+				Name:     "linc:v1:sessions",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&lincV1SessionsCreate,
+					&lincV1SessionsDelete,
+					&lincV1SessionsCancel,
+					&lincV1SessionsIngestEvents,
+					&lincV1SessionsRetrieveEvents,
+					&lincV1SessionsRetrieveMessages,
+					&lincV1SessionsRetrieveState,
+					&lincV1SessionsSendRpc,
 				},
 			},
 			{
@@ -384,6 +420,14 @@ func init() {
 				Suggest:  true,
 				Commands: []*cli.Command{
 					&mediaV1TranscriptsSearchCreate,
+				},
+			},
+			{
+				Name:     "media:v1:transcripts:retrieve",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&mediaV1TranscriptsRetrieveCreate,
 				},
 			},
 			{
@@ -541,7 +585,9 @@ func init() {
 				Suggest:  true,
 				Commands: []*cli.Command{
 					&vaultMultipartAbort,
+					&vaultMultipartComplete,
 					&vaultMultipartGetPartURLs,
+					&vaultMultipartInit,
 				},
 			},
 			{
@@ -553,6 +599,7 @@ func init() {
 					&vaultObjectsUpdate,
 					&vaultObjectsList,
 					&vaultObjectsDelete,
+					&vaultObjectsAppend,
 					&vaultObjectsCreatePresignedURL,
 					&vaultObjectsDownload,
 					&vaultObjectsGetChunks,
@@ -560,6 +607,7 @@ func init() {
 					&vaultObjectsGetPages,
 					&vaultObjectsGetSummarizeJob,
 					&vaultObjectsGetText,
+					&vaultObjectsSummarize,
 				},
 			},
 			{

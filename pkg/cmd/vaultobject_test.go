@@ -57,6 +57,7 @@ func TestVaultObjectsList(t *testing.T) {
 			"--api-key", "string",
 			"vault:objects", "list",
 			"--id", "id",
+			"--include-unconfirmed=true",
 		)
 	})
 }
@@ -70,6 +71,39 @@ func TestVaultObjectsDelete(t *testing.T) {
 			"--id", "id",
 			"--object-id", "objectId",
 			"--force", "true",
+		)
+	})
+}
+
+func TestVaultObjectsAppend(t *testing.T) {
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"vault:objects", "append",
+			"--id", "id",
+			"--object-id", "objectId",
+			"--append-object-id", "string",
+			"--back-links=true",
+			"--back-links-text", "backLinksText",
+			"--rewrite-links=true",
+		)
+	})
+
+	t.Run("piping data", func(t *testing.T) {
+		// Test piping YAML data over stdin
+		pipeData := []byte("" +
+			"appendObjectIds:\n" +
+			"  - string\n" +
+			"backLinks: true\n" +
+			"backLinksText: backLinksText\n" +
+			"rewriteLinks: true\n")
+		mocktest.TestRunMockTestWithPipeAndFlags(
+			t, pipeData,
+			"--api-key", "string",
+			"vault:objects", "append",
+			"--id", "id",
+			"--object-id", "objectId",
 		)
 	})
 }
@@ -181,6 +215,34 @@ func TestVaultObjectsGetText(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"vault:objects", "get-text",
+			"--id", "id",
+			"--object-id", "objectId",
+		)
+	})
+}
+
+func TestVaultObjectsSummarize(t *testing.T) {
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"vault:objects", "summarize",
+			"--id", "id",
+			"--object-id", "objectId",
+			"--output-format", "PDF",
+			"--workflow-type", "workflowType",
+		)
+	})
+
+	t.Run("piping data", func(t *testing.T) {
+		// Test piping YAML data over stdin
+		pipeData := []byte("" +
+			"outputFormat: PDF\n" +
+			"workflowType: workflowType\n")
+		mocktest.TestRunMockTestWithPipeAndFlags(
+			t, pipeData,
+			"--api-key", "string",
+			"vault:objects", "summarize",
 			"--id", "id",
 			"--object-id", "objectId",
 		)

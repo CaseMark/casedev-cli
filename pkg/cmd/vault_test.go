@@ -118,6 +118,7 @@ func TestVaultConfirmUpload(t *testing.T) {
 			"--object-id", "objectId",
 			"--size-bytes", "1",
 			"--success=true",
+			"--auto-ingest=true",
 			"--etag", "etag",
 		)
 	})
@@ -127,6 +128,7 @@ func TestVaultConfirmUpload(t *testing.T) {
 		pipeData := []byte("" +
 			"sizeBytes: 1\n" +
 			"success: true\n" +
+			"autoIngest: true\n" +
 			"etag: etag\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
@@ -208,6 +210,7 @@ func TestVaultUpload(t *testing.T) {
 			"--content-type", "contentType",
 			"--filename", "filename",
 			"--auto-index=true",
+			"--is-ai-generated=true",
 			"--metadata", "{}",
 			"--path", "path",
 			"--size-bytes", "1",
@@ -220,6 +223,7 @@ func TestVaultUpload(t *testing.T) {
 			"contentType: contentType\n" +
 			"filename: filename\n" +
 			"auto_index: true\n" +
+			"is_ai_generated: true\n" +
 			"metadata: {}\n" +
 			"path: path\n" +
 			"sizeBytes: 1\n")
