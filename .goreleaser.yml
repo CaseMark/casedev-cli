@@ -84,6 +84,8 @@ homebrew_casks:
       owner: CaseMark
       name: homebrew-casedev
       token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
+      pull_request:
+        enabled: true
     homepage: https://case.dev
     description: The official CLI for case.dev — manage legal AI resources from the terminal
     license: Apache-2.0
