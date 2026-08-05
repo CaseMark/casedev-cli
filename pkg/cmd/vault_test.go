@@ -116,18 +116,24 @@ func TestVaultConfirmUpload(t *testing.T) {
 			"vault", "confirm-upload",
 			"--id", "id",
 			"--object-id", "objectId",
-			"--size-bytes", "1",
 			"--success=true",
+			"--auto-ingest=true",
+			"--error-code", "errorCode",
+			"--error-message", "errorMessage",
 			"--etag", "etag",
+			"--size-bytes", "1",
 		)
 	})
 
 	t.Run("piping data", func(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("" +
-			"sizeBytes: 1\n" +
 			"success: true\n" +
-			"etag: etag\n")
+			"autoIngest: true\n" +
+			"errorCode: errorCode\n" +
+			"errorMessage: errorMessage\n" +
+			"etag: etag\n" +
+			"sizeBytes: 1\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",
@@ -208,9 +214,11 @@ func TestVaultUpload(t *testing.T) {
 			"--content-type", "contentType",
 			"--filename", "filename",
 			"--auto-index=true",
+			"--is-ai-generated=true",
 			"--metadata", "{}",
 			"--path", "path",
 			"--size-bytes", "1",
+			"--idempotency-key", "Idempotency-Key",
 		)
 	})
 
@@ -220,6 +228,7 @@ func TestVaultUpload(t *testing.T) {
 			"contentType: contentType\n" +
 			"filename: filename\n" +
 			"auto_index: true\n" +
+			"is_ai_generated: true\n" +
 			"metadata: {}\n" +
 			"path: path\n" +
 			"sizeBytes: 1\n")
@@ -228,6 +237,7 @@ func TestVaultUpload(t *testing.T) {
 			"--api-key", "string",
 			"vault", "upload",
 			"--id", "id",
+			"--idempotency-key", "Idempotency-Key",
 		)
 	})
 }

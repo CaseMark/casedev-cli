@@ -15,6 +15,8 @@ func TestUsageV1Retrieve(t *testing.T) {
 			"--api-key", "string",
 			"usage:v1", "retrieve",
 			"--granularity", "summary",
+			"--group-by", "lincSessionId",
+			"--linc-session-id", "lincSessionId",
 			"--period-end", "'2019-12-27T18:11:19.117Z'",
 			"--period-start", "'2019-12-27T18:11:19.117Z'",
 		)

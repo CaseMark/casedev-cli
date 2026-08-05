@@ -182,7 +182,7 @@ var mattersV1WorkItemsList = cli.Command{
 
 var mattersV1WorkItemsDecide = cli.Command{
 	Name:    "decide",
-	Usage:   "Approve, revise, block, or reassign a work item. Used by humans or agents to\nmove work items through their lifecycle.",
+	Usage:   "Approve or block a work item.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -197,13 +197,9 @@ var mattersV1WorkItemsDecide = cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "decision",
-			Usage:    `Allowed values: "approve", "revise", "block", "reassign".`,
+			Usage:    `Allowed values: "approve", "block".`,
 			Required: true,
 			BodyPath: "decision",
-		},
-		&requestflag.Flag[*string]{
-			Name:     "agent-type-id",
-			BodyPath: "agent_type_id",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "metadata",
@@ -215,26 +211,6 @@ var mattersV1WorkItemsDecide = cli.Command{
 		},
 	},
 	Action:          handleMattersV1WorkItemsDecide,
-	HideHelpCommand: true,
-}
-
-var mattersV1WorkItemsListExecutions = cli.Command{
-	Name:    "list-executions",
-	Usage:   "List execution attempts for a work item, including agent and run linkage.",
-	Suggest: true,
-	Flags: []cli.Flag{
-		&requestflag.Flag[string]{
-			Name:      "id",
-			Required:  true,
-			PathParam: "id",
-		},
-		&requestflag.Flag[string]{
-			Name:      "work-item-id",
-			Required:  true,
-			PathParam: "workItemId",
-		},
-	},
-	Action:          handleMattersV1WorkItemsListExecutions,
 	HideHelpCommand: true,
 }
 
@@ -406,40 +382,6 @@ func handleMattersV1WorkItemsDecide(ctx context.Context, cmd *cli.Command) error
 		cmd.Value("id").(string),
 		cmd.Value("work-item-id").(string),
 		params,
-		options...,
-	)
-}
-
-func handleMattersV1WorkItemsListExecutions(ctx context.Context, cmd *cli.Command) error {
-	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
-	unusedArgs := cmd.Args().Slice()
-	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
-		cmd.Set("id", unusedArgs[0])
-		unusedArgs = unusedArgs[1:]
-	}
-	if !cmd.IsSet("work-item-id") && len(unusedArgs) > 0 {
-		cmd.Set("work-item-id", unusedArgs[0])
-		unusedArgs = unusedArgs[1:]
-	}
-	if len(unusedArgs) > 0 {
-		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
-	}
-
-	options, err := flagOptions(
-		cmd,
-		apiquery.NestedQueryFormatBrackets,
-		apiquery.ArrayQueryFormatComma,
-		EmptyBody,
-		false,
-	)
-	if err != nil {
-		return err
-	}
-
-	return client.Matters.V1.WorkItems.ListExecutions(
-		ctx,
-		cmd.Value("id").(string),
-		cmd.Value("work-item-id").(string),
 		options...,
 	)
 }

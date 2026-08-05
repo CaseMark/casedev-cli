@@ -80,6 +80,12 @@ var vaultObjectsList = cli.Command{
 			Required:  true,
 			PathParam: "id",
 		},
+		&requestflag.Flag[bool]{
+			Name:      "include-unconfirmed",
+			Usage:     "Include placeholders for uploads that were never completed (awaiting_upload) or were cancelled (aborted). Excluded by default.",
+			Default:   false,
+			QueryPath: "includeUnconfirmed",
+		},
 	},
 	Action:          handleVaultObjectsList,
 	HideHelpCommand: true,
@@ -109,6 +115,78 @@ var vaultObjectsDelete = cli.Command{
 	Action:          handleVaultObjectsDelete,
 	HideHelpCommand: true,
 }
+
+var vaultObjectsAppend = requestflag.WithInnerFlags(cli.Command{
+	Name:    "append",
+	Usage:   "Merges one or more PDF vault objects onto the end of an existing PDF vault\nobject, overwriting the target in place before returning. Optionally rewrites\ncitation links in the original target into internal PDF jumps and adds back\nlinks on appended pages. The target object’s ingestion state is not affected;\nappended pages are not searchable.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
+		},
+		&requestflag.Flag[string]{
+			Name:      "object-id",
+			Required:  true,
+			PathParam: "objectId",
+		},
+		&requestflag.Flag[[]string]{
+			Name:     "append-object-id",
+			Usage:    "Vault object IDs whose pages will be appended onto the target object, in order. Must not include the target object itself.",
+			Required: true,
+			BodyPath: "appendObjectIds",
+		},
+		&requestflag.Flag[bool]{
+			Name:     "back-links",
+			Usage:    "Adds back links on appended pages",
+			Default:  false,
+			BodyPath: "backLinks",
+		},
+		&requestflag.Flag[string]{
+			Name:     "back-links-text",
+			Usage:    "Label text for the back link. Used only when backLinks is true and rendered centered at the bottom of each appended page.",
+			Default:  "Back to Summary",
+			BodyPath: "backLinksText",
+		},
+		&requestflag.Flag[map[string]any]{
+			Name:     "bates",
+			Usage:    "Optional Bates stamping for appended source PDFs. Numbering is deterministic across appendObjectIds order and does not stamp the target report pages.",
+			BodyPath: "bates",
+		},
+		&requestflag.Flag[bool]{
+			Name:     "rewrite-links",
+			Usage:    "When true, rewrites links in the target object to internal PDF jumps when the URL contains exactly one appended object ID as a standalone query parameter value or decoded path segment.",
+			Default:  false,
+			BodyPath: "rewriteLinks",
+		},
+	},
+	Action:          handleVaultObjectsAppend,
+	HideHelpCommand: true,
+}, map[string][]requestflag.HasOuterFlag{
+	"bates": {
+		&requestflag.InnerFlag[bool]{
+			Name:       "bates.enabled",
+			InnerField: "enabled",
+		},
+		&requestflag.InnerFlag[int64]{
+			Name:       "bates.pad-to",
+			InnerField: "padTo",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "bates.prefix",
+			InnerField: "prefix",
+		},
+		&requestflag.InnerFlag[int64]{
+			Name:       "bates.start",
+			InnerField: "start",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "bates.suffix",
+			InnerField: "suffix",
+		},
+	},
+})
 
 var vaultObjectsCreatePresignedURL = cli.Command{
 	Name:    "create-presigned-url",
@@ -273,34 +351,9 @@ var vaultObjectsGetPages = cli.Command{
 	HideHelpCommand: true,
 }
 
-var vaultObjectsGetSummarizeJob = cli.Command{
-	Name:    "get-summarize-job",
-	Usage:   "Get the status of a CaseMark summary workflow job.",
-	Suggest: true,
-	Flags: []cli.Flag{
-		&requestflag.Flag[string]{
-			Name:      "id",
-			Required:  true,
-			PathParam: "id",
-		},
-		&requestflag.Flag[string]{
-			Name:      "object-id",
-			Required:  true,
-			PathParam: "objectId",
-		},
-		&requestflag.Flag[string]{
-			Name:      "job-id",
-			Required:  true,
-			PathParam: "jobId",
-		},
-	},
-	Action:          handleVaultObjectsGetSummarizeJob,
-	HideHelpCommand: true,
-}
-
 var vaultObjectsGetText = cli.Command{
 	Name:    "get-text",
-	Usage:   "Retrieves the full extracted text content from a processed vault object. Returns\nthe concatenated text from all chunks, useful for document review, analysis, or\nexport. The object must have completed processing before text can be retrieved.",
+	Usage:   "Retrieves the full extracted text content from a processed vault object,\npage-numbered (--- Page N --- markers) when the source document is paginated.\nUseful for document review, analysis, or export. The object must have completed\nprocessing before text can be retrieved.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -317,6 +370,72 @@ var vaultObjectsGetText = cli.Command{
 	Action:          handleVaultObjectsGetText,
 	HideHelpCommand: true,
 }
+
+var vaultObjectsMerge = requestflag.WithInnerFlags(cli.Command{
+	Name:    "merge",
+	Usage:   "Starts an asynchronous merge that creates a new PDF vault object. Source objects\nare unchanged. Missing searchable PDF renditions are generated on demand before\ncombining. Completion is reported through vault.object.merge webhooks.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
+		},
+		&requestflag.Flag[string]{
+			Name:     "filename",
+			Usage:    "Output PDF filename",
+			Required: true,
+			BodyPath: "filename",
+		},
+		&requestflag.Flag[[]string]{
+			Name:     "source-object-id",
+			Usage:    "Source object IDs in output order",
+			Required: true,
+			BodyPath: "sourceObjectIds",
+		},
+		&requestflag.Flag[string]{
+			Name:     "source-rendition",
+			Usage:    `Allowed values: "original", "searchable_pdf".`,
+			Default:  "searchable_pdf",
+			Required: true,
+			BodyPath: "sourceRendition",
+		},
+		&requestflag.Flag[string]{
+			Name:       "idempotency-key",
+			Required:   true,
+			HeaderPath: "Idempotency-Key",
+		},
+		&requestflag.Flag[map[string]any]{
+			Name:     "bates",
+			BodyPath: "bates",
+		},
+		&requestflag.Flag[string]{
+			Name:     "client-reference",
+			BodyPath: "clientReference",
+		},
+	},
+	Action:          handleVaultObjectsMerge,
+	HideHelpCommand: true,
+}, map[string][]requestflag.HasOuterFlag{
+	"bates": {
+		&requestflag.InnerFlag[int64]{
+			Name:       "bates.pad-to",
+			InnerField: "padTo",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "bates.prefix",
+			InnerField: "prefix",
+		},
+		&requestflag.InnerFlag[int64]{
+			Name:       "bates.start",
+			InnerField: "start",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "bates.suffix",
+			InnerField: "suffix",
+		},
+	},
+})
 
 func handleVaultObjectsRetrieve(ctx context.Context, cmd *cli.Command) error {
 	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
@@ -445,9 +564,16 @@ func handleVaultObjectsList(ctx context.Context, cmd *cli.Command) error {
 		return err
 	}
 
+	params := githubcomcasemarkcasedevgo.VaultObjectListParams{}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Vault.Objects.List(ctx, cmd.Value("id").(string), options...)
+	_, err = client.Vault.Objects.List(
+		ctx,
+		cmd.Value("id").(string),
+		params,
+		options...,
+	)
 	if err != nil {
 		return err
 	}
@@ -515,6 +641,60 @@ func handleVaultObjectsDelete(ctx context.Context, cmd *cli.Command) error {
 		Format:         format,
 		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "vault:objects delete",
+		Transform:      transform,
+	})
+}
+
+func handleVaultObjectsAppend(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
+		cmd.Set("id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if !cmd.IsSet("object-id") && len(unusedArgs) > 0 {
+		cmd.Set("object-id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	params := githubcomcasemarkcasedevgo.VaultObjectAppendParams{}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Vault.Objects.Append(
+		ctx,
+		cmd.Value("id").(string),
+		cmd.Value("object-id").(string),
+		params,
+		options...,
+	)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "vault:objects append",
 		Transform:      transform,
 	})
 }
@@ -777,62 +957,6 @@ func handleVaultObjectsGetPages(ctx context.Context, cmd *cli.Command) error {
 	})
 }
 
-func handleVaultObjectsGetSummarizeJob(ctx context.Context, cmd *cli.Command) error {
-	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
-	unusedArgs := cmd.Args().Slice()
-	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
-		cmd.Set("id", unusedArgs[0])
-		unusedArgs = unusedArgs[1:]
-	}
-	if !cmd.IsSet("object-id") && len(unusedArgs) > 0 {
-		cmd.Set("object-id", unusedArgs[0])
-		unusedArgs = unusedArgs[1:]
-	}
-	if !cmd.IsSet("job-id") && len(unusedArgs) > 0 {
-		cmd.Set("job-id", unusedArgs[0])
-		unusedArgs = unusedArgs[1:]
-	}
-	if len(unusedArgs) > 0 {
-		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
-	}
-
-	options, err := flagOptions(
-		cmd,
-		apiquery.NestedQueryFormatBrackets,
-		apiquery.ArrayQueryFormatComma,
-		EmptyBody,
-		false,
-	)
-	if err != nil {
-		return err
-	}
-
-	var res []byte
-	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Vault.Objects.GetSummarizeJob(
-		ctx,
-		cmd.Value("id").(string),
-		cmd.Value("object-id").(string),
-		cmd.Value("job-id").(string),
-		options...,
-	)
-	if err != nil {
-		return err
-	}
-
-	obj := gjson.ParseBytes(res)
-	format := cmd.Root().String("format")
-	explicitFormat := cmd.Root().IsSet("format")
-	transform := cmd.Root().String("transform")
-	return ShowJSON(obj, ShowJSONOpts{
-		ExplicitFormat: explicitFormat,
-		Format:         format,
-		RawOutput:      cmd.Root().Bool("raw-output"),
-		Title:          "vault:objects get-summarize-job",
-		Transform:      transform,
-	})
-}
-
 func handleVaultObjectsGetText(ctx context.Context, cmd *cli.Command) error {
 	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
@@ -880,6 +1004,55 @@ func handleVaultObjectsGetText(ctx context.Context, cmd *cli.Command) error {
 		Format:         format,
 		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "vault:objects get-text",
+		Transform:      transform,
+	})
+}
+
+func handleVaultObjectsMerge(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
+		cmd.Set("id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	params := githubcomcasemarkcasedevgo.VaultObjectMergeParams{}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Vault.Objects.Merge(
+		ctx,
+		cmd.Value("id").(string),
+		params,
+		options...,
+	)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "vault:objects merge",
 		Transform:      transform,
 	})
 }

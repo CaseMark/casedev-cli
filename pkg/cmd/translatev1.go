@@ -5,6 +5,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/CaseMark/casedev-cli/internal/apiquery"
 	"github.com/CaseMark/casedev-cli/internal/requestflag"
@@ -86,6 +87,39 @@ var translateV1Translate = cli.Command{
 		},
 	},
 	Action:          handleTranslateV1Translate,
+	HideHelpCommand: true,
+}
+
+var translateV1TranslateDocument = cli.Command{
+	Name:    "translate-document",
+	Usage:   "Translate one TXT, DOCX, or searchable PDF document. DOCX and PDF translations\npreserve the source document format and retain as much layout and formatting as\npossible.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:      "file",
+			Usage:     "TXT, DOCX, or searchable PDF document (max 20MB)",
+			Required:  true,
+			BodyPath:  "file",
+			FileInput: true,
+		},
+		&requestflag.Flag[string]{
+			Name:     "target",
+			Usage:    "Target BCP-47 language code",
+			Required: true,
+			BodyPath: "target",
+		},
+		&requestflag.Flag[string]{
+			Name:     "source",
+			Usage:    "Optional source BCP-47 language code. Auto-detected when omitted.",
+			BodyPath: "source",
+		},
+		&requestflag.Flag[string]{
+			Name:    "output",
+			Aliases: []string{"o"},
+			Usage:   "The file where the response contents will be stored. Use the value '-' to force output to stdout.",
+		},
+	},
+	Action:          handleTranslateV1TranslateDocument,
 	HideHelpCommand: true,
 }
 
@@ -210,4 +244,36 @@ func handleTranslateV1Translate(ctx context.Context, cmd *cli.Command) error {
 		Title:          "translate:v1 translate",
 		Transform:      transform,
 	})
+}
+
+func handleTranslateV1TranslateDocument(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		MultipartFormEncoded,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	params := githubcomcasemarkcasedevgo.TranslateV1TranslateDocumentParams{}
+
+	response, err := client.Translate.V1.TranslateDocument(ctx, params, options...)
+	if err != nil {
+		return err
+	}
+	message, err := writeBinaryResponse(response, os.Stdout, cmd.String("output"))
+	if message != "" {
+		fmt.Println(message)
+	}
+	return err
 }

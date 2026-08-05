@@ -48,7 +48,7 @@ jobs:
       - name: Link staging branch
         if: github.repository == 'CaseMark/casedev-cli-staging'
         env:
-          GO_BRANCH: ${{ github.ref_name }}
+          GO_BRANCH: ${{ github.head_ref || github.ref_name }}
           GO_MODULE_REPO: CaseMark/casedev-go-staging
         run: |
           ./scripts/link "github.com/${GO_MODULE_REPO}@${GO_BRANCH}"
@@ -91,7 +91,7 @@ jobs:
       - name: Link staging branch
         if: github.repository == 'CaseMark/casedev-cli-staging'
         env:
-          GO_BRANCH: ${{ github.ref_name }}
+          GO_BRANCH: ${{ github.head_ref || github.ref_name }}
           GO_MODULE_REPO: CaseMark/casedev-go-staging
         run: |
           ./scripts/link "github.com/${GO_MODULE_REPO}@${GO_BRANCH}"
@@ -140,7 +140,7 @@ jobs:
       - name: Link staging branch
         if: github.repository == 'CaseMark/casedev-cli-staging'
         env:
-          GO_BRANCH: ${{ github.ref_name }}
+          GO_BRANCH: ${{ github.head_ref || github.ref_name }}
           GO_MODULE_REPO: CaseMark/casedev-go-staging
         run: |
           ./scripts/link "github.com/${GO_MODULE_REPO}@${GO_BRANCH}"

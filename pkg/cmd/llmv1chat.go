@@ -27,7 +27,7 @@ var llmV1ChatCreateCompletion = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[bool]{
 			Name:     "casemark-show-reasoning",
-			Usage:    "CaseMark-only: when true, allows reasoning fields in responses. Defaults to false (reasoning is suppressed).",
+			Usage:    "CaseMark-only: controls whether reasoning fields appear in responses. Defaults to false (suppressed) for most CaseMark models; defaults to true for casemark/core-potassium.",
 			BodyPath: "casemark_show_reasoning",
 		},
 		&requestflag.Flag[float64]{

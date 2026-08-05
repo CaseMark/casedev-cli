@@ -90,38 +90,55 @@ func init() {
 		},
 		Commands: []*cli.Command{
 			{
-				Name:     "agent:v1:agents",
+				Name:     "connectors:v1",
 				Category: "API RESOURCE",
 				Suggest:  true,
 				Commands: []*cli.Command{
-					&agentV1AgentsCreate,
-					&agentV1AgentsRetrieve,
-					&agentV1AgentsUpdate,
-					&agentV1AgentsList,
-					&agentV1AgentsDelete,
+					&connectorsV1SyncLink,
+					&connectorsV1Transfer,
 				},
 			},
 			{
-				Name:     "agent:v1:run",
+				Name:     "connectors:v1:installations",
 				Category: "API RESOURCE",
 				Suggest:  true,
 				Commands: []*cli.Command{
-					&agentV1RunCreate,
-					&agentV1RunList,
-					&agentV1RunCancel,
-					&agentV1RunEvents,
-					&agentV1RunExec,
-					&agentV1RunGetDetails,
-					&agentV1RunGetStatus,
-					&agentV1RunWatch,
+					&connectorsV1InstallationsList,
+					&connectorsV1InstallationsEnsure,
 				},
 			},
 			{
-				Name:     "agent:v1:execute",
+				Name:     "connectors:v1:installations:vaults",
 				Category: "API RESOURCE",
 				Suggest:  true,
 				Commands: []*cli.Command{
-					&agentV1ExecuteCreate,
+					&connectorsV1InstallationsVaultsList,
+					&connectorsV1InstallationsVaultsGrant,
+					&connectorsV1InstallationsVaultsRevoke,
+				},
+			},
+			{
+				Name:     "connectors:v1:connections",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&connectorsV1ConnectionsCreate,
+					&connectorsV1ConnectionsRetrieve,
+					&connectorsV1ConnectionsList,
+					&connectorsV1ConnectionsDelete,
+					&connectorsV1ConnectionsBrowse,
+				},
+			},
+			{
+				Name:     "connectors:v1:links",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&connectorsV1LinksRetrieve,
+					&connectorsV1LinksUpdate,
+					&connectorsV1LinksList,
+					&connectorsV1LinksDelete,
+					&connectorsV1LinksListObjects,
 				},
 			},
 			{
@@ -185,44 +202,11 @@ func init() {
 				},
 			},
 			{
-				Name:     "database:v1",
-				Category: "API RESOURCE",
-				Suggest:  true,
-				Commands: []*cli.Command{
-					&databaseV1GetUsage,
-				},
-			},
-			{
-				Name:     "database:v1:projects",
-				Category: "API RESOURCE",
-				Suggest:  true,
-				Commands: []*cli.Command{
-					&databaseV1ProjectsCreate,
-					&databaseV1ProjectsRetrieve,
-					&databaseV1ProjectsList,
-					&databaseV1ProjectsDelete,
-					&databaseV1ProjectsCreateBranch,
-					&databaseV1ProjectsGetConnection,
-					&databaseV1ProjectsListBranches,
-				},
-			},
-			{
-				Name:     "format:v1:templates",
-				Category: "API RESOURCE",
-				Suggest:  true,
-				Commands: []*cli.Command{
-					&formatV1TemplatesCreate,
-					&formatV1TemplatesRetrieve,
-					&formatV1TemplatesList,
-				},
-			},
-			{
 				Name:     "legal:v1",
 				Category: "API RESOURCE",
 				Suggest:  true,
 				Commands: []*cli.Command{
 					&legalV1Docket,
-					&legalV1Draft,
 					&legalV1Find,
 					&legalV1GetCitations,
 					&legalV1GetCitationsFromURL,
@@ -235,6 +219,21 @@ func init() {
 					&legalV1Similar,
 					&legalV1TrademarkSearch,
 					&legalV1Verify,
+				},
+			},
+			{
+				Name:     "linc:v1:sessions",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&lincV1SessionsCreate,
+					&lincV1SessionsDelete,
+					&lincV1SessionsCancel,
+					&lincV1SessionsIngestEvents,
+					&lincV1SessionsRetrieveEvents,
+					&lincV1SessionsRetrieveMessages,
+					&lincV1SessionsRetrieveState,
+					&lincV1SessionsSendRpc,
 				},
 			},
 			{
@@ -328,7 +327,6 @@ func init() {
 					&mattersV1WorkItemsUpdate,
 					&mattersV1WorkItemsList,
 					&mattersV1WorkItemsDecide,
-					&mattersV1WorkItemsListExecutions,
 				},
 			},
 			{
@@ -387,6 +385,14 @@ func init() {
 				},
 			},
 			{
+				Name:     "media:v1:transcripts:retrieve",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&mediaV1TranscriptsRetrieveCreate,
+				},
+			},
+			{
 				Name:     "ocr:v1",
 				Category: "API RESOURCE",
 				Suggest:  true,
@@ -402,24 +408,6 @@ func init() {
 				Suggest:  true,
 				Commands: []*cli.Command{
 					&privilegeV1Detect,
-				},
-			},
-			{
-				Name:     "mail:v1:inboxes",
-				Category: "API RESOURCE",
-				Suggest:  true,
-				Commands: []*cli.Command{
-					&mailV1InboxesCreate,
-					&mailV1InboxesRetrieve,
-					&mailV1InboxesList,
-					&mailV1InboxesDelete,
-					&mailV1InboxesGetAttachment,
-					&mailV1InboxesGetMessage,
-					&mailV1InboxesGetPolicy,
-					&mailV1InboxesListMessages,
-					&mailV1InboxesReply,
-					&mailV1InboxesSend,
-					&mailV1InboxesSetPolicy,
 				},
 			},
 			{
@@ -450,8 +438,6 @@ func init() {
 				Commands: []*cli.Command{
 					&searchV1Answer,
 					&searchV1Contents,
-					&searchV1Research,
-					&searchV1RetrieveResearch,
 					&searchV1Search,
 					&searchV1Similar,
 				},
@@ -464,6 +450,7 @@ func init() {
 					&translateV1Detect,
 					&translateV1ListLanguages,
 					&translateV1Translate,
+					&translateV1TranslateDocument,
 				},
 			},
 			{
@@ -515,16 +502,6 @@ func init() {
 				},
 			},
 			{
-				Name:     "vault:graphrag",
-				Category: "API RESOURCE",
-				Suggest:  true,
-				Commands: []*cli.Command{
-					&vaultGraphragGetStats,
-					&vaultGraphragInit,
-					&vaultGraphragProcessObject,
-				},
-			},
-			{
 				Name:     "vault:groups",
 				Category: "API RESOURCE",
 				Suggest:  true,
@@ -541,7 +518,9 @@ func init() {
 				Suggest:  true,
 				Commands: []*cli.Command{
 					&vaultMultipartAbort,
+					&vaultMultipartComplete,
 					&vaultMultipartGetPartURLs,
+					&vaultMultipartInit,
 				},
 			},
 			{
@@ -553,13 +532,14 @@ func init() {
 					&vaultObjectsUpdate,
 					&vaultObjectsList,
 					&vaultObjectsDelete,
+					&vaultObjectsAppend,
 					&vaultObjectsCreatePresignedURL,
 					&vaultObjectsDownload,
 					&vaultObjectsGetChunks,
 					&vaultObjectsGetOcrWords,
 					&vaultObjectsGetPages,
-					&vaultObjectsGetSummarizeJob,
 					&vaultObjectsGetText,
+					&vaultObjectsMerge,
 				},
 			},
 			{
