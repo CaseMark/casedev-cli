@@ -134,7 +134,6 @@ func TestMattersV1WorkItemsDecide(t *testing.T) {
 			"--id", "id",
 			"--work-item-id", "workItemId",
 			"--decision", "approve",
-			"--agent-type-id", "agent_type_id",
 			"--metadata", "{foo: bar}",
 			"--reason", "reason",
 		)
@@ -144,7 +143,6 @@ func TestMattersV1WorkItemsDecide(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("" +
 			"decision: approve\n" +
-			"agent_type_id: agent_type_id\n" +
 			"metadata:\n" +
 			"  foo: bar\n" +
 			"reason: reason\n")
@@ -152,18 +150,6 @@ func TestMattersV1WorkItemsDecide(t *testing.T) {
 			t, pipeData,
 			"--api-key", "string",
 			"matters:v1:work-items", "decide",
-			"--id", "id",
-			"--work-item-id", "workItemId",
-		)
-	})
-}
-
-func TestMattersV1WorkItemsListExecutions(t *testing.T) {
-	t.Run("regular flags", func(t *testing.T) {
-		mocktest.TestRunMockTestWithFlags(
-			t,
-			"--api-key", "string",
-			"matters:v1:work-items", "list-executions",
 			"--id", "id",
 			"--work-item-id", "workItemId",
 		)

@@ -93,47 +93,6 @@ func TestSearchV1Contents(t *testing.T) {
 	})
 }
 
-func TestSearchV1Research(t *testing.T) {
-	t.Run("regular flags", func(t *testing.T) {
-		mocktest.TestRunMockTestWithFlags(
-			t,
-			"--api-key", "string",
-			"search:v1", "research",
-			"--instructions", "instructions",
-			"--model", "fast",
-			"--output-schema", "{}",
-			"--query", "query",
-		)
-	})
-
-	t.Run("piping data", func(t *testing.T) {
-		// Test piping YAML data over stdin
-		pipeData := []byte("" +
-			"instructions: instructions\n" +
-			"model: fast\n" +
-			"outputSchema: {}\n" +
-			"query: query\n")
-		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData,
-			"--api-key", "string",
-			"search:v1", "research",
-		)
-	})
-}
-
-func TestSearchV1RetrieveResearch(t *testing.T) {
-	t.Run("regular flags", func(t *testing.T) {
-		mocktest.TestRunMockTestWithFlags(
-			t,
-			"--api-key", "string",
-			"search:v1", "retrieve-research",
-			"--id", "id",
-			"--events", "events",
-			"--stream=true",
-		)
-	})
-}
-
 func TestSearchV1Search(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(

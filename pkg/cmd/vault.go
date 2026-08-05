@@ -145,7 +145,7 @@ var vaultDelete = cli.Command{
 
 var vaultConfirmUpload = cli.Command{
 	Name:    "confirm-upload",
-	Usage:   "Confirm whether a direct-to-S3 vault upload succeeded or failed. This endpoint\nemits vault.upload.completed or vault.upload.failed events and is idempotent for\nrepeated confirmations.",
+	Usage:   "Confirm whether a direct-to-S3 vault upload succeeded or failed. This endpoint\nemits vault.upload.completed or vault.upload.failed events and is idempotent for\nrepeated confirmations. Conditional fields: when success=true, sizeBytes is\nrequired; when success=false, errorCode and errorMessage are required. These\nrules are enforced server-side with specific 400 responses.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -157,11 +157,6 @@ var vaultConfirmUpload = cli.Command{
 			Name:      "object-id",
 			Required:  true,
 			PathParam: "objectId",
-		},
-		&requestflag.Flag[int64]{
-			Name:     "size-bytes",
-			Usage:    "Uploaded file size in bytes",
-			BodyPath: "sizeBytes",
 		},
 		&requestflag.Flag[bool]{
 			Name:     "success",
@@ -176,19 +171,24 @@ var vaultConfirmUpload = cli.Command{
 			BodyPath: "autoIngest",
 		},
 		&requestflag.Flag[string]{
-			Name:     "etag",
-			Usage:    "S3 ETag for the uploaded object (optional if client cannot access ETag header)",
-			BodyPath: "etag",
-		},
-		&requestflag.Flag[string]{
 			Name:     "error-code",
-			Usage:    "Client-side error code",
+			Usage:    "Client-side error code. Required when success=false.",
 			BodyPath: "errorCode",
 		},
 		&requestflag.Flag[string]{
 			Name:     "error-message",
-			Usage:    "Client-side error message",
+			Usage:    "Client-side error message. Required when success=false.",
 			BodyPath: "errorMessage",
+		},
+		&requestflag.Flag[string]{
+			Name:     "etag",
+			Usage:    "S3 ETag for the uploaded object (optional if client cannot access ETag header). Only meaningful when success=true.",
+			BodyPath: "etag",
+		},
+		&requestflag.Flag[int64]{
+			Name:     "size-bytes",
+			Usage:    "Uploaded file size in bytes. Required when success=true.",
+			BodyPath: "sizeBytes",
 		},
 	},
 	Action:          handleVaultConfirmUpload,
@@ -197,7 +197,7 @@ var vaultConfirmUpload = cli.Command{
 
 var vaultIngest = cli.Command{
 	Name:    "ingest",
-	Usage:   "Triggers ingestion workflow for a vault object to extract text, generate chunks,\nand create embeddings. For supported file types (PDF, DOCX, PPTX, XLSX, TXT,\nRTF, XML, HTML, Markdown, CSV/TSV, JSON/YAML/TOML, common source code files,\nZIP, audio, video), processing happens asynchronously. ZIP archives are unpacked\nrecursively up to 5 levels, and each extracted file is created as an independent\nvault object and ingested via the normal pipeline. For unsupported types\n(images, etc.), the file is marked as completed immediately without text\nextraction. GraphRAG indexing must be triggered separately via POST\n/vault/:id/graphrag/:objectId.",
+	Usage:   "Triggers ingestion workflow for a vault object to extract text, generate chunks,\nand create embeddings. For supported file types (PDF, DOCX, PPTX, XLSX, TXT,\nRTF, XML, HTML, Markdown, CSV/TSV, JSON/YAML/TOML, common source code files,\nZIP, audio, video), processing happens asynchronously. ZIP archives are unpacked\nrecursively up to 5 levels, and each extracted file is created as an independent\nvault object and ingested via the normal pipeline. For unsupported types\n(images, etc.), the file is marked as completed immediately without text\nextraction.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -309,6 +309,10 @@ var vaultUpload = cli.Command{
 			Name:     "size-bytes",
 			Usage:    "File size in bytes (optional, max 5GB for single PUT uploads). When provided, enforces exact file size at S3 level.",
 			BodyPath: "sizeBytes",
+		},
+		&requestflag.Flag[string]{
+			Name:       "idempotency-key",
+			HeaderPath: "Idempotency-Key",
 		},
 	},
 	Action:          handleVaultUpload,

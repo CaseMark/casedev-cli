@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/CaseMark/casedev-cli/internal/mocktest"
+	"github.com/CaseMark/casedev-cli/internal/requestflag"
 )
 
 func TestVaultObjectsRetrieve(t *testing.T) {
@@ -86,6 +87,30 @@ func TestVaultObjectsAppend(t *testing.T) {
 			"--append-object-id", "string",
 			"--back-links=true",
 			"--back-links-text", "backLinksText",
+			"--bates", "{enabled: true, padTo: 0, prefix: prefix, start: 1, suffix: suffix}",
+			"--rewrite-links=true",
+		)
+	})
+
+	t.Run("inner flags", func(t *testing.T) {
+		// Check that inner flags have been set up correctly
+		requestflag.CheckInnerFlags(vaultObjectsAppend)
+
+		// Alternative argument passing style using inner flags
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"vault:objects", "append",
+			"--id", "id",
+			"--object-id", "objectId",
+			"--append-object-id", "string",
+			"--back-links=true",
+			"--back-links-text", "backLinksText",
+			"--bates.enabled=true",
+			"--bates.pad-to", "0",
+			"--bates.prefix", "prefix",
+			"--bates.start", "1",
+			"--bates.suffix", "suffix",
 			"--rewrite-links=true",
 		)
 	})
@@ -97,6 +122,12 @@ func TestVaultObjectsAppend(t *testing.T) {
 			"  - string\n" +
 			"backLinks: true\n" +
 			"backLinksText: backLinksText\n" +
+			"bates:\n" +
+			"  enabled: true\n" +
+			"  padTo: 0\n" +
+			"  prefix: prefix\n" +
+			"  start: 1\n" +
+			"  suffix: suffix\n" +
 			"rewriteLinks: true\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
@@ -196,19 +227,6 @@ func TestVaultObjectsGetPages(t *testing.T) {
 	})
 }
 
-func TestVaultObjectsGetSummarizeJob(t *testing.T) {
-	t.Run("regular flags", func(t *testing.T) {
-		mocktest.TestRunMockTestWithFlags(
-			t,
-			"--api-key", "string",
-			"vault:objects", "get-summarize-job",
-			"--id", "id",
-			"--object-id", "objectId",
-			"--job-id", "jobId",
-		)
-	})
-}
-
 func TestVaultObjectsGetText(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
@@ -221,30 +239,63 @@ func TestVaultObjectsGetText(t *testing.T) {
 	})
 }
 
-func TestVaultObjectsSummarize(t *testing.T) {
+func TestVaultObjectsMerge(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
 			t,
 			"--api-key", "string",
-			"vault:objects", "summarize",
+			"vault:objects", "merge",
 			"--id", "id",
-			"--object-id", "objectId",
-			"--output-format", "PDF",
-			"--workflow-type", "workflowType",
+			"--filename", "filename",
+			"--source-object-id", "string",
+			"--source-rendition", "original",
+			"--idempotency-key", "x",
+			"--bates", "{padTo: 0, prefix: prefix, start: 1, suffix: suffix}",
+			"--client-reference", "clientReference",
+		)
+	})
+
+	t.Run("inner flags", func(t *testing.T) {
+		// Check that inner flags have been set up correctly
+		requestflag.CheckInnerFlags(vaultObjectsMerge)
+
+		// Alternative argument passing style using inner flags
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"vault:objects", "merge",
+			"--id", "id",
+			"--filename", "filename",
+			"--source-object-id", "string",
+			"--source-rendition", "original",
+			"--idempotency-key", "x",
+			"--bates.pad-to", "0",
+			"--bates.prefix", "prefix",
+			"--bates.start", "1",
+			"--bates.suffix", "suffix",
+			"--client-reference", "clientReference",
 		)
 	})
 
 	t.Run("piping data", func(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("" +
-			"outputFormat: PDF\n" +
-			"workflowType: workflowType\n")
+			"filename: filename\n" +
+			"sourceObjectIds:\n" +
+			"  - string\n" +
+			"sourceRendition: original\n" +
+			"bates:\n" +
+			"  padTo: 0\n" +
+			"  prefix: prefix\n" +
+			"  start: 1\n" +
+			"  suffix: suffix\n" +
+			"clientReference: clientReference\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",
-			"vault:objects", "summarize",
+			"vault:objects", "merge",
 			"--id", "id",
-			"--object-id", "objectId",
+			"--idempotency-key", "x",
 		)
 	})
 }

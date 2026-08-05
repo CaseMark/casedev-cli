@@ -45,6 +45,11 @@ var lincV1SessionsCreate = cli.Command{
 			Usage:    "Optional caller-provided scoped Case.dev API key for the runtime.",
 			BodyPath: "scopedApiKey",
 		},
+		&requestflag.Flag[string]{
+			Name:     "service-tier",
+			Usage:    "Processing tier for eligible OpenAI GPT models. Priority provides lower latency at premium cost.",
+			BodyPath: "serviceTier",
+		},
 		&requestflag.Flag[any]{
 			Name:     "skill-slug",
 			Usage:    "Skills API slugs to install into the runtime sandbox before the native session starts.",
@@ -80,13 +85,18 @@ var lincV1SessionsDelete = cli.Command{
 
 var lincV1SessionsCancel = cli.Command{
 	Name:    "cancel",
-	Usage:   "Cancel native Linc session turn",
+	Usage:   "Sends an abort RPC to the session runtime, ending the current turn while keeping\nthe session alive. Body handling is intentionally lenient — cancel is a stop\ncontrol, so unknown fields are ignored and an invalid or missing body is treated\nas empty rather than rejected.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "id",
 			Required:  true,
 			PathParam: "id",
+		},
+		&requestflag.Flag[bool]{
+			Name:     "clear-queue",
+			Usage:    "Also clear queued steering/follow-up messages so the abort leaves the agent fully idle. Cleared texts are returned in the `response.data.clearedQueue` field of the response body. Without it, messages still queued when the abort settles are auto-continued as a new run. Runtimes older than the Linc release that supports this flag ignore it: the abort still happens but the queue is left untouched.",
+			BodyPath: "clearQueue",
 		},
 	},
 	Action:          handleLincV1SessionsCancel,
@@ -302,14 +312,21 @@ func handleLincV1SessionsCancel(ctx context.Context, cmd *cli.Command) error {
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
 		apiquery.ArrayQueryFormatComma,
-		EmptyBody,
+		ApplicationJSON,
 		false,
 	)
 	if err != nil {
 		return err
 	}
 
-	return client.Linc.V1.Sessions.Cancel(ctx, cmd.Value("id").(string), options...)
+	params := githubcomcasemarkcasedevgo.LincV1SessionCancelParams{}
+
+	return client.Linc.V1.Sessions.Cancel(
+		ctx,
+		cmd.Value("id").(string),
+		params,
+		options...,
+	)
 }
 
 func handleLincV1SessionsIngestEvents(ctx context.Context, cmd *cli.Command) error {

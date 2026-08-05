@@ -71,7 +71,7 @@ var legalV1Docket = cli.Command{
 		},
 		&requestflag.Flag[int64]{
 			Name:     "offset",
-			Usage:    "Offset for search results or entry list",
+			Usage:    "Offset for search results or entry list (maximum 200 when including lookup entries)",
 			Default:  0,
 			BodyPath: "offset",
 		},
@@ -84,84 +84,6 @@ var legalV1Docket = cli.Command{
 	Action:          handleLegalV1Docket,
 	HideHelpCommand: true,
 }
-
-var legalV1Draft = requestflag.WithInnerFlags(cli.Command{
-	Name:    "draft",
-	Usage:   "Generate a legal document with structured inputs. Powered by an agent that\nhandles research, formatting, citation verification, and vault upload. Returns a\nrun ID for polling.",
-	Suggest: true,
-	Flags: []cli.Flag{
-		&requestflag.Flag[string]{
-			Name:     "instructions",
-			Usage:    `What to draft — the core task. E.g., "Motion to compel defendant to produce discovery responses"`,
-			Required: true,
-			BodyPath: "instructions",
-		},
-		&requestflag.Flag[string]{
-			Name:     "vault-id",
-			Usage:    "Vault ID where the final document will be uploaded",
-			Required: true,
-			BodyPath: "vault_id",
-		},
-		&requestflag.Flag[bool]{
-			Name:     "citations",
-			Usage:    "Research and include legal citations",
-			Default:  false,
-			BodyPath: "citations",
-		},
-		&requestflag.Flag[*string]{
-			Name:     "format",
-			Usage:    `Court or jurisdiction formatting hint. Triggers a legal-skills search. E.g., "California Superior Court", "SDNY", "federal pleading"`,
-			BodyPath: "format",
-		},
-		&requestflag.Flag[map[string]any]{
-			Name:     "length",
-			Usage:    "Target document length",
-			BodyPath: "length",
-		},
-		&requestflag.Flag[*string]{
-			Name:     "model",
-			Usage:    "LLM model override. Defaults to anthropic/claude-sonnet-4.6",
-			BodyPath: "model",
-		},
-		&requestflag.Flag[any]{
-			Name:     "object-id",
-			Usage:    "Vault object IDs to use as source/reference documents",
-			BodyPath: "object_ids",
-		},
-		&requestflag.Flag[*string]{
-			Name:     "output-name",
-			Usage:    "Filename for the output document. Auto-generated if omitted.",
-			BodyPath: "output_name",
-		},
-		&requestflag.Flag[string]{
-			Name:     "output-type",
-			Usage:    "Output file format",
-			Default:  "md",
-			BodyPath: "output_type",
-		},
-		&requestflag.Flag[bool]{
-			Name:     "verified",
-			Usage:    "Verify all citations in a loop — re-run verification and repair bad citations until they pass",
-			Default:  false,
-			BodyPath: "verified",
-		},
-	},
-	Action:          handleLegalV1Draft,
-	HideHelpCommand: true,
-}, map[string][]requestflag.HasOuterFlag{
-	"length": {
-		&requestflag.InnerFlag[float64]{
-			Name:       "length.target",
-			Usage:      "Target value (e.g., 2000 words or 5 pages)",
-			InnerField: "target",
-		},
-		&requestflag.InnerFlag[string]{
-			Name:       "length.unit",
-			Usage:      "Whether the target length is measured in words or pages",
-			InnerField: "unit",
-		},
-	},
-})
 
 var legalV1Find = cli.Command{
 	Name:    "find",
@@ -588,47 +510,6 @@ func handleLegalV1Docket(ctx context.Context, cmd *cli.Command) error {
 		Format:         format,
 		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "legal:v1 docket",
-		Transform:      transform,
-	})
-}
-
-func handleLegalV1Draft(ctx context.Context, cmd *cli.Command) error {
-	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
-	unusedArgs := cmd.Args().Slice()
-
-	if len(unusedArgs) > 0 {
-		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
-	}
-
-	options, err := flagOptions(
-		cmd,
-		apiquery.NestedQueryFormatBrackets,
-		apiquery.ArrayQueryFormatComma,
-		ApplicationJSON,
-		false,
-	)
-	if err != nil {
-		return err
-	}
-
-	params := githubcomcasemarkcasedevgo.LegalV1DraftParams{}
-
-	var res []byte
-	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Legal.V1.Draft(ctx, params, options...)
-	if err != nil {
-		return err
-	}
-
-	obj := gjson.ParseBytes(res)
-	format := cmd.Root().String("format")
-	explicitFormat := cmd.Root().IsSet("format")
-	transform := cmd.Root().String("transform")
-	return ShowJSON(obj, ShowJSONOpts{
-		ExplicitFormat: explicitFormat,
-		Format:         format,
-		RawOutput:      cmd.Root().Bool("raw-output"),
-		Title:          "legal:v1 draft",
 		Transform:      transform,
 	})
 }

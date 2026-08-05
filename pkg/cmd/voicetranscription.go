@@ -16,7 +16,7 @@ import (
 
 var voiceTranscriptionCreate = cli.Command{
 	Name:    "create",
-	Usage:   "Creates an asynchronous transcription job for audio files. Supports two modes:",
+	Usage:   "Creates an asynchronous transcription job for audio or video files. Supports two\nmodes:",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{

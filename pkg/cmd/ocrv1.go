@@ -17,7 +17,7 @@ import (
 
 var ocrV1Retrieve = cli.Command{
 	Name:    "retrieve",
-	Usage:   "Retrieve the status and results of an OCR job. Returns job progress, extracted\ntext, and metadata when processing is complete.",
+	Usage:   "Retrieve the status and results of an OCR job. Returns job progress and\nmetadata; full extracted text is included only when include_text=true.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -27,7 +27,7 @@ var ocrV1Retrieve = cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:      "include-text",
-			Usage:     "Include full OCR text in completed responses (default: true)",
+			Usage:     "Include full OCR text in completed responses (default: false)",
 			QueryPath: "include_text",
 		},
 	},

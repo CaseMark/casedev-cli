@@ -21,6 +21,7 @@ func TestLincV1SessionsCreate(t *testing.T) {
 			"--instructions", "instructions",
 			"--model", "model",
 			"--scoped-api-key", "scopedApiKey",
+			"--service-tier", "default",
 			"--skill-slug", "[string]",
 			"--title", "title",
 			"--vault-id", "[string]",
@@ -37,6 +38,7 @@ func TestLincV1SessionsCreate(t *testing.T) {
 			"instructions: instructions\n" +
 			"model: model\n" +
 			"scopedApiKey: scopedApiKey\n" +
+			"serviceTier: default\n" +
 			"skillSlugs:\n" +
 			"  - string\n" +
 			"title: title\n" +
@@ -65,6 +67,18 @@ func TestLincV1SessionsCancel(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
 			t,
+			"--api-key", "string",
+			"linc:v1:sessions", "cancel",
+			"--id", "id",
+			"--clear-queue=true",
+		)
+	})
+
+	t.Run("piping data", func(t *testing.T) {
+		// Test piping YAML data over stdin
+		pipeData := []byte("clearQueue: true")
+		mocktest.TestRunMockTestWithPipeAndFlags(
+			t, pipeData,
 			"--api-key", "string",
 			"linc:v1:sessions", "cancel",
 			"--id", "id",

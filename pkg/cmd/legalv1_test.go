@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/CaseMark/casedev-cli/internal/mocktest"
-	"github.com/CaseMark/casedev-cli/internal/requestflag"
 )
 
 func TestLegalV1Docket(t *testing.T) {
@@ -47,72 +46,6 @@ func TestLegalV1Docket(t *testing.T) {
 			t, pipeData,
 			"--api-key", "string",
 			"legal:v1", "docket",
-		)
-	})
-}
-
-func TestLegalV1Draft(t *testing.T) {
-	t.Run("regular flags", func(t *testing.T) {
-		mocktest.TestRunMockTestWithFlags(
-			t,
-			"--api-key", "string",
-			"legal:v1", "draft",
-			"--instructions", "xxxxxxxxxx",
-			"--vault-id", "vault_id",
-			"--citations=true",
-			"--format", "format",
-			"--length", "{target: 0, unit: words}",
-			"--model", "model",
-			"--object-id", "[string]",
-			"--output-name", "output_name",
-			"--output-type", "pdf",
-			"--verified=true",
-		)
-	})
-
-	t.Run("inner flags", func(t *testing.T) {
-		// Check that inner flags have been set up correctly
-		requestflag.CheckInnerFlags(legalV1Draft)
-
-		// Alternative argument passing style using inner flags
-		mocktest.TestRunMockTestWithFlags(
-			t,
-			"--api-key", "string",
-			"legal:v1", "draft",
-			"--instructions", "xxxxxxxxxx",
-			"--vault-id", "vault_id",
-			"--citations=true",
-			"--format", "format",
-			"--length.target", "0",
-			"--length.unit", "words",
-			"--model", "model",
-			"--object-id", "[string]",
-			"--output-name", "output_name",
-			"--output-type", "pdf",
-			"--verified=true",
-		)
-	})
-
-	t.Run("piping data", func(t *testing.T) {
-		// Test piping YAML data over stdin
-		pipeData := []byte("" +
-			"instructions: xxxxxxxxxx\n" +
-			"vault_id: vault_id\n" +
-			"citations: true\n" +
-			"format: format\n" +
-			"length:\n" +
-			"  target: 0\n" +
-			"  unit: words\n" +
-			"model: model\n" +
-			"object_ids:\n" +
-			"  - string\n" +
-			"output_name: output_name\n" +
-			"output_type: pdf\n" +
-			"verified: true\n")
-		mocktest.TestRunMockTestWithPipeAndFlags(
-			t, pipeData,
-			"--api-key", "string",
-			"legal:v1", "draft",
 		)
 	})
 }
