@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.46.0](https://github.com/CaseMark/casedev-cli/compare/v0.45.0...v0.46.0) (2026-08-05)
+
+
+### Features
+
+* **api:** api update ([#8](https://github.com/CaseMark/casedev-cli/issues/8)) ([81d3269](https://github.com/CaseMark/casedev-cli/commit/81d3269655bf10b8af41212eb2885eeb1ba0ba98))
+
 ## [0.45.0](https://github.com/CaseMark/casedev-cli/compare/v0.44.0...v0.45.0) (2026-06-11)
 
 
