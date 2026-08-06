@@ -143,6 +143,26 @@ func TestDebugMiddleware(t *testing.T) {
 		require.Contains(t, logBuf.String(), customAPIKeyHeader+": "+redactedPlaceholder)
 	})
 
+	t.Run("RedactsVercelProtectionBypassByDefault", func(t *testing.T) {
+		t.Parallel()
+
+		middleware, logBuf := setup()
+		req := httptest.NewRequest("GET", "https://example.com", nil)
+		req.Header.Set("x-vercel-protection-bypass", secretToken)
+
+		middleware.Middleware()(req, func(req *http.Request) (*http.Response, error) {
+			require.Equal(t, secretToken, req.Header.Get("x-vercel-protection-bypass"))
+			return &http.Response{}, nil
+		})
+
+		require.NotContains(t, logBuf.String(), secretToken)
+		require.Contains(
+			t,
+			logBuf.String(),
+			"X-Vercel-Protection-Bypass: "+redactedPlaceholder,
+		)
+	})
+
 	t.Run("RedactsMultipleSensitiveHeaders", func(t *testing.T) {
 		t.Parallel()
 
