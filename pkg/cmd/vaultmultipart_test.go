@@ -46,6 +46,7 @@ func TestVaultMultipartComplete(t *testing.T) {
 			"--part", "{etag: etag, partNumber: 1}",
 			"--size-bytes", "1",
 			"--upload-id", "uploadId",
+			"--auto-ingest=true",
 		)
 	})
 
@@ -64,6 +65,7 @@ func TestVaultMultipartComplete(t *testing.T) {
 			"--part.part-number", "1",
 			"--size-bytes", "1",
 			"--upload-id", "uploadId",
+			"--auto-ingest=true",
 		)
 	})
 
@@ -75,7 +77,8 @@ func TestVaultMultipartComplete(t *testing.T) {
 			"  - etag: etag\n" +
 			"    partNumber: 1\n" +
 			"sizeBytes: 1\n" +
-			"uploadId: uploadId\n")
+			"uploadId: uploadId\n" +
+			"autoIngest: true\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",
@@ -143,6 +146,7 @@ func TestVaultMultipartInit(t *testing.T) {
 			"--filename", "filename",
 			"--size-bytes", "1",
 			"--auto-index=true",
+			"--file-origin", "{foo: bar}",
 			"--is-ai-generated=true",
 			"--metadata", "{}",
 			"--part-size-bytes", "5242880",
@@ -157,6 +161,8 @@ func TestVaultMultipartInit(t *testing.T) {
 			"filename: filename\n" +
 			"sizeBytes: 1\n" +
 			"auto_index: true\n" +
+			"file_origin:\n" +
+			"  foo: bar\n" +
 			"is_ai_generated: true\n" +
 			"metadata: {}\n" +
 			"partSizeBytes: 5242880\n" +

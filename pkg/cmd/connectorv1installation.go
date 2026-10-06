@@ -9,12 +9,14 @@ import (
 	"github.com/CaseMark/casedev-cli/internal/apiquery"
 	"github.com/CaseMark/casedev-cli/internal/requestflag"
 	"github.com/CaseMark/casedev-go"
+	"github.com/CaseMark/casedev-go/option"
+	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
 var connectorsV1InstallationsList = cli.Command{
 	Name:    "list",
-	Usage:   "List application installations (tenants) in this organization.",
+	Usage:   "List application installations (tenants) in this organization. Returns at most\n`limit` installations (default 200, maximum 200). When `pagination.has_more` is\ntrue, replay `pagination.next_cursor` as `?cursor=` to fetch the following page.\nCursors are opaque and are only valid for the exact filter set and caller scope\nthey were issued under.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -22,8 +24,18 @@ var connectorsV1InstallationsList = cli.Command{
 			QueryPath: "application",
 		},
 		&requestflag.Flag[string]{
+			Name:      "cursor",
+			Usage:     "Opaque continuation cursor from `pagination.next_cursor` of the previous page. Must be replayed with the same filters and scope that produced it.",
+			QueryPath: "cursor",
+		},
+		&requestflag.Flag[string]{
 			Name:      "external-tenant-id",
 			QueryPath: "external_tenant_id",
+		},
+		&requestflag.Flag[int64]{
+			Name:      "limit",
+			Usage:     "Installations per page (1-200). Defaults to 200.",
+			QueryPath: "limit",
 		},
 	},
 	Action:          handleConnectorsV1InstallationsList,
@@ -73,7 +85,24 @@ func handleConnectorsV1InstallationsList(ctx context.Context, cmd *cli.Command) 
 
 	params := githubcomcasemarkcasedevgo.ConnectorV1InstallationListParams{}
 
-	return client.Connectors.V1.Installations.List(ctx, params, options...)
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Connectors.V1.Installations.List(ctx, params, options...)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "connectors:v1:installations list",
+		Transform:      transform,
+	})
 }
 
 func handleConnectorsV1InstallationsEnsure(ctx context.Context, cmd *cli.Command) error {

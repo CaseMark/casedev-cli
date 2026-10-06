@@ -33,7 +33,7 @@ var skillsCreate = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]map[string]any]{
 			Name:     "file",
-			Usage:    "Optional bundled companion files installed alongside the skill as <slug>/<path> in sandbox skill directories.",
+			Usage:    "Optional bundled companion files installed alongside the skill as <slug>/<path> in sandbox skill directories. The complete file set may contain at most 12 MiB of decoded content.",
 			BodyPath: "files",
 		},
 		&requestflag.Flag[any]{
@@ -63,6 +63,7 @@ var skillsCreate = requestflag.WithInnerFlags(cli.Command{
 	"file": {
 		&requestflag.InnerFlag[string]{
 			Name:       "file.content",
+			Usage:      "UTF-8 text when encoding is utf8 (max 65,536 characters), or canonical base64 when encoding is base64 (max 262,144 decoded bytes).",
 			InnerField: "content",
 		},
 		&requestflag.InnerFlag[string]{
@@ -73,6 +74,11 @@ var skillsCreate = requestflag.WithInnerFlags(cli.Command{
 		&requestflag.InnerFlag[string]{
 			Name:       "file.content-type",
 			InnerField: "contentType",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "file.encoding",
+			Usage:      "How content is encoded. Omit for UTF-8 text files.",
+			InnerField: "encoding",
 		},
 		&requestflag.InnerFlag[any]{
 			Name:       "file.metadata",
@@ -107,9 +113,14 @@ var skillsUpdate = requestflag.WithInnerFlags(cli.Command{
 			Name:     "content",
 			BodyPath: "content",
 		},
+		&requestflag.Flag[int64]{
+			Name:     "expected-version",
+			Usage:    "Reject with 409 if the skill changed since this version was read.",
+			BodyPath: "expectedVersion",
+		},
 		&requestflag.Flag[any]{
 			Name:     "file",
-			Usage:    "Optional replacement companion file tree. Omit to leave existing bundled files unchanged; send [] to remove bundled files.",
+			Usage:    "Optional replacement companion file tree, limited to 12 MiB of decoded content. Omit to leave existing bundled files unchanged; send [] to remove bundled files.",
 			BodyPath: "files",
 		},
 		&requestflag.Flag[any]{
@@ -140,6 +151,7 @@ var skillsUpdate = requestflag.WithInnerFlags(cli.Command{
 	"file": {
 		&requestflag.InnerFlag[string]{
 			Name:                  "file.content",
+			Usage:                 "UTF-8 text when encoding is utf8 (max 65,536 characters), or canonical base64 when encoding is base64 (max 262,144 decoded bytes).",
 			InnerField:            "content",
 			OuterIsArrayOfObjects: true,
 		},
@@ -151,6 +163,12 @@ var skillsUpdate = requestflag.WithInnerFlags(cli.Command{
 		&requestflag.InnerFlag[string]{
 			Name:                  "file.content-type",
 			InnerField:            "contentType",
+			OuterIsArrayOfObjects: true,
+		},
+		&requestflag.InnerFlag[string]{
+			Name:                  "file.encoding",
+			Usage:                 "How content is encoded. Omit for UTF-8 text files.",
+			InnerField:            "encoding",
 			OuterIsArrayOfObjects: true,
 		},
 		&requestflag.InnerFlag[any]{
@@ -188,6 +206,43 @@ var skillsDelete = cli.Command{
 		},
 	},
 	Action:          handleSkillsDelete,
+	HideHelpCommand: true,
+}
+
+var skillsCatalog = cli.Command{
+	Name:    "catalog",
+	Usage:   "Browse public and organization skills using one authenticated catalog. Returns\nmetadata only; skill content is loaded separately.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[int64]{
+			Name:      "limit",
+			Usage:     "Maximum results to return",
+			Default:   50,
+			QueryPath: "limit",
+		},
+		&requestflag.Flag[int64]{
+			Name:      "offset",
+			Usage:     "Number of results to skip",
+			Default:   0,
+			QueryPath: "offset",
+		},
+		&requestflag.Flag[string]{
+			Name:      "q",
+			Usage:     "Optional text search",
+			QueryPath: "q",
+		},
+		&requestflag.Flag[string]{
+			Name:      "source",
+			Usage:     "Optional source filter, applied after organization overrides and before pagination. Omit to browse both sources.",
+			QueryPath: "source",
+		},
+		&requestflag.Flag[string]{
+			Name:      "tag",
+			Usage:     "Optional tag filter",
+			QueryPath: "tag",
+		},
+	},
+	Action:          handleSkillsCatalog,
 	HideHelpCommand: true,
 }
 
@@ -377,6 +432,47 @@ func handleSkillsDelete(ctx context.Context, cmd *cli.Command) error {
 		Format:         format,
 		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "skills delete",
+		Transform:      transform,
+	})
+}
+
+func handleSkillsCatalog(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		EmptyBody,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	params := githubcomcasemarkcasedevgo.SkillCatalogParams{}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Skills.Catalog(ctx, params, options...)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "skills catalog",
 		Transform:      transform,
 	})
 }

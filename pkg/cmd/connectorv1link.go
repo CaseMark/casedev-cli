@@ -22,6 +22,10 @@ var connectorsV1LinksRetrieve = cli.Command{
 			Required:  true,
 			PathParam: "id",
 		},
+		&requestflag.Flag[string]{
+			Name:       "x-case-connector-subject",
+			HeaderPath: "x-case-connector-subject",
+		},
 	},
 	Action:          handleConnectorsV1LinksRetrieve,
 	HideHelpCommand: true,
@@ -44,12 +48,17 @@ var connectorsV1LinksUpdate = cli.Command{
 		},
 		&requestflag.Flag[any]{
 			Name:     "policy",
+			Usage:    "Replaces the entire stored policy; omitted fields return to defaults. Repeat deletes, collisions and filters that should be retained. Folder/file exclusions require deletes: preserve (the default).",
 			BodyPath: "policy",
 		},
 		&requestflag.Flag[string]{
 			Name:     "state",
 			Usage:    `Allowed values: "paused", "ready".`,
 			BodyPath: "state",
+		},
+		&requestflag.Flag[string]{
+			Name:       "x-case-connector-subject",
+			HeaderPath: "x-case-connector-subject",
 		},
 	},
 	Action:          handleConnectorsV1LinksUpdate,
@@ -64,6 +73,11 @@ var connectorsV1LinksList = cli.Command{
 		&requestflag.Flag[string]{
 			Name:      "connection-id",
 			QueryPath: "connection_id",
+		},
+		&requestflag.Flag[string]{
+			Name:      "cursor",
+			Usage:     "Opaque cursor from the previous page.",
+			QueryPath: "cursor",
 		},
 		&requestflag.Flag[string]{
 			Name:      "direction",
@@ -88,6 +102,10 @@ var connectorsV1LinksList = cli.Command{
 			Name:      "vault-id",
 			QueryPath: "vault_id",
 		},
+		&requestflag.Flag[string]{
+			Name:       "x-case-connector-subject",
+			HeaderPath: "x-case-connector-subject",
+		},
 	},
 	Action:          handleConnectorsV1LinksList,
 	HideHelpCommand: true,
@@ -108,6 +126,10 @@ var connectorsV1LinksDelete = cli.Command{
 			Usage:     `Allowed values: "keep", "delete".`,
 			Default:   "keep",
 			QueryPath: "vault_docs",
+		},
+		&requestflag.Flag[string]{
+			Name:       "x-case-connector-subject",
+			HeaderPath: "x-case-connector-subject",
 		},
 	},
 	Action:          handleConnectorsV1LinksDelete,
@@ -132,6 +154,10 @@ var connectorsV1LinksListObjects = cli.Command{
 			Name:      "state",
 			Usage:     `Allowed values: "pending", "transferring", "ingesting", "synced", "skipped", "failed", "tombstoned".`,
 			QueryPath: "state",
+		},
+		&requestflag.Flag[string]{
+			Name:       "x-case-connector-subject",
+			HeaderPath: "x-case-connector-subject",
 		},
 	},
 	Action:          handleConnectorsV1LinksListObjects,
@@ -160,7 +186,14 @@ func handleConnectorsV1LinksRetrieve(ctx context.Context, cmd *cli.Command) erro
 		return err
 	}
 
-	return client.Connectors.V1.Links.Get(ctx, cmd.Value("id").(string), options...)
+	params := githubcomcasemarkcasedevgo.ConnectorV1LinkGetParams{}
+
+	return client.Connectors.V1.Links.Get(
+		ctx,
+		cmd.Value("id").(string),
+		params,
+		options...,
+	)
 }
 
 func handleConnectorsV1LinksUpdate(ctx context.Context, cmd *cli.Command) error {

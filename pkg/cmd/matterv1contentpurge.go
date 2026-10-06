@@ -14,57 +14,65 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-var llmV1CreateEmbedding = cli.Command{
-	Name:    "create-embedding",
-	Usage:   "Create vector embeddings from text using OpenAI-compatible models. Perfect for\nsemantic search, document similarity, and building RAG systems for legal\ndocuments.",
+var mattersV1ContentPurgesCreate = cli.Command{
+	Name:    "create",
+	Usage:   "Queues an idempotent hard deletion of explicitly owned content while preserving\nthe Matter, Vault, and unrelated content. Use unified matter.content_purge\nwebhooks for completion, not polling.",
 	Suggest: true,
 	Flags: []cli.Flag{
-		&requestflag.Flag[any]{
-			Name:     "input",
-			Usage:    "Text or array of texts to create embeddings for",
+		&requestflag.Flag[string]{
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
+		},
+		&requestflag.Flag[string]{
+			Name:     "request-id",
+			Usage:    "Stable caller idempotency ID; cannot be reused with different targets.",
 			Required: true,
-			BodyPath: "input",
+			BodyPath: "request_id",
 		},
-		&requestflag.Flag[string]{
-			Name:     "model",
-			Usage:    "Embedding model to use (e.g., text-embedding-ada-002, text-embedding-3-small)",
-			Required: true,
-			BodyPath: "model",
+		&requestflag.Flag[[]string]{
+			Name:     "object-id",
+			BodyPath: "object_ids",
 		},
-		&requestflag.Flag[int64]{
-			Name:     "dimensions",
-			Usage:    "Number of dimensions for the embeddings (model-specific)",
-			BodyPath: "dimensions",
+		&requestflag.Flag[[]string]{
+			Name:     "session-id",
+			BodyPath: "session_ids",
 		},
-		&requestflag.Flag[string]{
-			Name:     "encoding-format",
-			Usage:    "Format for returned embeddings",
-			Default:  "float",
-			BodyPath: "encoding_format",
+		&requestflag.Flag[[]string]{
+			Name:     "transcription-id",
+			BodyPath: "transcription_ids",
 		},
-		&requestflag.Flag[string]{
-			Name:     "user",
-			Usage:    "Unique identifier for the end-user",
-			BodyPath: "user",
+		&requestflag.Flag[[]string]{
+			Name:     "work-item-id",
+			BodyPath: "work_item_ids",
 		},
 	},
-	Action:          handleLlmV1CreateEmbedding,
+	Action:          handleMattersV1ContentPurgesCreate,
 	HideHelpCommand: true,
 }
 
-var llmV1ListModels = cli.Command{
-	Name:            "list-models",
-	Usage:           "Retrieve the curated list of available models: OpenAI and Google models plus\nCase.dev's specialized CaseMark legal models. Returns OpenAI-compatible model\nmetadata with pricing information.",
-	Suggest:         true,
-	Flags:           []cli.Flag{},
-	Action:          handleLlmV1ListModels,
+var mattersV1ContentPurgesRetrieve = cli.Command{
+	Name:    "retrieve",
+	Usage:   "Owner-only receipt for operator diagnostics. Integrations must use unified\ncontent-purge webhooks rather than polling.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:      "purge-id",
+			Required:  true,
+			PathParam: "purgeId",
+		},
+	},
+	Action:          handleMattersV1ContentPurgesRetrieve,
 	HideHelpCommand: true,
 }
 
-func handleLlmV1CreateEmbedding(ctx context.Context, cmd *cli.Command) error {
+func handleMattersV1ContentPurgesCreate(ctx context.Context, cmd *cli.Command) error {
 	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
-
+	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
+		cmd.Set("id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -80,11 +88,16 @@ func handleLlmV1CreateEmbedding(ctx context.Context, cmd *cli.Command) error {
 		return err
 	}
 
-	params := githubcomcasemarkcasedevgo.LlmV1NewEmbeddingParams{}
+	params := githubcomcasemarkcasedevgo.MatterV1ContentPurgeNewParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Llm.V1.NewEmbedding(ctx, params, options...)
+	_, err = client.Matters.V1.ContentPurges.New(
+		ctx,
+		cmd.Value("id").(string),
+		params,
+		options...,
+	)
 	if err != nil {
 		return err
 	}
@@ -97,15 +110,18 @@ func handleLlmV1CreateEmbedding(ctx context.Context, cmd *cli.Command) error {
 		ExplicitFormat: explicitFormat,
 		Format:         format,
 		RawOutput:      cmd.Root().Bool("raw-output"),
-		Title:          "llm:v1 create-embedding",
+		Title:          "matters:v1:content-purges create",
 		Transform:      transform,
 	})
 }
 
-func handleLlmV1ListModels(ctx context.Context, cmd *cli.Command) error {
+func handleMattersV1ContentPurgesRetrieve(ctx context.Context, cmd *cli.Command) error {
 	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
-
+	if !cmd.IsSet("purge-id") && len(unusedArgs) > 0 {
+		cmd.Set("purge-id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
@@ -123,7 +139,7 @@ func handleLlmV1ListModels(ctx context.Context, cmd *cli.Command) error {
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Llm.V1.ListModels(ctx, options...)
+	_, err = client.Matters.V1.ContentPurges.Get(ctx, cmd.Value("purge-id").(string), options...)
 	if err != nil {
 		return err
 	}
@@ -136,7 +152,7 @@ func handleLlmV1ListModels(ctx context.Context, cmd *cli.Command) error {
 		ExplicitFormat: explicitFormat,
 		Format:         format,
 		RawOutput:      cmd.Root().Bool("raw-output"),
-		Title:          "llm:v1 list-models",
+		Title:          "matters:v1:content-purges retrieve",
 		Transform:      transform,
 	})
 }

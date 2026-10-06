@@ -41,6 +41,12 @@ var voiceTranscriptionCreate = cli.Command{
 			Default:  false,
 			BodyPath: "content_safety",
 		},
+		&requestflag.Flag[bool]{
+			Name:     "disfluencies",
+			Usage:    "Preserve filler words such as um and uh in English transcription",
+			Default:  false,
+			BodyPath: "disfluencies",
+		},
 		&requestflag.Flag[string]{
 			Name:     "format",
 			Usage:    "Output format for the transcript when using vault mode",
@@ -89,7 +95,7 @@ var voiceTranscriptionCreate = cli.Command{
 		&requestflag.Flag[[]string]{
 			Name:     "speech-model",
 			Usage:    "Priority-ordered speech models to use",
-			Default:  []string{"universal-3-pro", "universal-2"},
+			Default:  []string{"universal-3-5-pro"},
 			BodyPath: "speech_models",
 		},
 		&requestflag.Flag[string]{

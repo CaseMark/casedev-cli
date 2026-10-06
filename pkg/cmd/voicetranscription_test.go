@@ -18,6 +18,7 @@ func TestVoiceTranscriptionCreate(t *testing.T) {
 			"--auto-highlights=true",
 			"--boost-param", "low",
 			"--content-safety=true",
+			"--disfluencies=true",
 			"--format", "json",
 			"--format-text=true",
 			"--language-code", "language_code",
@@ -39,6 +40,7 @@ func TestVoiceTranscriptionCreate(t *testing.T) {
 			"auto_highlights: true\n" +
 			"boost_param: low\n" +
 			"content_safety: true\n" +
+			"disfluencies: true\n" +
 			"format: json\n" +
 			"format_text: true\n" +
 			"language_code: language_code\n" +

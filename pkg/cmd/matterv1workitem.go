@@ -9,6 +9,8 @@ import (
 	"github.com/CaseMark/casedev-cli/internal/apiquery"
 	"github.com/CaseMark/casedev-cli/internal/requestflag"
 	"github.com/CaseMark/casedev-go"
+	"github.com/CaseMark/casedev-go/option"
+	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
@@ -159,7 +161,7 @@ var mattersV1WorkItemsUpdate = cli.Command{
 
 var mattersV1WorkItemsList = cli.Command{
 	Name:    "list",
-	Usage:   "List active work items for a matter.",
+	Usage:   "List active work items for a matter, newest update first. Pagination is opt-in:\npass `limit` (1-200) to receive a bounded page, then replay\n`pagination.next_cursor` as `?cursor=` while `pagination.has_more` is true. A\nrequest with neither `limit` nor `cursor` still returns every work item, and\n`pagination.limit` is null. That default will become a bounded page in a future\nrelease — paginate now to avoid the change.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -170,6 +172,16 @@ var mattersV1WorkItemsList = cli.Command{
 		&requestflag.Flag[string]{
 			Name:      "assignee-id",
 			QueryPath: "assignee_id",
+		},
+		&requestflag.Flag[string]{
+			Name:      "cursor",
+			Usage:     "Opaque continuation cursor from `pagination.next_cursor` of the previous page. Must be replayed with the same filters that produced it.",
+			QueryPath: "cursor",
+		},
+		&requestflag.Flag[int64]{
+			Name:      "limit",
+			Usage:     "Work items per page (1-200). Omit to receive every work item. Supplying a cursor without a limit uses 50.",
+			QueryPath: "limit",
 		},
 		&requestflag.Flag[string]{
 			Name:      "status",
@@ -341,12 +353,29 @@ func handleMattersV1WorkItemsList(ctx context.Context, cmd *cli.Command) error {
 
 	params := githubcomcasemarkcasedevgo.MatterV1WorkItemListParams{}
 
-	return client.Matters.V1.WorkItems.List(
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Matters.V1.WorkItems.List(
 		ctx,
 		cmd.Value("id").(string),
 		params,
 		options...,
 	)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "matters:v1:work-items list",
+		Transform:      transform,
+	})
 }
 
 func handleMattersV1WorkItemsDecide(ctx context.Context, cmd *cli.Command) error {

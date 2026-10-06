@@ -15,6 +15,8 @@ func TestLincV1SessionsCreate(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"linc:v1:sessions", "create",
+			"--capability-policy", "read_only",
+			"--conversation-key", "conversationKey",
 			"--document-template-slug", "[string]",
 			"--idle-timeout-ms", "0",
 			"--include-document-templates=true",
@@ -25,12 +27,47 @@ func TestLincV1SessionsCreate(t *testing.T) {
 			"--skill-slug", "[string]",
 			"--title", "title",
 			"--vault-id", "[string]",
+			"--vault-scope", "[{objectIds: [string], vaultId: vaultId}]",
+			"--workspace-key", "workspaceKey",
+			"--ai-reporting-tags", "ai-reporting-tags",
+			"--ai-reporting-user", "ai-reporting-user",
+		)
+	})
+
+	t.Run("inner flags", func(t *testing.T) {
+		// Check that inner flags have been set up correctly
+		requestflag.CheckInnerFlags(lincV1SessionsCreate)
+
+		// Alternative argument passing style using inner flags
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"linc:v1:sessions", "create",
+			"--capability-policy", "read_only",
+			"--conversation-key", "conversationKey",
+			"--document-template-slug", "[string]",
+			"--idle-timeout-ms", "0",
+			"--include-document-templates=true",
+			"--instructions", "instructions",
+			"--model", "model",
+			"--scoped-api-key", "scopedApiKey",
+			"--service-tier", "default",
+			"--skill-slug", "[string]",
+			"--title", "title",
+			"--vault-id", "[string]",
+			"--vault-scope.object-ids", "[string]",
+			"--vault-scope.vault-id", "vaultId",
+			"--workspace-key", "workspaceKey",
+			"--ai-reporting-tags", "ai-reporting-tags",
+			"--ai-reporting-user", "ai-reporting-user",
 		)
 	})
 
 	t.Run("piping data", func(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("" +
+			"capabilityPolicy: read_only\n" +
+			"conversationKey: conversationKey\n" +
 			"documentTemplateSlugs:\n" +
 			"  - string\n" +
 			"idleTimeoutMs: 0\n" +
@@ -43,11 +80,18 @@ func TestLincV1SessionsCreate(t *testing.T) {
 			"  - string\n" +
 			"title: title\n" +
 			"vaultIds:\n" +
-			"  - string\n")
+			"  - string\n" +
+			"vaultScopes:\n" +
+			"  - objectIds:\n" +
+			"      - string\n" +
+			"    vaultId: vaultId\n" +
+			"workspaceKey: workspaceKey\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",
 			"linc:v1:sessions", "create",
+			"--ai-reporting-tags", "ai-reporting-tags",
+			"--ai-reporting-user", "ai-reporting-user",
 		)
 	})
 }
@@ -59,6 +103,7 @@ func TestLincV1SessionsDelete(t *testing.T) {
 			"--api-key", "string",
 			"linc:v1:sessions", "delete",
 			"--id", "id",
+			"--reason", "user_deleted",
 		)
 	})
 }
@@ -125,6 +170,52 @@ func TestLincV1SessionsIngestEvents(t *testing.T) {
 			t, pipeData,
 			"--api-key", "string",
 			"linc:v1:sessions", "ingest-events",
+			"--id", "id",
+		)
+	})
+}
+
+func TestLincV1SessionsReplaceScope(t *testing.T) {
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"linc:v1:sessions", "replace-scope",
+			"--id", "id",
+			"--vault-id", "string",
+			"--vault-scope", "{objectIds: [string], vaultId: vaultId}",
+		)
+	})
+
+	t.Run("inner flags", func(t *testing.T) {
+		// Check that inner flags have been set up correctly
+		requestflag.CheckInnerFlags(lincV1SessionsReplaceScope)
+
+		// Alternative argument passing style using inner flags
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"linc:v1:sessions", "replace-scope",
+			"--id", "id",
+			"--vault-id", "string",
+			"--vault-scope.object-ids", "[string]",
+			"--vault-scope.vault-id", "vaultId",
+		)
+	})
+
+	t.Run("piping data", func(t *testing.T) {
+		// Test piping YAML data over stdin
+		pipeData := []byte("" +
+			"vaultIds:\n" +
+			"  - string\n" +
+			"vaultScopes:\n" +
+			"  - objectIds:\n" +
+			"      - string\n" +
+			"    vaultId: vaultId\n")
+		mocktest.TestRunMockTestWithPipeAndFlags(
+			t, pipeData,
+			"--api-key", "string",
+			"linc:v1:sessions", "replace-scope",
 			"--id", "id",
 		)
 	})

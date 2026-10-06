@@ -9,6 +9,8 @@ import (
 	"github.com/CaseMark/casedev-cli/internal/apiquery"
 	"github.com/CaseMark/casedev-cli/internal/requestflag"
 	"github.com/CaseMark/casedev-go"
+	"github.com/CaseMark/casedev-go/option"
+	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
@@ -88,12 +90,22 @@ var mattersV1PartiesUpdate = cli.Command{
 
 var mattersV1PartiesList = cli.Command{
 	Name:    "list",
-	Usage:   "List reusable legal parties for the authenticated organization.",
+	Usage:   "List reusable legal parties for the authenticated organization, newest update\nfirst. Pagination is opt-in: pass `limit` (1-200) to receive a bounded page,\nthen replay `pagination.next_cursor` as `?cursor=` while `pagination.has_more`\nis true. A request with neither `limit` nor `cursor` still returns every party,\nand `pagination.limit` is null. That default will become a bounded page in a\nfuture release — paginate now to avoid the change.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
+			Name:      "cursor",
+			Usage:     "Opaque continuation cursor from `pagination.next_cursor` of the previous page. Must be replayed with the same filters that produced it.",
+			QueryPath: "cursor",
+		},
+		&requestflag.Flag[string]{
 			Name:      "email",
 			QueryPath: "email",
+		},
+		&requestflag.Flag[int64]{
+			Name:      "limit",
+			Usage:     "Parties per page (1-200). Omit to receive every party. Supplying a cursor without a limit uses 50.",
+			QueryPath: "limit",
 		},
 		&requestflag.Flag[string]{
 			Name:      "query",
@@ -204,5 +216,22 @@ func handleMattersV1PartiesList(ctx context.Context, cmd *cli.Command) error {
 
 	params := githubcomcasemarkcasedevgo.MatterV1PartyListParams{}
 
-	return client.Matters.V1.Parties.List(ctx, params, options...)
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Matters.V1.Parties.List(ctx, params, options...)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "matters:v1:parties list",
+		Transform:      transform,
+	})
 }
