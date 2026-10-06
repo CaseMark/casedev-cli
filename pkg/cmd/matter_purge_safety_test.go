@@ -32,6 +32,7 @@ func TestMatterPurgeSafety(t *testing.T) {
 		{name: "content requires confirmation", args: []string{"matters:v1:content-purges", "create", "--id", "matter", "--request-id", "request", "--object-id", "object"}, error: "requires --confirm"},
 		{name: "empty targets are refused", args: []string{"matters:v1:content-purges", "create", "--id", "matter", "--request-id", "request", "--confirm"}, error: "requires at least one nonempty"},
 		{name: "empty stdin targets are refused", args: []string{"matters:v1:content-purges", "create", "--id", "matter", "--confirm"}, stdin: `{"request_id":"request","object_ids":[],"session_ids":[""]}`, error: "requires at least one nonempty"},
+		{name: "scalar stdin targets are refused", args: []string{"matters:v1:content-purges", "create", "--id", "matter", "--confirm"}, stdin: `{"request_id":"request","object_ids":"object"}`, error: "requires at least one nonempty"},
 		{name: "confirmed flag target", args: []string{"matters:v1:content-purges", "create", "--id", "matter", "--request-id", "request", "--object-id", "object", "--confirm"}},
 		{name: "confirmed stdin target", args: []string{"matters:v1:content-purges", "create", "--id", "matter", "--confirm"}, stdin: `{"request_id":"request","object_ids":["object"]}`},
 	} {

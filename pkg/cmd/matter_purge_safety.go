@@ -37,7 +37,11 @@ func validateMatterPurgeRequest(command *cli.Command, body any) error {
 		return err
 	}
 	for _, field := range []string{"object_ids", "session_ids", "transcription_ids", "work_item_ids"} {
-		for _, id := range gjson.GetBytes(data, field).Array() {
+		targets := gjson.GetBytes(data, field)
+		if !targets.IsArray() {
+			continue
+		}
+		for _, id := range targets.Array() {
 			if id.Type == gjson.String && strings.TrimSpace(id.String()) != "" {
 				return nil
 			}
