@@ -14,6 +14,7 @@ func TestMattersV1ContentPurgesCreate(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"matters:v1:content-purges", "create",
+			"--confirm",
 			"--id", "id",
 			"--request-id", "request_id",
 			"--object-id", "string",
@@ -39,6 +40,7 @@ func TestMattersV1ContentPurgesCreate(t *testing.T) {
 			t, pipeData,
 			"--api-key", "string",
 			"matters:v1:content-purges", "create",
+			"--confirm",
 			"--id", "id",
 		)
 	})

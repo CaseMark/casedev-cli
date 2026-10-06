@@ -195,6 +195,7 @@ func TestMattersV1Delete(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"matters:v1", "delete",
+			"--confirm",
 			"--id", "id",
 		)
 	})
