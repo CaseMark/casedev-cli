@@ -3,6 +3,16 @@
 ## [0.47.0](https://github.com/CaseMark/casedev-cli/compare/v0.46.0...v0.47.0) (2026-10-06)
 
 
+### Compatibility, purge safeguards and dependency update
+
+This pre-1.0 minor release includes breaking API and CLI flag changes. Remove retired GraphRAG flags and graph/global/local/entity search modes; use hybrid, fast, or vector search instead. New list and multipart-completion APIs expose typed response envelopes and cursor pagination.
+
+Matter deletion and content-purge creation now require --confirm. Content purges also require at least one nonempty target ID after flags, stdin and file input are combined. Empty or malformed targets are refused before any HTTP request, and confirmation is never sent to the API.
+
+The CLI pins the published production Go SDK v0.58.0 and is validated without a staging module replacement. Debug request logging redacts x-vercel-protection-bypass headers. Release metadata now marks production releases as stable.
+
+Migration examples and operational guidance: https://github.com/CaseMark/casedotdev-mono/blob/preview/stainless/RELEASE_RECONCILIATION.md. Connector token creation and webhook endpoint creation return one-time credentials; protect them and exclude responses from logs.
+
 ### Features
 
 * **api:** api update ([0c99c12](https://github.com/CaseMark/casedev-cli/commit/0c99c12003332836aa2592f09a8f3ba4cc7a6903))
