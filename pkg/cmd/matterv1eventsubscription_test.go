@@ -18,6 +18,7 @@ func TestMattersV1EventsSubscriptionsCreate(t *testing.T) {
 			"--callback-url", "https://example.com",
 			"--event-type", "string",
 			"--signing-secret", "signingSecret",
+			"--idempotency-key", "Idempotency-Key",
 		)
 	})
 
@@ -33,6 +34,7 @@ func TestMattersV1EventsSubscriptionsCreate(t *testing.T) {
 			"--api-key", "string",
 			"matters:v1:events:subscriptions", "create",
 			"--id", "id",
+			"--idempotency-key", "Idempotency-Key",
 		)
 	})
 }

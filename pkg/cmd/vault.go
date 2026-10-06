@@ -16,7 +16,7 @@ import (
 
 var vaultCreate = cli.Command{
 	Name:    "create",
-	Usage:   "Creates a new secure vault with dedicated S3 storage and vector search\ncapabilities. Each vault provides isolated document storage with semantic\nsearch, OCR processing, and optional GraphRAG knowledge graph features for legal\ndocument analysis and discovery.",
+	Usage:   "Creates a new secure vault with dedicated S3 storage and vector search\ncapabilities. Each vault provides isolated document storage with semantic search\nand OCR processing for legal document analysis and discovery.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -35,12 +35,6 @@ var vaultCreate = cli.Command{
 			Usage:    "Optional embedding model for this vault. Defaults to casemark/embed-v1. Determines the S3 Vectors index dimension and which model is used at both ingest and search time. The vault is locked to this model after creation — use a re-embed flow to change later. Ignored when enableIndexing is false. Note: `casemark/llama-nemotron-embed-vl-1b-v2` is a deprecated alias for `casemark/embed-v1` (retained for SDK backward compatibility); new integrations should use `casemark/embed-v1` directly.",
 			Default:  "casemark/embed-v1",
 			BodyPath: "embeddingModel",
-		},
-		&requestflag.Flag[bool]{
-			Name:     "enable-graph",
-			Usage:    "Enable knowledge graph for entity relationship mapping. Only applies when enableIndexing is true.",
-			Default:  true,
-			BodyPath: "enableGraph",
 		},
 		&requestflag.Flag[bool]{
 			Name:     "enable-indexing",
@@ -80,7 +74,7 @@ var vaultRetrieve = cli.Command{
 
 var vaultUpdate = cli.Command{
 	Name:    "update",
-	Usage:   "Update vault settings including name, description, and enableGraph. Changing\nenableGraph only affects future document uploads - existing documents retain\ntheir current graph/non-graph state.",
+	Usage:   "Update vault settings including name, description, and group membership.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -92,11 +86,6 @@ var vaultUpdate = cli.Command{
 			Name:     "description",
 			Usage:    "New description for the vault. Set to null to remove.",
 			BodyPath: "description",
-		},
-		&requestflag.Flag[bool]{
-			Name:     "enable-graph",
-			Usage:    "Whether to enable GraphRAG for future document uploads",
-			BodyPath: "enableGraph",
 		},
 		&requestflag.Flag[*string]{
 			Name:     "group-id",
@@ -114,10 +103,31 @@ var vaultUpdate = cli.Command{
 }
 
 var vaultList = cli.Command{
-	Name:            "list",
-	Usage:           "List all vaults for the authenticated organization. Returns vault metadata\nincluding name, description, storage configuration, and usage statistics.",
-	Suggest:         true,
-	Flags:           []cli.Flag{},
+	Name:    "list",
+	Usage:   "List all vaults for the authenticated organization. Returns vault metadata\nincluding name, description, storage configuration, and usage statistics.\nPagination is opt-in: pass `limit` (1-200) to receive a bounded page, then\nreplay `pagination.next_cursor` as `?cursor=` while `pagination.has_more` is\ntrue. A request with neither `limit` nor `cursor` still returns every vault, and\n`pagination.limit` is null. That default will become a bounded page in a future\nrelease — paginate now to avoid the change.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:      "cursor",
+			Usage:     "Opaque continuation cursor from `pagination.next_cursor` of the previous page. Must be replayed with the same API key scope and `query` that produced it.",
+			QueryPath: "cursor",
+		},
+		&requestflag.Flag[bool]{
+			Name:      "include-totals",
+			Usage:     "When `true`, adds `totals` covering every vault matching the filters, not just this page. Scans all objects in those vaults, so request it once per filter change rather than on every page.",
+			QueryPath: "include_totals",
+		},
+		&requestflag.Flag[int64]{
+			Name:      "limit",
+			Usage:     "Vaults per page (1-200). Omit to receive every vault. Supplying a cursor without a limit uses 50.",
+			QueryPath: "limit",
+		},
+		&requestflag.Flag[string]{
+			Name:      "query",
+			Usage:     "Case-insensitive substring match on the vault name.",
+			QueryPath: "query",
+		},
+	},
 	Action:          handleVaultList,
 	HideHelpCommand: true,
 }
@@ -187,7 +197,7 @@ var vaultConfirmUpload = cli.Command{
 		},
 		&requestflag.Flag[int64]{
 			Name:     "size-bytes",
-			Usage:    "Uploaded file size in bytes. Required when success=true.",
+			Usage:    "Uploaded file size in bytes, including zero. Required when success=true and verified against S3. Empty files can be stored and transferred, but cannot be ingested.",
 			BodyPath: "sizeBytes",
 		},
 	},
@@ -197,7 +207,7 @@ var vaultConfirmUpload = cli.Command{
 
 var vaultIngest = cli.Command{
 	Name:    "ingest",
-	Usage:   "Triggers ingestion workflow for a vault object to extract text, generate chunks,\nand create embeddings. For supported file types (PDF, DOCX, PPTX, XLSX, TXT,\nRTF, XML, HTML, Markdown, CSV/TSV, JSON/YAML/TOML, common source code files,\nZIP, audio, video), processing happens asynchronously. ZIP archives are unpacked\nrecursively up to 5 levels, and each extracted file is created as an independent\nvault object and ingested via the normal pipeline. For unsupported types\n(images, etc.), the file is marked as completed immediately without text\nextraction.",
+	Usage:   "Triggers ingestion workflow for a vault object to extract text, generate chunks,\nand create embeddings. For supported file types (PDF, DOCX, PPTX, XLSX, TXT,\nRTF, XML, HTML, Markdown, CSV/TSV, JSON/YAML/TOML, common source code files,\nZIP, audio, video), processing happens asynchronously. ZIP archives always\nreturn a processing response, are unpacked recursively up to 5 levels, and each\nextracted file is created as an independent vault object and ingested via the\nnormal pipeline. For unsupported types (images, etc.), the file is marked as\ncompleted immediately without text extraction.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -210,6 +220,16 @@ var vaultIngest = cli.Command{
 			Required:  true,
 			PathParam: "objectId",
 		},
+		&requestflag.Flag[string]{
+			Name:     "callback-url",
+			Usage:    "Optional callback URL for asynchronous workflow completion.",
+			BodyPath: "callback_url",
+		},
+		&requestflag.Flag[[]int64]{
+			Name:     "page-boundary",
+			Usage:    "Optional PDF pages that must begin a new chunk segment. Overlap never crosses these boundaries.",
+			BodyPath: "page_boundaries",
+		},
 	},
 	Action:          handleVaultIngest,
 	HideHelpCommand: true,
@@ -217,7 +237,7 @@ var vaultIngest = cli.Command{
 
 var vaultSearch = requestflag.WithInnerFlags(cli.Command{
 	Name:    "search",
-	Usage:   "Search across vault documents using multiple methods including hybrid vector +\ngraph search, GraphRAG global search, entity-based search, and fast similarity\nsearch. Returns relevant documents and contextual answers based on the search\nmethod.",
+	Usage:   "Search across vault documents using hybrid vector + BM25 search (default), fast\nvector similarity search, or a simple vector fallback. Returns matching chunks\nand their source documents.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -238,7 +258,7 @@ var vaultSearch = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "method",
-			Usage:    "Search method: 'global' for comprehensive questions, 'entity' for specific entities, 'fast' for quick similarity search, 'hybrid' for combined approach",
+			Usage:    "Search method: 'hybrid' for combined vector + keyword ranking (default), 'fast' for quick vector similarity search, 'vector' for a simple document listing fallback",
 			Default:  "hybrid",
 			BodyPath: "method",
 		},
@@ -257,6 +277,11 @@ var vaultSearch = requestflag.WithInnerFlags(cli.Command{
 			Name:       "filters.object-id",
 			Usage:      "Filter to specific document(s) by object ID. Accepts a single ID or array of IDs.",
 			InnerField: "object_id",
+		},
+		&requestflag.InnerFlag[map[string]any]{
+			Name:       "filters.page-range",
+			Usage:      "Restrict vector-backed retrieval to chunks wholly contained in this inclusive PDF page range. Supported by vector, hybrid, and fast methods.",
+			InnerField: "page_range",
 		},
 	},
 })
@@ -289,6 +314,11 @@ var vaultUpload = cli.Command{
 			Default:  true,
 			BodyPath: "auto_index",
 		},
+		&requestflag.Flag[map[string]any]{
+			Name:     "file-origin",
+			Usage:    "Optional client-defined provenance metadata. Returned with the object and queryable through the object-list API.",
+			BodyPath: "file_origin",
+		},
 		&requestflag.Flag[bool]{
 			Name:     "is-ai-generated",
 			Usage:    "Marks the file as AI-generated work product (e.g. uploaded by an agent) rather than a user-provided source document. Persisted on the object and returned by object listings so clients can distinguish provenance.",
@@ -302,12 +332,12 @@ var vaultUpload = cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "path",
-			Usage:    "Optional folder path for hierarchy preservation. Allows integrations to maintain source folder structure from systems like NetDocs, Clio, or Smokeball. Example: '/Discovery/Depositions/2024'",
+			Usage:    "Optional folder path, excluding the filename, for hierarchy preservation. Allows integrations to maintain source folder structure from systems like NetDocs, Clio, or Smokeball. Example: '/Discovery/Depositions/2024'",
 			BodyPath: "path",
 		},
 		&requestflag.Flag[int64]{
 			Name:     "size-bytes",
-			Usage:    "File size in bytes (optional, max 5GB for single PUT uploads). When provided, enforces exact file size at S3 level.",
+			Usage:    "File size in bytes (optional, including zero, max 5GB for single PUT uploads). When provided, enforces exact file size at S3 level. Empty files can be stored and transferred, but cannot be ingested.",
 			BodyPath: "sizeBytes",
 		},
 		&requestflag.Flag[string]{
@@ -470,9 +500,11 @@ func handleVaultList(ctx context.Context, cmd *cli.Command) error {
 		return err
 	}
 
+	params := githubcomcasemarkcasedevgo.VaultListParams{}
+
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Vault.List(ctx, options...)
+	_, err = client.Vault.List(ctx, params, options...)
 	if err != nil {
 		return err
 	}
@@ -612,12 +644,14 @@ func handleVaultIngest(ctx context.Context, cmd *cli.Command) error {
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
 		apiquery.ArrayQueryFormatComma,
-		EmptyBody,
+		ApplicationJSON,
 		false,
 	)
 	if err != nil {
 		return err
 	}
+
+	params := githubcomcasemarkcasedevgo.VaultIngestParams{}
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
@@ -625,6 +659,7 @@ func handleVaultIngest(ctx context.Context, cmd *cli.Command) error {
 		ctx,
 		cmd.Value("id").(string),
 		cmd.Value("object-id").(string),
+		params,
 		options...,
 	)
 	if err != nil {

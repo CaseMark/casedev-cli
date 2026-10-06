@@ -99,12 +99,30 @@ func init() {
 				},
 			},
 			{
+				Name:     "connectors:v1:applications:keys",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&connectorsV1ApplicationsKeysBind,
+					&connectorsV1ApplicationsKeysRevoke,
+				},
+			},
+			{
 				Name:     "connectors:v1:installations",
 				Category: "API RESOURCE",
 				Suggest:  true,
 				Commands: []*cli.Command{
 					&connectorsV1InstallationsList,
 					&connectorsV1InstallationsEnsure,
+				},
+			},
+			{
+				Name:     "connectors:v1:installations:tokens",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&connectorsV1InstallationsTokensCreate,
+					&connectorsV1InstallationsTokensRevoke,
 				},
 			},
 			{
@@ -127,6 +145,7 @@ func init() {
 					&connectorsV1ConnectionsList,
 					&connectorsV1ConnectionsDelete,
 					&connectorsV1ConnectionsBrowse,
+					&connectorsV1ConnectionsUpdateAll,
 				},
 			},
 			{
@@ -230,6 +249,7 @@ func init() {
 					&lincV1SessionsDelete,
 					&lincV1SessionsCancel,
 					&lincV1SessionsIngestEvents,
+					&lincV1SessionsReplaceScope,
 					&lincV1SessionsRetrieveEvents,
 					&lincV1SessionsRetrieveMessages,
 					&lincV1SessionsRetrieveState,
@@ -245,6 +265,24 @@ func init() {
 					&mattersV1Retrieve,
 					&mattersV1Update,
 					&mattersV1List,
+					&mattersV1Delete,
+				},
+			},
+			{
+				Name:     "matters:v1:purges",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&mattersV1PurgesRetrieve,
+				},
+			},
+			{
+				Name:     "matters:v1:content-purges",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&mattersV1ContentPurgesCreate,
+					&mattersV1ContentPurgesRetrieve,
 				},
 			},
 			{
@@ -418,6 +456,7 @@ func init() {
 					&skillsCreate,
 					&skillsUpdate,
 					&skillsDelete,
+					&skillsCatalog,
 					&skillsExport,
 					&skillsRead,
 					&skillsResolve,
@@ -540,6 +579,7 @@ func init() {
 					&vaultObjectsGetPages,
 					&vaultObjectsGetText,
 					&vaultObjectsMerge,
+					&vaultObjectsMove,
 				},
 			},
 			{

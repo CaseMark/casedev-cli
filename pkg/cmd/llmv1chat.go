@@ -65,6 +65,14 @@ var llmV1ChatCreateCompletion = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "Nucleus sampling parameter",
 			BodyPath: "top_p",
 		},
+		&requestflag.Flag[string]{
+			Name:       "ai-reporting-tags",
+			HeaderPath: "ai-reporting-tags",
+		},
+		&requestflag.Flag[string]{
+			Name:       "ai-reporting-user",
+			HeaderPath: "ai-reporting-user",
+		},
 	},
 	Action:          handleLlmV1ChatCreateCompletion,
 	HideHelpCommand: true,

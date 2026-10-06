@@ -72,6 +72,12 @@ var vaultMultipartComplete = requestflag.WithInnerFlags(cli.Command{
 			Required: true,
 			BodyPath: "uploadId",
 		},
+		&requestflag.Flag[bool]{
+			Name:     "auto-ingest",
+			Usage:    "Start ingestion after completion when auto_index is enabled. The ingest response reports whether a workflow was started.",
+			Default:  false,
+			BodyPath: "autoIngest",
+		},
 	},
 	Action:          handleVaultMultipartComplete,
 	HideHelpCommand: true,
@@ -168,6 +174,11 @@ var vaultMultipartInit = cli.Command{
 			Default:  true,
 			BodyPath: "auto_index",
 		},
+		&requestflag.Flag[map[string]any]{
+			Name:     "file-origin",
+			Usage:    "Optional client-defined provenance metadata. Returned with the object and queryable through the object-list API.",
+			BodyPath: "file_origin",
+		},
 		&requestflag.Flag[bool]{
 			Name:     "is-ai-generated",
 			Usage:    "Marks the file as AI-generated work product (e.g. uploaded by an agent) rather than a user-provided source document. Persisted on the object and returned by object listings so clients can distinguish provenance.",
@@ -186,7 +197,7 @@ var vaultMultipartInit = cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "path",
-			Usage:    "Optional folder path for hierarchy preservation",
+			Usage:    "Optional folder path, excluding the filename, for hierarchy preservation",
 			BodyPath: "path",
 		},
 	},
@@ -250,12 +261,29 @@ func handleVaultMultipartComplete(ctx context.Context, cmd *cli.Command) error {
 
 	params := githubcomcasemarkcasedevgo.VaultMultipartCompleteParams{}
 
-	return client.Vault.Multipart.Complete(
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Vault.Multipart.Complete(
 		ctx,
 		cmd.Value("id").(string),
 		params,
 		options...,
 	)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "vault:multipart complete",
+		Transform:      transform,
+	})
 }
 
 func handleVaultMultipartGetPartURLs(ctx context.Context, cmd *cli.Command) error {

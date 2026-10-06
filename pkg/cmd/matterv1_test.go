@@ -30,7 +30,7 @@ func TestMattersV1Create(t *testing.T) {
 			"--responsible-attorney-id", "responsible_attorney_id",
 			"--status", "intake",
 			"--subtype", "subtype",
-			"--vault", "{description: description, enableGraph: true, enableIndexing: true, metadata: {foo: bar}}",
+			"--vault", "{description: description, enableIndexing: true, metadata: {foo: bar}}",
 			"--vault-id", "vault_id",
 		)
 	})
@@ -60,7 +60,6 @@ func TestMattersV1Create(t *testing.T) {
 			"--status", "intake",
 			"--subtype", "subtype",
 			"--vault.description", "description",
-			"--vault.enable-graph=true",
 			"--vault.enable-indexing=true",
 			"--vault.metadata", "{foo: bar}",
 			"--vault-id", "vault_id",
@@ -92,7 +91,6 @@ func TestMattersV1Create(t *testing.T) {
 			"subtype: subtype\n" +
 			"vault:\n" +
 			"  description: description\n" +
-			"  enableGraph: true\n" +
 			"  enableIndexing: true\n" +
 			"  metadata:\n" +
 			"    foo: bar\n" +
@@ -181,10 +179,23 @@ func TestMattersV1List(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"matters:v1", "list",
+			"--cursor", "cursor",
+			"--limit", "1",
 			"--matter-type", "matter_type",
 			"--practice-area", "practice_area",
 			"--query", "query",
 			"--status", "status",
+		)
+	})
+}
+
+func TestMattersV1Delete(t *testing.T) {
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"matters:v1", "delete",
+			"--id", "id",
 		)
 	})
 }

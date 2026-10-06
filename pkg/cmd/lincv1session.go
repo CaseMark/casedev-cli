@@ -12,11 +12,21 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-var lincV1SessionsCreate = cli.Command{
+var lincV1SessionsCreate = requestflag.WithInnerFlags(cli.Command{
 	Name:    "create",
 	Usage:   "Creates a Daytona-backed native Linc session with scoped Case.dev credentials.\nThis endpoint starts the sandbox actor only; messages and event replay use\nseparate endpoints.",
 	Suggest: true,
 	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:     "capability-policy",
+			Usage:    "Optional server-enforced capability profile. read_only grants only retrieval/inference service reads; session event ingestion remains bound to the exact managed runtime credential.",
+			BodyPath: "capabilityPolicy",
+		},
+		&requestflag.Flag[string]{
+			Name:     "conversation-key",
+			Usage:    "Stable conversation identity within workspaceKey. Required in workspace mode and idempotent for repeated creates.",
+			BodyPath: "conversationKey",
+		},
 		&requestflag.Flag[any]{
 			Name:     "document-template-slug",
 			Usage:    "Specific document template slugs to inject into the using-document-templates skill.",
@@ -61,12 +71,44 @@ var lincV1SessionsCreate = cli.Command{
 		},
 		&requestflag.Flag[any]{
 			Name:     "vault-id",
+			Usage:    "Legacy explicit whole-vault scope. Mutually exclusive with vaultScopes.",
 			BodyPath: "vaultIds",
+		},
+		&requestflag.Flag[any]{
+			Name:     "vault-scope",
+			Usage:    "Exact object allowlist per vault. Empty objectIds denies object access for that vault. Mutually exclusive with vaultIds.",
+			BodyPath: "vaultScopes",
+		},
+		&requestflag.Flag[string]{
+			Name:     "workspace-key",
+			Usage:    "Opt-in persistent workspace identity. Requires conversationKey. Omit both fields to preserve isolated legacy session behavior.",
+			BodyPath: "workspaceKey",
+		},
+		&requestflag.Flag[string]{
+			Name:       "ai-reporting-tags",
+			HeaderPath: "ai-reporting-tags",
+		},
+		&requestflag.Flag[string]{
+			Name:       "ai-reporting-user",
+			HeaderPath: "ai-reporting-user",
 		},
 	},
 	Action:          handleLincV1SessionsCreate,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"vault-scope": {
+		&requestflag.InnerFlag[[]string]{
+			Name:                  "vault-scope.object-ids",
+			InnerField:            "objectIds",
+			OuterIsArrayOfObjects: true,
+		},
+		&requestflag.InnerFlag[string]{
+			Name:                  "vault-scope.vault-id",
+			InnerField:            "vaultId",
+			OuterIsArrayOfObjects: true,
+		},
+	},
+})
 
 var lincV1SessionsDelete = cli.Command{
 	Name:    "delete",
@@ -77,6 +119,12 @@ var lincV1SessionsDelete = cli.Command{
 			Name:      "id",
 			Required:  true,
 			PathParam: "id",
+		},
+		&requestflag.Flag[string]{
+			Name:      "reason",
+			Usage:     "Why the session is being ended; recorded in the linc.session.ended event payload. Unknown values fall back to user_deleted. The replaced_* values distinguish automatic session replacement (e.g. by C3) from a user-initiated deletion.",
+			Default:   "user_deleted",
+			QueryPath: "reason",
 		},
 	},
 	Action:          handleLincV1SessionsDelete,
@@ -138,6 +186,42 @@ var lincV1SessionsIngestEvents = requestflag.WithInnerFlags(cli.Command{
 			Name:       "frame.type",
 			Usage:      "Native Linc event type.",
 			InnerField: "type",
+		},
+	},
+})
+
+var lincV1SessionsReplaceScope = requestflag.WithInnerFlags(cli.Command{
+	Name:    "replace-scope",
+	Usage:   "Stops the conversation worker, applies a newly authorized object scope, revokes\nits prior managed credential, and resumes the same native conversation in its\nexisting workspace.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
+		},
+		&requestflag.Flag[[]string]{
+			Name:     "vault-id",
+			Usage:    "Legacy whole-vault scope. Mutually exclusive with vaultScopes.",
+			BodyPath: "vaultIds",
+		},
+		&requestflag.Flag[[]map[string]any]{
+			Name:     "vault-scope",
+			Usage:    "Authoritative object allowlist for the next and later turns.",
+			BodyPath: "vaultScopes",
+		},
+	},
+	Action:          handleLincV1SessionsReplaceScope,
+	HideHelpCommand: true,
+}, map[string][]requestflag.HasOuterFlag{
+	"vault-scope": {
+		&requestflag.InnerFlag[[]string]{
+			Name:       "vault-scope.object-ids",
+			InnerField: "objectIds",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "vault-scope.vault-id",
+			InnerField: "vaultId",
 		},
 	},
 })
@@ -294,7 +378,14 @@ func handleLincV1SessionsDelete(ctx context.Context, cmd *cli.Command) error {
 		return err
 	}
 
-	return client.Linc.V1.Sessions.Delete(ctx, cmd.Value("id").(string), options...)
+	params := githubcomcasemarkcasedevgo.LincV1SessionDeleteParams{}
+
+	return client.Linc.V1.Sessions.Delete(
+		ctx,
+		cmd.Value("id").(string),
+		params,
+		options...,
+	)
 }
 
 func handleLincV1SessionsCancel(ctx context.Context, cmd *cli.Command) error {
@@ -354,6 +445,38 @@ func handleLincV1SessionsIngestEvents(ctx context.Context, cmd *cli.Command) err
 	params := githubcomcasemarkcasedevgo.LincV1SessionIngestEventsParams{}
 
 	return client.Linc.V1.Sessions.IngestEvents(
+		ctx,
+		cmd.Value("id").(string),
+		params,
+		options...,
+	)
+}
+
+func handleLincV1SessionsReplaceScope(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
+		cmd.Set("id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	params := githubcomcasemarkcasedevgo.LincV1SessionReplaceScopeParams{}
+
+	return client.Linc.V1.Sessions.ReplaceScope(
 		ctx,
 		cmd.Value("id").(string),
 		params,

@@ -17,10 +17,12 @@ func TestConnectorsV1SyncLink(t *testing.T) {
 			"connectors:v1", "sync-link",
 			"--connection-id", "connection_id",
 			"--direction", "import",
-			"--remote", "{folder_id: folder_id, container_id: container_id, path: path, site_id: site_id}",
+			"--remote", "{folder_id: folder_id, container_id: container_id, path: path, resource_type: resource_type, site_id: site_id}",
 			"--vault-id", "vault_id",
+			"--export-destination", "{folder_id: folder_id, container_id: container_id, path: path, site_id: site_id}",
 			"--matter-id", "matter_id",
-			"--policy", "{collisions: version, deletes: mirror, filters: {exclude_mime: [string], max_size_bytes: 0}}",
+			"--policy", "{collisions: version, deletes: mirror, filters: {exclude_file_ids: [string], exclude_folder_ids: [string], exclude_mime: [string], max_size_bytes: 0}}",
+			"--x-case-connector-subject", "x-case-connector-subject",
 		)
 	})
 
@@ -38,12 +40,18 @@ func TestConnectorsV1SyncLink(t *testing.T) {
 			"--remote.folder-id", "folder_id",
 			"--remote.container-id", "container_id",
 			"--remote.path", "path",
+			"--remote.resource-type", "resource_type",
 			"--remote.site-id", "site_id",
 			"--vault-id", "vault_id",
+			"--export-destination.folder-id", "folder_id",
+			"--export-destination.container-id", "container_id",
+			"--export-destination.path", "path",
+			"--export-destination.site-id", "site_id",
 			"--matter-id", "matter_id",
 			"--policy.collisions", "version",
 			"--policy.deletes", "mirror",
-			"--policy.filters", "{exclude_mime: [string], max_size_bytes: 0}",
+			"--policy.filters", "{exclude_file_ids: [string], exclude_folder_ids: [string], exclude_mime: [string], max_size_bytes: 0}",
+			"--x-case-connector-subject", "x-case-connector-subject",
 		)
 	})
 
@@ -56,13 +64,23 @@ func TestConnectorsV1SyncLink(t *testing.T) {
 			"  folder_id: folder_id\n" +
 			"  container_id: container_id\n" +
 			"  path: path\n" +
+			"  resource_type: resource_type\n" +
 			"  site_id: site_id\n" +
 			"vault_id: vault_id\n" +
+			"export_destination:\n" +
+			"  folder_id: folder_id\n" +
+			"  container_id: container_id\n" +
+			"  path: path\n" +
+			"  site_id: site_id\n" +
 			"matter_id: matter_id\n" +
 			"policy:\n" +
 			"  collisions: version\n" +
 			"  deletes: mirror\n" +
 			"  filters:\n" +
+			"    exclude_file_ids:\n" +
+			"      - string\n" +
+			"    exclude_folder_ids:\n" +
+			"      - string\n" +
 			"    exclude_mime:\n" +
 			"      - string\n" +
 			"    max_size_bytes: 0\n")
@@ -70,6 +88,7 @@ func TestConnectorsV1SyncLink(t *testing.T) {
 			t, pipeData,
 			"--api-key", "string",
 			"connectors:v1", "sync-link",
+			"--x-case-connector-subject", "x-case-connector-subject",
 		)
 	})
 }
@@ -82,11 +101,13 @@ func TestConnectorsV1Transfer(t *testing.T) {
 			"connectors:v1", "transfer",
 			"--connection-id", "connection_id",
 			"--direction", "import",
-			"--remote", "{folder_id: folder_id, container_id: container_id, path: path, site_id: site_id}",
+			"--remote", "{folder_id: folder_id, container_id: container_id, path: path, resource_type: resource_type, site_id: site_id}",
 			"--vault-id", "vault_id",
+			"--export-destination", "{folder_id: folder_id, container_id: container_id, path: path, site_id: site_id}",
 			"--matter-id", "matter_id",
-			"--policy", "{collisions: version, deletes: mirror, filters: {exclude_mime: [string], max_size_bytes: 0}}",
+			"--policy", "{collisions: version, deletes: mirror, filters: {exclude_file_ids: [string], exclude_folder_ids: [string], exclude_mime: [string], max_size_bytes: 0}}",
 			"--run-mode", "auto",
+			"--x-case-connector-subject", "x-case-connector-subject",
 		)
 	})
 
@@ -104,13 +125,19 @@ func TestConnectorsV1Transfer(t *testing.T) {
 			"--remote.folder-id", "folder_id",
 			"--remote.container-id", "container_id",
 			"--remote.path", "path",
+			"--remote.resource-type", "resource_type",
 			"--remote.site-id", "site_id",
 			"--vault-id", "vault_id",
+			"--export-destination.folder-id", "folder_id",
+			"--export-destination.container-id", "container_id",
+			"--export-destination.path", "path",
+			"--export-destination.site-id", "site_id",
 			"--matter-id", "matter_id",
 			"--policy.collisions", "version",
 			"--policy.deletes", "mirror",
-			"--policy.filters", "{exclude_mime: [string], max_size_bytes: 0}",
+			"--policy.filters", "{exclude_file_ids: [string], exclude_folder_ids: [string], exclude_mime: [string], max_size_bytes: 0}",
 			"--run-mode", "auto",
+			"--x-case-connector-subject", "x-case-connector-subject",
 		)
 	})
 
@@ -123,13 +150,23 @@ func TestConnectorsV1Transfer(t *testing.T) {
 			"  folder_id: folder_id\n" +
 			"  container_id: container_id\n" +
 			"  path: path\n" +
+			"  resource_type: resource_type\n" +
 			"  site_id: site_id\n" +
 			"vault_id: vault_id\n" +
+			"export_destination:\n" +
+			"  folder_id: folder_id\n" +
+			"  container_id: container_id\n" +
+			"  path: path\n" +
+			"  site_id: site_id\n" +
 			"matter_id: matter_id\n" +
 			"policy:\n" +
 			"  collisions: version\n" +
 			"  deletes: mirror\n" +
 			"  filters:\n" +
+			"    exclude_file_ids:\n" +
+			"      - string\n" +
+			"    exclude_folder_ids:\n" +
+			"      - string\n" +
 			"    exclude_mime:\n" +
 			"      - string\n" +
 			"    max_size_bytes: 0\n" +
@@ -138,6 +175,7 @@ func TestConnectorsV1Transfer(t *testing.T) {
 			t, pipeData,
 			"--api-key", "string",
 			"connectors:v1", "transfer",
+			"--x-case-connector-subject", "x-case-connector-subject",
 		)
 	})
 }

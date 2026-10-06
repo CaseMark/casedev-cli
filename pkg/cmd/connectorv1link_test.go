@@ -15,6 +15,7 @@ func TestConnectorsV1LinksRetrieve(t *testing.T) {
 			"--api-key", "string",
 			"connectors:v1:links", "retrieve",
 			"--id", "id",
+			"--x-case-connector-subject", "x-case-connector-subject",
 		)
 	})
 }
@@ -29,6 +30,7 @@ func TestConnectorsV1LinksUpdate(t *testing.T) {
 			"--mode", "once",
 			"--policy", "{}",
 			"--state", "paused",
+			"--x-case-connector-subject", "x-case-connector-subject",
 		)
 	})
 
@@ -43,6 +45,7 @@ func TestConnectorsV1LinksUpdate(t *testing.T) {
 			"--api-key", "string",
 			"connectors:v1:links", "update",
 			"--id", "id",
+			"--x-case-connector-subject", "x-case-connector-subject",
 		)
 	})
 }
@@ -54,11 +57,13 @@ func TestConnectorsV1LinksList(t *testing.T) {
 			"--api-key", "string",
 			"connectors:v1:links", "list",
 			"--connection-id", "connection_id",
+			"--cursor", "cursor",
 			"--direction", "import",
 			"--mode", "once",
 			"--pair-id", "pair_id",
 			"--state", "ready",
 			"--vault-id", "vault_id",
+			"--x-case-connector-subject", "x-case-connector-subject",
 		)
 	})
 }
@@ -71,6 +76,7 @@ func TestConnectorsV1LinksDelete(t *testing.T) {
 			"connectors:v1:links", "delete",
 			"--id", "id",
 			"--vault-docs", "keep",
+			"--x-case-connector-subject", "x-case-connector-subject",
 		)
 	})
 }
@@ -84,6 +90,7 @@ func TestConnectorsV1LinksListObjects(t *testing.T) {
 			"--id", "id",
 			"--cursor", "cursor",
 			"--state", "pending",
+			"--x-case-connector-subject", "x-case-connector-subject",
 		)
 	})
 }

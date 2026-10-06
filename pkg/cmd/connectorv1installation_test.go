@@ -15,7 +15,9 @@ func TestConnectorsV1InstallationsList(t *testing.T) {
 			"--api-key", "string",
 			"connectors:v1:installations", "list",
 			"--application", "application",
+			"--cursor", "cursor",
 			"--external-tenant-id", "external_tenant_id",
+			"--limit", "1",
 		)
 	})
 }

@@ -35,6 +35,10 @@ var mattersV1EventsSubscriptionsCreate = cli.Command{
 			Name:     "signing-secret",
 			BodyPath: "signingSecret",
 		},
+		&requestflag.Flag[string]{
+			Name:       "idempotency-key",
+			HeaderPath: "Idempotency-Key",
+		},
 	},
 	Action:          handleMattersV1EventsSubscriptionsCreate,
 	HideHelpCommand: true,

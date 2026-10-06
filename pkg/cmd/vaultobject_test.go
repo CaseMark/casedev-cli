@@ -58,7 +58,12 @@ func TestVaultObjectsList(t *testing.T) {
 			"--api-key", "string",
 			"vault:objects", "list",
 			"--id", "id",
+			"--cursor", "cursor",
+			"--file-origin", `{"provider":"clio"}`,
+			"--include-totals=true",
 			"--include-unconfirmed=true",
+			"--limit", "1",
+			"--query", "query",
 		)
 	})
 }
@@ -88,7 +93,10 @@ func TestVaultObjectsAppend(t *testing.T) {
 			"--back-links=true",
 			"--back-links-text", "backLinksText",
 			"--bates", "{enabled: true, padTo: 0, prefix: prefix, start: 1, suffix: suffix}",
+			"--client-reference", "clientReference",
+			"--mode", "sync",
 			"--rewrite-links=true",
+			"--idempotency-key", "x",
 		)
 	})
 
@@ -111,7 +119,10 @@ func TestVaultObjectsAppend(t *testing.T) {
 			"--bates.prefix", "prefix",
 			"--bates.start", "1",
 			"--bates.suffix", "suffix",
+			"--client-reference", "clientReference",
+			"--mode", "sync",
 			"--rewrite-links=true",
+			"--idempotency-key", "x",
 		)
 	})
 
@@ -128,6 +139,8 @@ func TestVaultObjectsAppend(t *testing.T) {
 			"  prefix: prefix\n" +
 			"  start: 1\n" +
 			"  suffix: suffix\n" +
+			"clientReference: clientReference\n" +
+			"mode: sync\n" +
 			"rewriteLinks: true\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
@@ -135,6 +148,7 @@ func TestVaultObjectsAppend(t *testing.T) {
 			"vault:objects", "append",
 			"--id", "id",
 			"--object-id", "objectId",
+			"--idempotency-key", "x",
 		)
 	})
 }
@@ -296,6 +310,39 @@ func TestVaultObjectsMerge(t *testing.T) {
 			"vault:objects", "merge",
 			"--id", "id",
 			"--idempotency-key", "x",
+		)
+	})
+}
+
+func TestVaultObjectsMove(t *testing.T) {
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"vault:objects", "move",
+			"--id", "id",
+			"--destination-vault-id", "destinationVaultId",
+			"--mode", "move",
+			"--object-id", "string",
+			"--idempotency-key", "Idempotency-Key",
+			"--path", "path",
+		)
+	})
+
+	t.Run("piping data", func(t *testing.T) {
+		// Test piping YAML data over stdin
+		pipeData := []byte("" +
+			"destinationVaultId: destinationVaultId\n" +
+			"mode: move\n" +
+			"objectIds:\n" +
+			"  - string\n" +
+			"path: path\n")
+		mocktest.TestRunMockTestWithPipeAndFlags(
+			t, pipeData,
+			"--api-key", "string",
+			"vault:objects", "move",
+			"--id", "id",
+			"--idempotency-key", "Idempotency-Key",
 		)
 	})
 }
