@@ -24,6 +24,8 @@ func TestLlmV1ChatCreateCompletion(t *testing.T) {
 			"--stream=false",
 			"--temperature", "0.7",
 			"--top-p", "0",
+			"--ai-reporting-tags", "ai-reporting-tags",
+			"--ai-reporting-user", "ai-reporting-user",
 		)
 	})
 
@@ -46,6 +48,8 @@ func TestLlmV1ChatCreateCompletion(t *testing.T) {
 			"--stream=false",
 			"--temperature", "0.7",
 			"--top-p", "0",
+			"--ai-reporting-tags", "ai-reporting-tags",
+			"--ai-reporting-user", "ai-reporting-user",
 		)
 	})
 
@@ -67,6 +71,8 @@ func TestLlmV1ChatCreateCompletion(t *testing.T) {
 			t, pipeData,
 			"--api-key", "string",
 			"llm:v1:chat", "create-completion",
+			"--ai-reporting-tags", "ai-reporting-tags",
+			"--ai-reporting-user", "ai-reporting-user",
 		)
 	})
 }

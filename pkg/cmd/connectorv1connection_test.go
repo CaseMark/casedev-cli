@@ -14,22 +14,24 @@ func TestConnectorsV1ConnectionsCreate(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"connectors:v1:connections", "create",
-			"--provider", "clio",
+			"--provider", "box",
 			"--return-url", "return_url",
-			"--scope-tier", "clio.us",
+			"--scope-tier", "box.readwrite",
+			"--x-case-connector-subject", "x-case-connector-subject",
 		)
 	})
 
 	t.Run("piping data", func(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("" +
-			"provider: clio\n" +
+			"provider: box\n" +
 			"return_url: return_url\n" +
-			"scope_tier: clio.us\n")
+			"scope_tier: box.readwrite\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",
 			"connectors:v1:connections", "create",
+			"--x-case-connector-subject", "x-case-connector-subject",
 		)
 	})
 }
@@ -41,6 +43,7 @@ func TestConnectorsV1ConnectionsRetrieve(t *testing.T) {
 			"--api-key", "string",
 			"connectors:v1:connections", "retrieve",
 			"--id", "id",
+			"--x-case-connector-subject", "x-case-connector-subject",
 		)
 	})
 }
@@ -51,8 +54,11 @@ func TestConnectorsV1ConnectionsList(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"connectors:v1:connections", "list",
+			"--cursor", "cursor",
+			"--limit", "1",
 			"--provider", "provider",
 			"--status", "pending",
+			"--x-case-connector-subject", "x-case-connector-subject",
 		)
 	})
 }
@@ -65,6 +71,7 @@ func TestConnectorsV1ConnectionsDelete(t *testing.T) {
 			"connectors:v1:connections", "delete",
 			"--id", "id",
 			"--purge=true",
+			"--x-case-connector-subject", "x-case-connector-subject",
 		)
 	})
 }
@@ -82,6 +89,33 @@ func TestConnectorsV1ConnectionsBrowse(t *testing.T) {
 			"--parent", "parent",
 			"--query", "query",
 			"--site", "site",
+			"--x-case-connector-subject", "x-case-connector-subject",
+		)
+	})
+}
+
+func TestConnectorsV1ConnectionsUpdateAll(t *testing.T) {
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"connectors:v1:connections", "update-all",
+			"--confirm-organization-wide=true",
+			"--enabled=true",
+			"--provider", "provider",
+		)
+	})
+
+	t.Run("piping data", func(t *testing.T) {
+		// Test piping YAML data over stdin
+		pipeData := []byte("" +
+			"confirm_organization_wide: true\n" +
+			"enabled: true\n" +
+			"provider: provider\n")
+		mocktest.TestRunMockTestWithPipeAndFlags(
+			t, pipeData,
+			"--api-key", "string",
+			"connectors:v1:connections", "update-all",
 		)
 	})
 }

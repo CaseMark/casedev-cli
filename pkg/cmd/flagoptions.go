@@ -435,6 +435,9 @@ func flagOptions(
 	} else {
 		requestContents.Body = embedded
 	}
+	if err := validateMatterPurgeRequest(cmd, requestContents.Body); err != nil {
+		return nil, err
+	}
 
 	if headersWithFiles, err := embedFiles(requestContents.Headers, EmbedText, &stdinReader); err != nil {
 		return nil, err

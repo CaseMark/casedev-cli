@@ -21,7 +21,7 @@ var connectorsV1ConnectionsCreate = cli.Command{
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "provider",
-			Usage:    `Allowed values: "clio", "gdrive", "microsoft".`,
+			Usage:    `Allowed values: "box", "clio", "dropbox", "gdrive", "microsoft", "smokeball".`,
 			Required: true,
 			BodyPath: "provider",
 		},
@@ -33,8 +33,12 @@ var connectorsV1ConnectionsCreate = cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "scope-tier",
-			Usage:    "Provider-specific OAuth permission tier. Omit to use the provider's default.",
+			Usage:    "Provider-specific OAuth permission tier. Omit to use the provider's default. Microsoft defaults to organizational OneDrive/SharePoint; use microsoft.personal.read for a personal Microsoft account's own OneDrive. Microsoft write tiers are a separately gated private pilot; exports and paired sync are not yet available.",
 			BodyPath: "scope_tier",
+		},
+		&requestflag.Flag[string]{
+			Name:       "x-case-connector-subject",
+			HeaderPath: "x-case-connector-subject",
 		},
 	},
 	Action:          handleConnectorsV1ConnectionsCreate,
@@ -51,6 +55,10 @@ var connectorsV1ConnectionsRetrieve = cli.Command{
 			Required:  true,
 			PathParam: "id",
 		},
+		&requestflag.Flag[string]{
+			Name:       "x-case-connector-subject",
+			HeaderPath: "x-case-connector-subject",
+		},
 	},
 	Action:          handleConnectorsV1ConnectionsRetrieve,
 	HideHelpCommand: true,
@@ -58,9 +66,19 @@ var connectorsV1ConnectionsRetrieve = cli.Command{
 
 var connectorsV1ConnectionsList = cli.Command{
 	Name:    "list",
-	Usage:   "List provider connections for the organization, with health status.",
+	Usage:   "List provider connections for the organization, with health status. Returns at\nmost `limit` connections (default 200, maximum 200). When `pagination.has_more`\nis true, replay `pagination.next_cursor` as `?cursor=` to fetch the following\npage. Cursors are opaque and are only valid for the exact filter set and\ninstallation/subject scope they were issued under.",
 	Suggest: true,
 	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:      "cursor",
+			Usage:     "Opaque continuation cursor from `pagination.next_cursor` of the previous page. Must be replayed with the same filters and scope that produced it.",
+			QueryPath: "cursor",
+		},
+		&requestflag.Flag[int64]{
+			Name:      "limit",
+			Usage:     "Connections per page (1-200). Defaults to 200.",
+			QueryPath: "limit",
+		},
 		&requestflag.Flag[string]{
 			Name:      "provider",
 			QueryPath: "provider",
@@ -69,6 +87,10 @@ var connectorsV1ConnectionsList = cli.Command{
 			Name:      "status",
 			Usage:     `Allowed values: "pending", "healthy", "reauth_required", "revoked", "throttled".`,
 			QueryPath: "status",
+		},
+		&requestflag.Flag[string]{
+			Name:       "x-case-connector-subject",
+			HeaderPath: "x-case-connector-subject",
 		},
 	},
 	Action:          handleConnectorsV1ConnectionsList,
@@ -90,6 +112,10 @@ var connectorsV1ConnectionsDelete = cli.Command{
 			Default:   false,
 			QueryPath: "purge",
 		},
+		&requestflag.Flag[string]{
+			Name:       "x-case-connector-subject",
+			HeaderPath: "x-case-connector-subject",
+		},
 	},
 	Action:          handleConnectorsV1ConnectionsDelete,
 	HideHelpCommand: true,
@@ -97,7 +123,7 @@ var connectorsV1ConnectionsDelete = cli.Command{
 
 var connectorsV1ConnectionsBrowse = cli.Command{
 	Name:    "browse",
-	Usage:   "Browse the provider one level at a time. Without a site, container, or parent,\nreturns top-level resources. Pass the stable browse_ref fields returned by one\nresponse to navigate into the next level. Returns 403\nprovider_scope_insufficient when the connection scope cannot browse server-side.",
+	Usage:   "Browse the provider one level at a time. Without a site, container, or parent,\nreturns top-level resources. Pass the stable browse_ref fields returned by one\nresponse to navigate into the next level. Returns 403\nprovider_scope_insufficient when the connection scope cannot browse server-side.\nClio browsing shares request capacity with background runs; throttled responses\ninclude Retry-After when a retry deadline is known.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -133,8 +159,38 @@ var connectorsV1ConnectionsBrowse = cli.Command{
 			Usage:     "Site id to list",
 			QueryPath: "site",
 		},
+		&requestflag.Flag[string]{
+			Name:       "x-case-connector-subject",
+			HeaderPath: "x-case-connector-subject",
+		},
 	},
 	Action:          handleConnectorsV1ConnectionsBrowse,
+	HideHelpCommand: true,
+}
+
+var connectorsV1ConnectionsUpdateAll = cli.Command{
+	Name:    "update-all",
+	Usage:   "Enable or disable new runs and scheduled syncs for one provider across the\nauthenticated organization or installation. This organization-wide operation\nrequires explicit confirmation. Existing credentials, links, and imported files\nare preserved; active runs are not interrupted.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[bool]{
+			Name:     "confirm-organization-wide",
+			Usage:    "Confirms that this change applies to every user connection in scope.",
+			Required: true,
+			BodyPath: "confirm_organization_wide",
+		},
+		&requestflag.Flag[bool]{
+			Name:     "enabled",
+			Required: true,
+			BodyPath: "enabled",
+		},
+		&requestflag.Flag[string]{
+			Name:     "provider",
+			Required: true,
+			BodyPath: "provider",
+		},
+	},
+	Action:          handleConnectorsV1ConnectionsUpdateAll,
 	HideHelpCommand: true,
 }
 
@@ -201,7 +257,14 @@ func handleConnectorsV1ConnectionsRetrieve(ctx context.Context, cmd *cli.Command
 		return err
 	}
 
-	return client.Connectors.V1.Connections.Get(ctx, cmd.Value("id").(string), options...)
+	params := githubcomcasemarkcasedevgo.ConnectorV1ConnectionGetParams{}
+
+	return client.Connectors.V1.Connections.Get(
+		ctx,
+		cmd.Value("id").(string),
+		params,
+		options...,
+	)
 }
 
 func handleConnectorsV1ConnectionsList(ctx context.Context, cmd *cli.Command) error {
@@ -324,4 +387,28 @@ func handleConnectorsV1ConnectionsBrowse(ctx context.Context, cmd *cli.Command) 
 		Title:          "connectors:v1:connections browse",
 		Transform:      transform,
 	})
+}
+
+func handleConnectorsV1ConnectionsUpdateAll(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	params := githubcomcasemarkcasedevgo.ConnectorV1ConnectionUpdateAllParams{}
+
+	return client.Connectors.V1.Connections.UpdateAll(ctx, params, options...)
 }

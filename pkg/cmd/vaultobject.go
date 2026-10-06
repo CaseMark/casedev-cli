@@ -37,7 +37,7 @@ var vaultObjectsRetrieve = cli.Command{
 
 var vaultObjectsUpdate = cli.Command{
 	Name:    "update",
-	Usage:   "Update a document's filename, path, or metadata. Use this to rename files or\norganize them into virtual folders. The path is stored in metadata.path and can\nbe used to build folder hierarchies in your application.",
+	Usage:   "Update a document's filename, folder path, or metadata. Use this to rename files\nor organize them into virtual folders. The path is a folder, not a complete file\npath, and is stored separately from the filename.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -62,7 +62,7 @@ var vaultObjectsUpdate = cli.Command{
 		},
 		&requestflag.Flag[*string]{
 			Name:     "path",
-			Usage:    "Folder path for hierarchy preservation (e.g., '/Discovery/Depositions'). Set to null or empty string to remove.",
+			Usage:    "Folder path, excluding the filename, for hierarchy preservation (e.g., '/Discovery/Depositions'). Set to null or empty string to remove.",
 			BodyPath: "path",
 		},
 	},
@@ -72,7 +72,7 @@ var vaultObjectsUpdate = cli.Command{
 
 var vaultObjectsList = cli.Command{
 	Name:    "list",
-	Usage:   "Retrieve all objects stored in a specific vault, including document metadata,\ningestion status, and processing statistics.",
+	Usage:   "Retrieve the objects stored in a specific vault, oldest first, including\ndocument metadata, ingestion status, and processing statistics. Pass `limit` to\npage through large vaults: when `pagination.has_more` is true, the response is\nincomplete and `pagination.next_cursor` fetches the rest.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -80,11 +80,36 @@ var vaultObjectsList = cli.Command{
 			Required:  true,
 			PathParam: "id",
 		},
+		&requestflag.Flag[string]{
+			Name:      "cursor",
+			Usage:     "Opaque continuation cursor from `pagination.next_cursor` of the previous page. Must be replayed with the same API key scope and the same `query`, `file_origin` and `includeUnconfirmed` values that produced it.",
+			QueryPath: "cursor",
+		},
+		&requestflag.Flag[string]{
+			Name:      "file-origin",
+			Usage:     `JSON-encoded provenance object used as a partial match. For example, {"provider":"clio"} returns objects whose file_origin contains that value.`,
+			QueryPath: "file_origin",
+		},
+		&requestflag.Flag[bool]{
+			Name:      "include-totals",
+			Usage:     "When `true`, adds `totals` covering every object matching the filters, not just this page. Request it once per filter change rather than on every page.",
+			QueryPath: "include_totals",
+		},
 		&requestflag.Flag[bool]{
 			Name:      "include-unconfirmed",
 			Usage:     "Include placeholders for uploads that were never completed (awaiting_upload) or were cancelled (aborted). Excluded by default.",
 			Default:   false,
 			QueryPath: "includeUnconfirmed",
+		},
+		&requestflag.Flag[int64]{
+			Name:      "limit",
+			Usage:     "Objects per page (1-200). Omit to receive every object. Supplying a cursor without a limit uses 50.",
+			QueryPath: "limit",
+		},
+		&requestflag.Flag[string]{
+			Name:      "query",
+			Usage:     "Case-insensitive substring match on the filename.",
+			QueryPath: "query",
 		},
 	},
 	Action:          handleVaultObjectsList,
@@ -118,7 +143,7 @@ var vaultObjectsDelete = cli.Command{
 
 var vaultObjectsAppend = requestflag.WithInnerFlags(cli.Command{
 	Name:    "append",
-	Usage:   "Merges one or more PDF vault objects onto the end of an existing PDF vault\nobject, overwriting the target in place before returning. Optionally rewrites\ncitation links in the original target into internal PDF jumps and adds back\nlinks on appended pages. The target object’s ingestion state is not affected;\nappended pages are not searchable.",
+	Usage:   "Merges one or more PDF vault objects onto the end of an existing PDF vault\nobject. Sync mode is the default and overwrites the target in place before\nreturning. Async mode returns 202 immediately and reports completion through\nvault.object.append webhooks. Optionally rewrites citation links in the original\ntarget into internal PDF jumps and adds back links on appended pages. The target\nobject’s ingestion state is not affected; appended pages are not searchable.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -133,7 +158,7 @@ var vaultObjectsAppend = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "append-object-id",
-			Usage:    "Vault object IDs whose pages will be appended onto the target object, in order. Must not include the target object itself.",
+			Usage:    "Vault object IDs whose pages will be appended onto the target object, in order. Must not include the target object itself. Sync mode accepts at most 20; async mode accepts at most 1000.",
 			Required: true,
 			BodyPath: "appendObjectIds",
 		},
@@ -154,11 +179,26 @@ var vaultObjectsAppend = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "Optional Bates stamping for appended source PDFs. Numbering is deterministic across appendObjectIds order and does not stamp the target report pages.",
 			BodyPath: "bates",
 		},
+		&requestflag.Flag[string]{
+			Name:     "client-reference",
+			Usage:    "Caller-provided correlation value returned in async responses and webhooks.",
+			BodyPath: "clientReference",
+		},
+		&requestflag.Flag[string]{
+			Name:     "mode",
+			Usage:    "Use async to return immediately and receive completion through vault.object.append webhooks.",
+			Default:  "sync",
+			BodyPath: "mode",
+		},
 		&requestflag.Flag[bool]{
 			Name:     "rewrite-links",
 			Usage:    "When true, rewrites links in the target object to internal PDF jumps when the URL contains exactly one appended object ID as a standalone query parameter value or decoded path segment.",
 			Default:  false,
 			BodyPath: "rewriteLinks",
+		},
+		&requestflag.Flag[string]{
+			Name:       "idempotency-key",
+			HeaderPath: "Idempotency-Key",
 		},
 	},
 	Action:          handleVaultObjectsAppend,
@@ -436,6 +476,46 @@ var vaultObjectsMerge = requestflag.WithInnerFlags(cli.Command{
 		},
 	},
 })
+
+var vaultObjectsMove = cli.Command{
+	Name:    "move",
+	Usage:   "Copies storage and search data without downloading the file through the client.\nMoves preserve object IDs; copies return new IDs. Extracted ZIP children travel\nwith their parent. Retry failed objects with the same Idempotency-Key;\nsuccessful objects are replayed without transfer. Object ID order does not\naffect the key.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
+		},
+		&requestflag.Flag[string]{
+			Name:     "destination-vault-id",
+			Required: true,
+			BodyPath: "destinationVaultId",
+		},
+		&requestflag.Flag[string]{
+			Name:     "mode",
+			Usage:    `Allowed values: "move", "copy".`,
+			Required: true,
+			BodyPath: "mode",
+		},
+		&requestflag.Flag[[]string]{
+			Name:     "object-id",
+			Required: true,
+			BodyPath: "objectIds",
+		},
+		&requestflag.Flag[string]{
+			Name:       "idempotency-key",
+			Required:   true,
+			HeaderPath: "Idempotency-Key",
+		},
+		&requestflag.Flag[*string]{
+			Name:     "path",
+			BodyPath: "path",
+		},
+	},
+	Action:          handleVaultObjectsMove,
+	HideHelpCommand: true,
+}
 
 func handleVaultObjectsRetrieve(ctx context.Context, cmd *cli.Command) error {
 	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
@@ -1053,6 +1133,55 @@ func handleVaultObjectsMerge(ctx context.Context, cmd *cli.Command) error {
 		Format:         format,
 		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "vault:objects merge",
+		Transform:      transform,
+	})
+}
+
+func handleVaultObjectsMove(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
+		cmd.Set("id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	params := githubcomcasemarkcasedevgo.VaultObjectMoveParams{}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Vault.Objects.Move(
+		ctx,
+		cmd.Value("id").(string),
+		params,
+		options...,
+	)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "vault:objects move",
 		Transform:      transform,
 	})
 }

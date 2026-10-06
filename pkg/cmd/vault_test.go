@@ -18,7 +18,6 @@ func TestVaultCreate(t *testing.T) {
 			"--name", "Contract Review Archive",
 			"--description", "Repository for all client contract reviews and analysis",
 			"--embedding-model", "casemark/embed-v1",
-			"--enable-graph=true",
 			"--enable-indexing=true",
 			"--group-id", "grp_abc123",
 			"--metadata", "{containsPHI: true, hipaaCompliant: true}",
@@ -31,7 +30,6 @@ func TestVaultCreate(t *testing.T) {
 			"name: Contract Review Archive\n" +
 			"description: Repository for all client contract reviews and analysis\n" +
 			"embeddingModel: casemark/embed-v1\n" +
-			"enableGraph: true\n" +
 			"enableIndexing: true\n" +
 			"groupId: grp_abc123\n" +
 			"metadata:\n" +
@@ -64,7 +62,6 @@ func TestVaultUpdate(t *testing.T) {
 			"vault", "update",
 			"--id", "id",
 			"--description", "description",
-			"--enable-graph=false",
 			"--group-id", "groupId",
 			"--name", "Updated Vault Name",
 		)
@@ -74,7 +71,6 @@ func TestVaultUpdate(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("" +
 			"description: description\n" +
-			"enableGraph: false\n" +
 			"groupId: groupId\n" +
 			"name: Updated Vault Name\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
@@ -92,6 +88,10 @@ func TestVaultList(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"vault", "list",
+			"--cursor", "cursor",
+			"--include-totals=true",
+			"--limit", "1",
+			"--query", "query",
 		)
 	})
 }
@@ -121,7 +121,7 @@ func TestVaultConfirmUpload(t *testing.T) {
 			"--error-code", "errorCode",
 			"--error-message", "errorMessage",
 			"--etag", "etag",
-			"--size-bytes", "1",
+			"--size-bytes", "0",
 		)
 	})
 
@@ -133,7 +133,7 @@ func TestVaultConfirmUpload(t *testing.T) {
 			"errorCode: errorCode\n" +
 			"errorMessage: errorMessage\n" +
 			"etag: etag\n" +
-			"sizeBytes: 1\n")
+			"sizeBytes: 0\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",
@@ -152,6 +152,23 @@ func TestVaultIngest(t *testing.T) {
 			"vault", "ingest",
 			"--id", "id",
 			"--object-id", "objectId",
+			"--callback-url", "https://example.com",
+			"--page-boundary", "2",
+		)
+	})
+
+	t.Run("piping data", func(t *testing.T) {
+		// Test piping YAML data over stdin
+		pipeData := []byte("" +
+			"callback_url: https://example.com\n" +
+			"page_boundaries:\n" +
+			"  - 2\n")
+		mocktest.TestRunMockTestWithPipeAndFlags(
+			t, pipeData,
+			"--api-key", "string",
+			"vault", "ingest",
+			"--id", "id",
+			"--object-id", "objectId",
 		)
 	})
 }
@@ -164,8 +181,8 @@ func TestVaultSearch(t *testing.T) {
 			"vault", "search",
 			"--id", "id",
 			"--query", "query",
-			"--filters", "{object_id: string}",
-			"--method", "vector",
+			"--filters", "{object_id: string, page_range: {start: 1, end: 1}}",
+			"--method", "hybrid",
 			"--top-k", "1",
 		)
 	})
@@ -182,7 +199,8 @@ func TestVaultSearch(t *testing.T) {
 			"--id", "id",
 			"--query", "query",
 			"--filters.object-id", "string",
-			"--method", "vector",
+			"--filters.page-range", "{start: 1, end: 1}",
+			"--method", "hybrid",
 			"--top-k", "1",
 		)
 	})
@@ -193,7 +211,10 @@ func TestVaultSearch(t *testing.T) {
 			"query: query\n" +
 			"filters:\n" +
 			"  object_id: string\n" +
-			"method: vector\n" +
+			"  page_range:\n" +
+			"    start: 1\n" +
+			"    end: 1\n" +
+			"method: hybrid\n" +
 			"topK: 1\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
@@ -214,10 +235,11 @@ func TestVaultUpload(t *testing.T) {
 			"--content-type", "contentType",
 			"--filename", "filename",
 			"--auto-index=true",
+			"--file-origin", "{foo: bar}",
 			"--is-ai-generated=true",
 			"--metadata", "{}",
 			"--path", "path",
-			"--size-bytes", "1",
+			"--size-bytes", "0",
 			"--idempotency-key", "Idempotency-Key",
 		)
 	})
@@ -228,10 +250,12 @@ func TestVaultUpload(t *testing.T) {
 			"contentType: contentType\n" +
 			"filename: filename\n" +
 			"auto_index: true\n" +
+			"file_origin:\n" +
+			"  foo: bar\n" +
 			"is_ai_generated: true\n" +
 			"metadata: {}\n" +
 			"path: path\n" +
-			"sizeBytes: 1\n")
+			"sizeBytes: 0\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",

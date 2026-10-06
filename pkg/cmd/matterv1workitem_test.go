@@ -120,6 +120,8 @@ func TestMattersV1WorkItemsList(t *testing.T) {
 			"matters:v1:work-items", "list",
 			"--id", "id",
 			"--assignee-id", "assignee_id",
+			"--cursor", "cursor",
+			"--limit", "1",
 			"--status", "status",
 		)
 	})

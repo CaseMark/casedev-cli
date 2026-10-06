@@ -17,7 +17,7 @@ func TestSkillsCreate(t *testing.T) {
 			"skills", "create",
 			"--content", "x",
 			"--name", "x",
-			"--file", "{content: content, path: path, contentType: contentType, metadata: {}, name: name, summary: summary, tags: [string]}",
+			"--file", "{content: content, path: path, contentType: contentType, encoding: utf8, metadata: {}, name: name, summary: summary, tags: [string]}",
 			"--metadata", "{}",
 			"--slug", "slug",
 			"--summary", "summary",
@@ -39,6 +39,7 @@ func TestSkillsCreate(t *testing.T) {
 			"--file.content", "content",
 			"--file.path", "path",
 			"--file.content-type", "contentType",
+			"--file.encoding", "utf8",
 			"--file.metadata", "{}",
 			"--file.name", "name",
 			"--file.summary", "summary",
@@ -59,6 +60,7 @@ func TestSkillsCreate(t *testing.T) {
 			"  - content: content\n" +
 			"    path: path\n" +
 			"    contentType: contentType\n" +
+			"    encoding: utf8\n" +
 			"    metadata: {}\n" +
 			"    name: name\n" +
 			"    summary: summary\n" +
@@ -85,7 +87,8 @@ func TestSkillsUpdate(t *testing.T) {
 			"skills", "update",
 			"--slug", "slug",
 			"--content", "content",
-			"--file", "[{content: content, path: path, contentType: contentType, metadata: {}, name: name, summary: summary, tags: [string]}]",
+			"--expected-version", "0",
+			"--file", "[{content: content, path: path, contentType: contentType, encoding: utf8, metadata: {}, name: name, summary: summary, tags: [string]}]",
 			"--metadata", "{}",
 			"--name", "name",
 			"--slug", "slug",
@@ -105,9 +108,11 @@ func TestSkillsUpdate(t *testing.T) {
 			"skills", "update",
 			"--slug", "slug",
 			"--content", "content",
+			"--expected-version", "0",
 			"--file.content", "content",
 			"--file.path", "path",
 			"--file.content-type", "contentType",
+			"--file.encoding", "utf8",
 			"--file.metadata", "{}",
 			"--file.name", "name",
 			"--file.summary", "summary",
@@ -124,10 +129,12 @@ func TestSkillsUpdate(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("" +
 			"content: content\n" +
+			"expectedVersion: 0\n" +
 			"files:\n" +
 			"  - content: content\n" +
 			"    path: path\n" +
 			"    contentType: contentType\n" +
+			"    encoding: utf8\n" +
 			"    metadata: {}\n" +
 			"    name: name\n" +
 			"    summary: summary\n" +
@@ -155,6 +162,21 @@ func TestSkillsDelete(t *testing.T) {
 			"--api-key", "string",
 			"skills", "delete",
 			"--slug", "slug",
+		)
+	})
+}
+
+func TestSkillsCatalog(t *testing.T) {
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"skills", "catalog",
+			"--limit", "1",
+			"--offset", "0",
+			"--q", "q",
+			"--source", "custom",
+			"--tag", "tag",
 		)
 	})
 }

@@ -19,6 +19,7 @@ func TestVaultEventsSubscriptionsCreate(t *testing.T) {
 			"--event-type", "string",
 			"--object-id", "string",
 			"--signing-secret", "signingSecret",
+			"--idempotency-key", "Idempotency-Key",
 		)
 	})
 
@@ -36,6 +37,7 @@ func TestVaultEventsSubscriptionsCreate(t *testing.T) {
 			"--api-key", "string",
 			"vault:events:subscriptions", "create",
 			"--id", "id",
+			"--idempotency-key", "Idempotency-Key",
 		)
 	})
 }

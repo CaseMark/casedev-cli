@@ -16,7 +16,7 @@ import (
 
 var connectorsV1SyncLink = requestflag.WithInnerFlags(cli.Command{
 	Name:    "sync-link",
-	Usage:   "Standing promise: backfill now, then stay current (the sync sweeper re-runs\nsynced links on a schedule). Same body as /transfer minus run_mode. Upserts the\nlink identified by (connection_id, direction, remote, vault_id); an existing\nonce-link is upgraded in place with its ledger and cursor preserved. Downgrade\nor pause via PATCH /links/{id}.",
+	Usage:   "Standing promise: backfill now, then stay current (the sync sweeper re-runs\nsynced links on a schedule). Direction both creates paired import/export links\nand defaults export to a CaseMark Output subfolder. Same body as /transfer minus\nrun_mode. Upserts links by (connection_id, direction, remote, vault_id);\nexisting once-links are upgraded in place with their ledger and cursor\npreserved. Downgrade or pause via PATCH /links/{id}.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -26,7 +26,7 @@ var connectorsV1SyncLink = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "direction",
-			Usage:    `Allowed values: "import", "export".`,
+			Usage:    `Allowed values: "import", "export", "both".`,
 			Required: true,
 			BodyPath: "direction",
 		},
@@ -40,6 +40,11 @@ var connectorsV1SyncLink = requestflag.WithInnerFlags(cli.Command{
 			Required: true,
 			BodyPath: "vault_id",
 		},
+		&requestflag.Flag[map[string]any]{
+			Name:     "export-destination",
+			Usage:    "Optional destination for direction both. Defaults to CaseMark Output under remote.",
+			BodyPath: "export_destination",
+		},
 		&requestflag.Flag[*string]{
 			Name:     "matter-id",
 			BodyPath: "matter_id",
@@ -47,6 +52,10 @@ var connectorsV1SyncLink = requestflag.WithInnerFlags(cli.Command{
 		&requestflag.Flag[map[string]any]{
 			Name:     "policy",
 			BodyPath: "policy",
+		},
+		&requestflag.Flag[string]{
+			Name:       "x-case-connector-subject",
+			HeaderPath: "x-case-connector-subject",
 		},
 	},
 	Action:          handleConnectorsV1SyncLink,
@@ -66,7 +75,29 @@ var connectorsV1SyncLink = requestflag.WithInnerFlags(cli.Command{
 			InnerField: "path",
 		},
 		&requestflag.InnerFlag[string]{
+			Name:       "remote.resource-type",
+			InnerField: "resource_type",
+		},
+		&requestflag.InnerFlag[string]{
 			Name:       "remote.site-id",
+			InnerField: "site_id",
+		},
+	},
+	"export-destination": {
+		&requestflag.InnerFlag[string]{
+			Name:       "export-destination.folder-id",
+			InnerField: "folder_id",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "export-destination.container-id",
+			InnerField: "container_id",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "export-destination.path",
+			InnerField: "path",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "export-destination.site-id",
 			InnerField: "site_id",
 		},
 	},
@@ -90,7 +121,7 @@ var connectorsV1SyncLink = requestflag.WithInnerFlags(cli.Command{
 
 var connectorsV1Transfer = requestflag.WithInnerFlags(cli.Command{
 	Name:    "transfer",
-	Usage:   "One-shot import (provider folder → vault) or export (vault → provider folder).\nUpserts the link identified by (connection_id, direction, remote, vault_id):\nfirst call backfills, later calls move only new/changed files via the ledger.\nPoll GET /links/{id} → active_run for progress.",
+	Usage:   "One-shot import (provider folder → vault), export (vault → provider folder), or\nboth. Direction both creates paired import/export links and defaults export to a\nCaseMark Output subfolder. Upserts links by (connection_id, direction, remote,\nvault_id): first call backfills, later calls move only new/changed files via the\nledger. Poll GET /links/{id} → active_run for progress.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -100,7 +131,7 @@ var connectorsV1Transfer = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "direction",
-			Usage:    `Allowed values: "import", "export".`,
+			Usage:    `Allowed values: "import", "export", "both".`,
 			Required: true,
 			BodyPath: "direction",
 		},
@@ -113,6 +144,11 @@ var connectorsV1Transfer = requestflag.WithInnerFlags(cli.Command{
 			Name:     "vault-id",
 			Required: true,
 			BodyPath: "vault_id",
+		},
+		&requestflag.Flag[map[string]any]{
+			Name:     "export-destination",
+			Usage:    "Optional destination for direction both. Defaults to CaseMark Output under remote.",
+			BodyPath: "export_destination",
 		},
 		&requestflag.Flag[*string]{
 			Name:     "matter-id",
@@ -127,6 +163,10 @@ var connectorsV1Transfer = requestflag.WithInnerFlags(cli.Command{
 			Usage:    `Allowed values: "auto", "full_reconcile".`,
 			Default:  "auto",
 			BodyPath: "run_mode",
+		},
+		&requestflag.Flag[string]{
+			Name:       "x-case-connector-subject",
+			HeaderPath: "x-case-connector-subject",
 		},
 	},
 	Action:          handleConnectorsV1Transfer,
@@ -146,7 +186,29 @@ var connectorsV1Transfer = requestflag.WithInnerFlags(cli.Command{
 			InnerField: "path",
 		},
 		&requestflag.InnerFlag[string]{
+			Name:       "remote.resource-type",
+			InnerField: "resource_type",
+		},
+		&requestflag.InnerFlag[string]{
 			Name:       "remote.site-id",
+			InnerField: "site_id",
+		},
+	},
+	"export-destination": {
+		&requestflag.InnerFlag[string]{
+			Name:       "export-destination.folder-id",
+			InnerField: "folder_id",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "export-destination.container-id",
+			InnerField: "container_id",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "export-destination.path",
+			InnerField: "path",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "export-destination.site-id",
 			InnerField: "site_id",
 		},
 	},

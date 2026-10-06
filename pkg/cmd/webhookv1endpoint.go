@@ -9,6 +9,8 @@ import (
 	"github.com/CaseMark/casedev-cli/internal/apiquery"
 	"github.com/CaseMark/casedev-cli/internal/requestflag"
 	"github.com/CaseMark/casedev-go"
+	"github.com/CaseMark/casedev-go/option"
+	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
@@ -218,7 +220,24 @@ func handleWebhooksV1EndpointsCreate(ctx context.Context, cmd *cli.Command) erro
 
 	params := githubcomcasemarkcasedevgo.WebhookV1EndpointNewParams{}
 
-	return client.Webhooks.V1.Endpoints.New(ctx, params, options...)
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Webhooks.V1.Endpoints.New(ctx, params, options...)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "webhooks:v1:endpoints create",
+		Transform:      transform,
+	})
 }
 
 func handleWebhooksV1EndpointsRetrieve(ctx context.Context, cmd *cli.Command) error {

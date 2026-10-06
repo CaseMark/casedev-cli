@@ -9,6 +9,8 @@ import (
 	"github.com/CaseMark/casedev-cli/internal/apiquery"
 	"github.com/CaseMark/casedev-cli/internal/requestflag"
 	"github.com/CaseMark/casedev-go"
+	"github.com/CaseMark/casedev-go/option"
+	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
@@ -95,10 +97,6 @@ var mattersV1Create = requestflag.WithInnerFlags(cli.Command{
 		&requestflag.InnerFlag[string]{
 			Name:       "vault.description",
 			InnerField: "description",
-		},
-		&requestflag.InnerFlag[bool]{
-			Name:       "vault.enable-graph",
-			InnerField: "enableGraph",
 		},
 		&requestflag.InnerFlag[bool]{
 			Name:       "vault.enable-indexing",
@@ -208,9 +206,19 @@ var mattersV1Update = cli.Command{
 
 var mattersV1List = cli.Command{
 	Name:    "list",
-	Usage:   "List matters for the authenticated organization.",
+	Usage:   "List matters for the authenticated organization, newest update first. Pagination\nis opt-in: pass `limit` (1-200) to receive a bounded page, then replay\n`pagination.next_cursor` as `?cursor=` while `pagination.has_more` is true.\nCursors are opaque and are only valid for the exact filter set they were issued\nunder. A request with neither `limit` nor `cursor` still returns every matter,\nand `pagination.limit` is null. That default will become a bounded page in a\nfuture release — paginate now to avoid the change.",
 	Suggest: true,
 	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:      "cursor",
+			Usage:     "Opaque continuation cursor from `pagination.next_cursor` of the previous page. Must be replayed with the same filters that produced it.",
+			QueryPath: "cursor",
+		},
+		&requestflag.Flag[int64]{
+			Name:      "limit",
+			Usage:     "Matters per page (1-200). Omit to receive every matter. Supplying a cursor without a limit uses 50.",
+			QueryPath: "limit",
+		},
 		&requestflag.Flag[string]{
 			Name:      "matter-type",
 			QueryPath: "matter_type",
@@ -229,6 +237,21 @@ var mattersV1List = cli.Command{
 		},
 	},
 	Action:          handleMattersV1List,
+	HideHelpCommand: true,
+}
+
+var mattersV1Delete = cli.Command{
+	Name:    "delete",
+	Usage:   "Queues a durable, idempotent purge of a Matter and all linked live content. Use\nmatter purge webhooks for status changes; the inspection route is intended for\nmanual diagnostics only.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
+		},
+	},
+	Action:          handleMattersV1Delete,
 	HideHelpCommand: true,
 }
 
@@ -334,5 +357,64 @@ func handleMattersV1List(ctx context.Context, cmd *cli.Command) error {
 
 	params := githubcomcasemarkcasedevgo.MatterV1ListParams{}
 
-	return client.Matters.V1.List(ctx, params, options...)
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Matters.V1.List(ctx, params, options...)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "matters:v1 list",
+		Transform:      transform,
+	})
+}
+
+func handleMattersV1Delete(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
+		cmd.Set("id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		EmptyBody,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Matters.V1.Delete(ctx, cmd.Value("id").(string), options...)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "matters:v1 delete",
+		Transform:      transform,
+	})
 }

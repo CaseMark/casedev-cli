@@ -43,6 +43,10 @@ var vaultEventsSubscriptionsCreate = cli.Command{
 			Usage:    "Optional secret used to sign outbound webhook deliveries",
 			BodyPath: "signingSecret",
 		},
+		&requestflag.Flag[string]{
+			Name:       "idempotency-key",
+			HeaderPath: "Idempotency-Key",
+		},
 	},
 	Action:          handleVaultEventsSubscriptionsCreate,
 	HideHelpCommand: true,
