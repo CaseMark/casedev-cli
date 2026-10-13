@@ -529,6 +529,16 @@ func init() {
 				},
 			},
 			{
+				Name:     "vault:folders",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&vaultFoldersCreate,
+					&vaultFoldersList,
+					&vaultFoldersMove,
+				},
+			},
+			{
 				Name:     "vault:events:subscriptions",
 				Category: "API RESOURCE",
 				Suggest:  true,
@@ -580,6 +590,7 @@ func init() {
 					&vaultObjectsGetText,
 					&vaultObjectsMerge,
 					&vaultObjectsMove,
+					&vaultObjectsOrganize,
 				},
 			},
 			{
