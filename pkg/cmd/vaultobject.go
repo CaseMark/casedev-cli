@@ -517,6 +517,54 @@ var vaultObjectsMove = cli.Command{
 	HideHelpCommand: true,
 }
 
+var vaultObjectsOrganize = requestflag.WithInnerFlags(cli.Command{
+	Name:    "organize",
+	Usage:   "Atomically moves up to 500 files to a folder. Authoritative transcription\nresults follow source media. Selecting a transcription result requires selecting\nits source media too. Source and destination folders remain durable even when\nempty. Metadata only; requires vault-wide write access and vault ownership.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
+		},
+		&requestflag.Flag[[]string]{
+			Name:     "object-id",
+			BodyPath: "objectIds",
+		},
+		&requestflag.Flag[string]{
+			Name:     "path",
+			BodyPath: "path",
+		},
+		&requestflag.Flag[map[string]any]{
+			Name:     "expected-paths",
+			Usage:    "Optional current folder preconditions for the supplied object IDs only. Automatically included transcription results do not require entries; supplied result entries are checked.",
+			BodyPath: "expectedPaths",
+		},
+		&requestflag.Flag[[]map[string]any]{
+			Name:     "move",
+			Usage:    "Restore confirmed move receipts with optimistic concurrency checks. Include every receipt for each media/transcription family. Cannot combine with objectIds or path.",
+			BodyPath: "moves",
+		},
+	},
+	Action:          handleVaultObjectsOrganize,
+	HideHelpCommand: true,
+}, map[string][]requestflag.HasOuterFlag{
+	"move": {
+		&requestflag.InnerFlag[string]{
+			Name:       "move.id",
+			InnerField: "id",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "move.expected-path",
+			InnerField: "expectedPath",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "move.path",
+			InnerField: "path",
+		},
+	},
+})
+
 func handleVaultObjectsRetrieve(ctx context.Context, cmd *cli.Command) error {
 	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
@@ -1182,6 +1230,55 @@ func handleVaultObjectsMove(ctx context.Context, cmd *cli.Command) error {
 		Format:         format,
 		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "vault:objects move",
+		Transform:      transform,
+	})
+}
+
+func handleVaultObjectsOrganize(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
+		cmd.Set("id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	params := githubcomcasemarkcasedevgo.VaultObjectOrganizeParams{}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Vault.Objects.Organize(
+		ctx,
+		cmd.Value("id").(string),
+		params,
+		options...,
+	)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "vault:objects organize",
 		Transform:      transform,
 	})
 }

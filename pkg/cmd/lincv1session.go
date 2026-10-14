@@ -32,6 +32,11 @@ var lincV1SessionsCreate = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "Specific document template slugs to inject into the using-document-templates skill.",
 			BodyPath: "documentTemplateSlugs",
 		},
+		&requestflag.Flag[any]{
+			Name:     "extension",
+			Usage:    "Optional caller-supplied executable tool files to install into .linc/extensions/ before the agent starts. Only supported for standalone sessions without capabilityPolicy: read_only. Rejected with a 400 on persistent (workspaceKey/conversationKey) or read_only sessions. At most 10 files, 64KB each, 256KB total. Extension destinations and content hashes are recorded in the session-created audit event; raw code is not logged.",
+			BodyPath: "extensions",
+		},
 		&requestflag.Flag[*int64]{
 			Name:     "idle-timeout-ms",
 			BodyPath: "idleTimeoutMs",
@@ -50,6 +55,11 @@ var lincV1SessionsCreate = requestflag.WithInnerFlags(cli.Command{
 			Name:     "model",
 			BodyPath: "model",
 		},
+		&requestflag.Flag[[]string]{
+			Name:     "model-fallback",
+			Usage:    "Optional ordered availability fallbacks for this session. Requires an explicit model. An empty array disables fallbacks; omission preserves existing runtime behavior. Linc switches within the same session, preserving context.",
+			BodyPath: "modelFallbacks",
+		},
 		&requestflag.Flag[*string]{
 			Name:     "scoped-api-key",
 			Usage:    "Optional caller-provided scoped Case.dev API key for the runtime.",
@@ -59,6 +69,11 @@ var lincV1SessionsCreate = requestflag.WithInnerFlags(cli.Command{
 			Name:     "service-tier",
 			Usage:    "Processing tier for eligible OpenAI GPT models. Priority provides lower latency at premium cost.",
 			BodyPath: "serviceTier",
+		},
+		&requestflag.Flag[string]{
+			Name:     "skills-delivery",
+			Usage:    "Defaults to local preinstallation. MCP is an opt-in, org-allowlisted rollout on a separately pinned image; requires a new standalone session and no skillSlugs preinstallation. Execution remains content-approval gated.",
+			BodyPath: "skillsDelivery",
 		},
 		&requestflag.Flag[any]{
 			Name:     "skill-slug",
@@ -96,6 +111,20 @@ var lincV1SessionsCreate = requestflag.WithInnerFlags(cli.Command{
 	Action:          handleLincV1SessionsCreate,
 	HideHelpCommand: true,
 }, map[string][]requestflag.HasOuterFlag{
+	"extension": {
+		&requestflag.InnerFlag[string]{
+			Name:                  "extension.content",
+			Usage:                 "UTF-8 tool file content, at most 64KB.",
+			InnerField:            "content",
+			OuterIsArrayOfObjects: true,
+		},
+		&requestflag.InnerFlag[string]{
+			Name:                  "extension.path",
+			Usage:                 `Bare .ts/.js filename or one-level subdir (e.g. create-automations.ts or automations/index.ts). Each directory must include exactly one index.ts or index.js entrypoint; helper files may accompany it. Platform names (casedev/subagent), root index.ts/index.js, node_modules, hidden top-level names, absolute paths, "..", and other extensions or nesting are rejected.`,
+			InnerField:            "path",
+			OuterIsArrayOfObjects: true,
+		},
+	},
 	"vault-scope": {
 		&requestflag.InnerFlag[[]string]{
 			Name:                  "vault-scope.object-ids",
