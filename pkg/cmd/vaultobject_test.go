@@ -346,3 +346,33 @@ func TestVaultObjectsMove(t *testing.T) {
 		)
 	})
 }
+
+func TestVaultObjectsOrganize(t *testing.T) {
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"vault:objects", "organize",
+			"--id", "id",
+			"--object-id", "string",
+			"--path", "path",
+			"--expected-paths", "{foo: string}",
+		)
+	})
+
+	t.Run("piping data", func(t *testing.T) {
+		// Test piping YAML data over stdin
+		pipeData := []byte("" +
+			"objectIds:\n" +
+			"  - string\n" +
+			"path: path\n" +
+			"expectedPaths:\n" +
+			"  foo: string\n")
+		mocktest.TestRunMockTestWithPipeAndFlags(
+			t, pipeData,
+			"--api-key", "string",
+			"vault:objects", "organize",
+			"--id", "id",
+		)
+	})
+}

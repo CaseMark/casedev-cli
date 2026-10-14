@@ -54,7 +54,7 @@ var llmV1CreateEmbedding = cli.Command{
 
 var llmV1ListModels = cli.Command{
 	Name:            "list-models",
-	Usage:           "Retrieve the curated list of available models: OpenAI and Google models plus\nCase.dev's specialized CaseMark legal models. Returns OpenAI-compatible model\nmetadata with pricing information.",
+	Usage:           "Retrieve the curated list of available models: OpenAI, Anthropic, and Google\nmodels plus Case.dev's specialized CaseMark legal models. Returns\nOpenAI-compatible model metadata with pricing information.",
 	Suggest:         true,
 	Flags:           []cli.Flag{},
 	Action:          handleLlmV1ListModels,

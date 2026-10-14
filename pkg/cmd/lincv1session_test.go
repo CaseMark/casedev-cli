@@ -18,12 +18,15 @@ func TestLincV1SessionsCreate(t *testing.T) {
 			"--capability-policy", "read_only",
 			"--conversation-key", "conversationKey",
 			"--document-template-slug", "[string]",
+			"--extension", "[{content: content, path: path}]",
 			"--idle-timeout-ms", "0",
 			"--include-document-templates=true",
 			"--instructions", "instructions",
 			"--model", "model",
+			"--model-fallback", "string",
 			"--scoped-api-key", "scopedApiKey",
 			"--service-tier", "default",
+			"--skills-delivery", "local",
 			"--skill-slug", "[string]",
 			"--title", "title",
 			"--vault-id", "[string]",
@@ -46,12 +49,16 @@ func TestLincV1SessionsCreate(t *testing.T) {
 			"--capability-policy", "read_only",
 			"--conversation-key", "conversationKey",
 			"--document-template-slug", "[string]",
+			"--extension.content", "content",
+			"--extension.path", "path",
 			"--idle-timeout-ms", "0",
 			"--include-document-templates=true",
 			"--instructions", "instructions",
 			"--model", "model",
+			"--model-fallback", "string",
 			"--scoped-api-key", "scopedApiKey",
 			"--service-tier", "default",
+			"--skills-delivery", "local",
 			"--skill-slug", "[string]",
 			"--title", "title",
 			"--vault-id", "[string]",
@@ -70,12 +77,18 @@ func TestLincV1SessionsCreate(t *testing.T) {
 			"conversationKey: conversationKey\n" +
 			"documentTemplateSlugs:\n" +
 			"  - string\n" +
+			"extensions:\n" +
+			"  - content: content\n" +
+			"    path: path\n" +
 			"idleTimeoutMs: 0\n" +
 			"includeDocumentTemplates: true\n" +
 			"instructions: instructions\n" +
 			"model: model\n" +
+			"modelFallbacks:\n" +
+			"  - string\n" +
 			"scopedApiKey: scopedApiKey\n" +
 			"serviceTier: default\n" +
+			"skillsDelivery: local\n" +
 			"skillSlugs:\n" +
 			"  - string\n" +
 			"title: title\n" +
