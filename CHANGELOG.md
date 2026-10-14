@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.48.0](https://github.com/CaseMark/casedev-cli/compare/v0.47.0...v0.48.0) (2026-10-14)
+
+
+### Features
+
+* **api:** CD-1819: release CLI vault APIs with Go SDK 0.59.0 ([096917e](https://github.com/CaseMark/casedev-cli/commit/096917ef4960dfaf0b2c2cec508b41b47820988a))
+
 ## [0.47.0](https://github.com/CaseMark/casedev-cli/compare/v0.46.0...v0.47.0) (2026-10-06)
 
 
