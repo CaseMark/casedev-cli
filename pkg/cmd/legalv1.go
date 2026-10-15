@@ -405,6 +405,112 @@ var legalV1SecFiling = cli.Command{
 	HideHelpCommand: true,
 }
 
+var legalV1SecXbrl = cli.Command{
+	Name:    "sec-xbrl",
+	Usage:   "Retrieve structured financial values reported to the SEC in XBRL, via\ndata.sec.gov. Use this endpoint when you need numbers (net income, assets,\nshares outstanding, and so on); use sec-filing to find filing documents. Three\ntypes: \"concept\" returns one line item for one company over time; \"facts\"\nreturns a catalog of every concept a company reports (or normalized facts for\nthe concepts you name); \"frames\" returns one concept across all reporting\ncompanies for one calendar period. Each fact links back to its EDGAR filing\nindex via secUrl. The same value is re-reported in later filings as a\nprior-period comparative, so by default (dedupe: true) only facts the SEC\nassigned a calendar frame are returned; set dedupe to false for every reported\nfact. Free.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:     "type",
+			Usage:    "concept: one line item for one company over time. facts: all concepts for one company (catalog, or values for the concepts you list). frames: one concept across all companies for one period.",
+			Required: true,
+			BodyPath: "type",
+		},
+		&requestflag.Flag[string]{
+			Name:     "cik",
+			Usage:    "Company CIK, padded or unpadded (concept and facts). Provide exactly one of cik or ticker.",
+			BodyPath: "cik",
+		},
+		&requestflag.Flag[[]string]{
+			Name:     "peer-cik",
+			Usage:    "frames only. Restrict results to these CIKs (peer set).",
+			BodyPath: "ciks",
+		},
+		&requestflag.Flag[[]string]{
+			Name:     "concept",
+			Usage:    `facts only. "taxonomy:tag" strings or bare tags (default us-gaap). Omit to get the concept catalog, which has no values.`,
+			BodyPath: "concepts",
+		},
+		&requestflag.Flag[any]{
+			Name:     "date-after",
+			Usage:    "concept and facts. Only facts whose period end date is on or after this date (YYYY-MM-DD).",
+			BodyPath: "dateAfter",
+		},
+		&requestflag.Flag[any]{
+			Name:     "date-before",
+			Usage:    "concept and facts. Only facts whose period end date is on or before this date (YYYY-MM-DD).",
+			BodyPath: "dateBefore",
+		},
+		&requestflag.Flag[bool]{
+			Name:     "dedupe",
+			Usage:    "concept and facts. When true, keep only facts the SEC assigned a calendar frame (its canonical fact per period), dropping prior-period comparatives re-reported in later filings. When false, return every reported fact.",
+			Default:  true,
+			BodyPath: "dedupe",
+		},
+		&requestflag.Flag[[]string]{
+			Name:     "fiscal-period",
+			Usage:    "concept and facts. Filter by fiscal period.",
+			BodyPath: "fiscalPeriods",
+		},
+		&requestflag.Flag[[]string]{
+			Name:     "form-type",
+			Usage:    "concept and facts. Filter by SEC form type such as 10-K or 10-Q.",
+			BodyPath: "formTypes",
+		},
+		&requestflag.Flag[int64]{
+			Name:     "limit",
+			Usage:    "Maximum rows to return",
+			Default:  25,
+			BodyPath: "limit",
+		},
+		&requestflag.Flag[int64]{
+			Name:     "offset",
+			Usage:    "Result offset for pagination",
+			Default:  0,
+			BodyPath: "offset",
+		},
+		&requestflag.Flag[string]{
+			Name:     "period",
+			Usage:    "frames only, required. CY2024 = annual duration, CY2024Q1 = quarterly duration, CY2024Q1I = instantaneous (balance sheet items).",
+			BodyPath: "period",
+		},
+		&requestflag.Flag[string]{
+			Name:     "sort",
+			Usage:    "frames only. Sort order by value.",
+			Default:  "value_desc",
+			BodyPath: "sort",
+		},
+		&requestflag.Flag[string]{
+			Name:     "tag",
+			Usage:    "XBRL element name such as NetIncomeLoss (required for concept and frames)",
+			BodyPath: "tag",
+		},
+		&requestflag.Flag[string]{
+			Name:     "taxonomy",
+			Usage:    "XBRL taxonomy. For facts it only filters the catalog and has no default.",
+			Default:  "us-gaap",
+			BodyPath: "taxonomy",
+		},
+		&requestflag.Flag[string]{
+			Name:     "ticker",
+			Usage:    "Company ticker (concept and facts). Provide exactly one of cik or ticker.",
+			BodyPath: "ticker",
+		},
+		&requestflag.Flag[[]string]{
+			Name:     "peer-ticker",
+			Usage:    "frames only. Restrict results to these tickers (peer set).",
+			BodyPath: "tickers",
+		},
+		&requestflag.Flag[string]{
+			Name:     "unit",
+			Usage:    "Unit such as USD, shares, or USD/shares. Optional filter for concept; defaults to USD for frames (the SEC URL form USD-per-shares is also accepted).",
+			BodyPath: "unit",
+		},
+	},
+	Action:          handleLegalV1SecXbrl,
+	HideHelpCommand: true,
+}
+
 var legalV1Similar = cli.Command{
 	Name:    "similar",
 	Usage:   "Find cases and documents similar to a given legal source. Useful for finding\nciting cases, related precedents, or similar statutes.",
@@ -879,6 +985,47 @@ func handleLegalV1SecFiling(ctx context.Context, cmd *cli.Command) error {
 		Format:         format,
 		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "legal:v1 sec-filing",
+		Transform:      transform,
+	})
+}
+
+func handleLegalV1SecXbrl(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	params := githubcomcasemarkcasedevgo.LegalV1SecXbrlParams{}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Legal.V1.SecXbrl(ctx, params, options...)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "legal:v1 sec-xbrl",
 		Transform:      transform,
 	})
 }

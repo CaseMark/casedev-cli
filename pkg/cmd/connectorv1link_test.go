@@ -27,8 +27,11 @@ func TestConnectorsV1LinksUpdate(t *testing.T) {
 			"--api-key", "string",
 			"connectors:v1:links", "update",
 			"--id", "id",
+			"--expected-policy", "{}",
+			"--expected-remote", "{}",
 			"--mode", "once",
 			"--policy", "{}",
+			"--remote", "{}",
 			"--state", "paused",
 			"--x-case-connector-subject", "x-case-connector-subject",
 		)
@@ -37,8 +40,11 @@ func TestConnectorsV1LinksUpdate(t *testing.T) {
 	t.Run("piping data", func(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("" +
+			"expected_policy: {}\n" +
+			"expected_remote: {}\n" +
 			"mode: once\n" +
 			"policy: {}\n" +
+			"remote: {}\n" +
 			"state: paused\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
@@ -90,6 +96,18 @@ func TestConnectorsV1LinksListObjects(t *testing.T) {
 			"--id", "id",
 			"--cursor", "cursor",
 			"--state", "pending",
+			"--x-case-connector-subject", "x-case-connector-subject",
+		)
+	})
+}
+
+func TestConnectorsV1LinksRetrieveSelectionRoot(t *testing.T) {
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"connectors:v1:links", "retrieve-selection-root",
+			"--id", "id",
 			"--x-case-connector-subject", "x-case-connector-subject",
 		)
 	})

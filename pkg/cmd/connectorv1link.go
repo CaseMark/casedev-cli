@@ -41,6 +41,16 @@ var connectorsV1LinksUpdate = cli.Command{
 			Required:  true,
 			PathParam: "id",
 		},
+		&requestflag.Flag[any]{
+			Name:     "expected-policy",
+			Usage:    "Optional saved Clio import policy. Rejects concurrent changes to its folder/file exclusions.",
+			BodyPath: "expected_policy",
+		},
+		&requestflag.Flag[any]{
+			Name:     "expected-remote",
+			Usage:    "Required saved remote when expanding a Clio import root; detects concurrent source changes.",
+			BodyPath: "expected_remote",
+		},
 		&requestflag.Flag[string]{
 			Name:     "mode",
 			Usage:    `Allowed values: "once", "synced".`,
@@ -50,6 +60,11 @@ var connectorsV1LinksUpdate = cli.Command{
 			Name:     "policy",
 			Usage:    "Replaces the entire stored policy; omitted fields return to defaults. Repeat deletes, collisions and filters that should be retained. Folder/file exclusions require deletes: preserve (the default).",
 			BodyPath: "policy",
+		},
+		&requestflag.Flag[any]{
+			Name:     "remote",
+			Usage:    "For unpaired Clio document imports only: expand folder_id to its verified Clio matter root. Connection, matter, vault and ledger remain unchanged.",
+			BodyPath: "remote",
 		},
 		&requestflag.Flag[string]{
 			Name:     "state",
@@ -161,6 +176,25 @@ var connectorsV1LinksListObjects = cli.Command{
 		},
 	},
 	Action:          handleConnectorsV1LinksListObjects,
+	HideHelpCommand: true,
+}
+
+var connectorsV1LinksRetrieveSelectionRoot = cli.Command{
+	Name:    "retrieve-selection-root",
+	Usage:   "Resolve the linked Clio matter root and existing folder ancestry for managing\nsynced folders. Applies the provider account ACLs.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
+		},
+		&requestflag.Flag[string]{
+			Name:       "x-case-connector-subject",
+			HeaderPath: "x-case-connector-subject",
+		},
+	},
+	Action:          handleConnectorsV1LinksRetrieveSelectionRoot,
 	HideHelpCommand: true,
 }
 
@@ -309,6 +343,38 @@ func handleConnectorsV1LinksListObjects(ctx context.Context, cmd *cli.Command) e
 	params := githubcomcasemarkcasedevgo.ConnectorV1LinkListObjectsParams{}
 
 	return client.Connectors.V1.Links.ListObjects(
+		ctx,
+		cmd.Value("id").(string),
+		params,
+		options...,
+	)
+}
+
+func handleConnectorsV1LinksRetrieveSelectionRoot(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
+		cmd.Set("id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		EmptyBody,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	params := githubcomcasemarkcasedevgo.ConnectorV1LinkGetSelectionRootParams{}
+
+	return client.Connectors.V1.Links.GetSelectionRoot(
 		ctx,
 		cmd.Value("id").(string),
 		params,

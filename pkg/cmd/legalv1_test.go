@@ -313,6 +313,67 @@ func TestLegalV1SecFiling(t *testing.T) {
 	})
 }
 
+func TestLegalV1SecXbrl(t *testing.T) {
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"legal:v1", "sec-xbrl",
+			"--type", "concept",
+			"--cik", "cik",
+			"--peer-cik", "string",
+			"--concept", "string",
+			"--date-after", "'2019-12-27'",
+			"--date-before", "'2019-12-27'",
+			"--dedupe=true",
+			"--fiscal-period", "FY",
+			"--form-type", "string",
+			"--limit", "1",
+			"--offset", "0",
+			"--period", "CY7321",
+			"--sort", "value_desc",
+			"--tag", "tag",
+			"--taxonomy", "us-gaap",
+			"--ticker", "ticker",
+			"--peer-ticker", "string",
+			"--unit", "unit",
+		)
+	})
+
+	t.Run("piping data", func(t *testing.T) {
+		// Test piping YAML data over stdin
+		pipeData := []byte("" +
+			"type: concept\n" +
+			"cik: cik\n" +
+			"ciks:\n" +
+			"  - string\n" +
+			"concepts:\n" +
+			"  - string\n" +
+			"dateAfter: '2019-12-27'\n" +
+			"dateBefore: '2019-12-27'\n" +
+			"dedupe: true\n" +
+			"fiscalPeriods:\n" +
+			"  - FY\n" +
+			"formTypes:\n" +
+			"  - string\n" +
+			"limit: 1\n" +
+			"offset: 0\n" +
+			"period: CY7321\n" +
+			"sort: value_desc\n" +
+			"tag: tag\n" +
+			"taxonomy: us-gaap\n" +
+			"ticker: ticker\n" +
+			"tickers:\n" +
+			"  - string\n" +
+			"unit: unit\n")
+		mocktest.TestRunMockTestWithPipeAndFlags(
+			t, pipeData,
+			"--api-key", "string",
+			"legal:v1", "sec-xbrl",
+		)
+	})
+}
+
 func TestLegalV1Similar(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
