@@ -158,6 +158,7 @@ func init() {
 					&connectorsV1LinksList,
 					&connectorsV1LinksDelete,
 					&connectorsV1LinksListObjects,
+					&connectorsV1LinksRetrieveSelectionRoot,
 				},
 			},
 			{
@@ -235,6 +236,7 @@ func init() {
 					&legalV1PatentSearch,
 					&legalV1Research,
 					&legalV1SecFiling,
+					&legalV1SecXbrl,
 					&legalV1Similar,
 					&legalV1TrademarkSearch,
 					&legalV1Verify,

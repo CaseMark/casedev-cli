@@ -248,7 +248,7 @@ var skillsCatalog = cli.Command{
 
 var skillsExport = cli.Command{
 	Name:    "export",
-	Usage:   "Export a skill as an installable filesystem tree for sandbox runtimes.\nAuthenticated org-scoped custom skills are resolved before curated skills.",
+	Usage:   "Export a skill as an installable filesystem tree for sandbox runtimes.\nAuthenticated org-scoped custom skills are resolved before curated skills. Slugs\nof merged skills are permanent aliases: they export the surviving skill (slug,\nroot and files describe the target) with `redirected_from` set to the requested\nslug.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -269,7 +269,7 @@ var skillsExport = cli.Command{
 
 var skillsRead = cli.Command{
 	Name:    "read",
-	Usage:   "Read the full content of a legal skill by its slug. Returns markdown content,\ntags, and metadata.",
+	Usage:   "Read the full content of a legal skill by its slug. Returns markdown content,\ntags, and metadata. Slugs of merged skills are permanent aliases: they return\nthe surviving skill with `redirected_from` set to the requested slug instead of\nan error.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
