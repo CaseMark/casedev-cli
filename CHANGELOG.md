@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.49.0](https://github.com/CaseMark/casedev-cli/compare/v0.48.0...v0.49.0) (2026-10-15)
+
+
+### Features
+
+* **api:** add SEC XBRL financial data and skill alias metadata (CD-1816) ([c6682be](https://github.com/CaseMark/casedev-cli/commit/c6682be8c88834e51035a640a62db825475642c1))
+
 ## [0.48.0](https://github.com/CaseMark/casedev-cli/compare/v0.47.0...v0.48.0) (2026-10-14)
 
 
