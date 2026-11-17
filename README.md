@@ -63,9 +63,21 @@ For details about specific commands, use the `--help` flag.
 
 ### Environment variables
 
-| Environment variable | Description                                                                         | Required |
-| -------------------- | ----------------------------------------------------------------------------------- | -------- |
-| `CASEDEV_API_KEY`    | API key authentication. Use your case.dev API key (e.g., sk_case_your_api_key_here) | yes      |
+| Environment variable                         | Description                                                                                 | Required |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------- | -------- |
+| `CASEDEV_API_KEY`                  | API key authentication. Use your case.dev API key (e.g., sk_case_your_api_key_here) | yes      |
+| `CASEDEV_BASE_URL`                 | Override the API base URL for the process                                           | no       |
+| `CASEDEV_CUSTOM_HEADERS`            | Newline-delimited `Name: value` headers added to every API request                  | no       |
+
+For example, trusted CI or hosting infrastructure can authenticate a protected
+Preview deployment without changing individual commands:
+
+```sh
+export CASEDEV_CUSTOM_HEADERS='x-vercel-protection-bypass: <automation-secret>'
+```
+
+Treat custom-header values as secrets. The CLI's debug logger redacts known
+sensitive headers, including Vercel's protection bypass header.
 
 ### Global flags
 

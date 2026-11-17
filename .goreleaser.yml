@@ -84,17 +84,18 @@ homebrew_casks:
       owner: CaseMark
       name: homebrew-casedev
       token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
-    homepage: https://case.dev
-    description: The official CLI for case.dev — manage legal AI resources from the terminal
+      pull_request:
+        enabled: true
+    homepage: https://case.dev/
+    description: Official CLI for case.dev — manage legal AI resources from the terminal
     license: Apache-2.0
+    url:
+      verified: github.com/CaseMark/casedev-cli/
     binaries:
       - casedev
     hooks:
       post:
-        install: |
-          if OS.mac?
-            system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/casedev"]
-          end
+        install: 'system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/casedev"] if OS.mac?'
     completions:
       bash: "completions/casedev.bash"
       zsh: "completions/casedev.zsh"
