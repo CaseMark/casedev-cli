@@ -68,7 +68,7 @@ var ocrV1Process = requestflag.WithInnerFlags(cli.Command{
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "document-url",
-			Usage:    "URL or S3 path to the document to process",
+			Usage:    "HTTP(S) URL of the document to process, or the s3:// path of a vault object in your organization",
 			Required: true,
 			BodyPath: "document_url",
 		},

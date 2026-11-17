@@ -94,6 +94,99 @@ func TestConnectorsV1ConnectionsBrowse(t *testing.T) {
 	})
 }
 
+func TestConnectorsV1ConnectionsCreateFolder(t *testing.T) {
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"connectors:v1:connections", "create-folder",
+			"--id", "id",
+			"--name", "name",
+			"--container", "container",
+			"--parent", "parent",
+			"--site", "site",
+			"--x-case-connector-subject", "x-case-connector-subject",
+		)
+	})
+
+	t.Run("piping data", func(t *testing.T) {
+		// Test piping YAML data over stdin
+		pipeData := []byte("" +
+			"name: name\n" +
+			"container: container\n" +
+			"parent: parent\n" +
+			"site: site\n")
+		mocktest.TestRunMockTestWithPipeAndFlags(
+			t, pipeData,
+			"--api-key", "string",
+			"connectors:v1:connections", "create-folder",
+			"--id", "id",
+			"--x-case-connector-subject", "x-case-connector-subject",
+		)
+	})
+}
+
+func TestConnectorsV1ConnectionsCreateMicrosoftAdminApproval(t *testing.T) {
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"connectors:v1:connections", "create-microsoft-admin-approval",
+			"--id", "id",
+			"--x-case-connector-subject", "x-case-connector-subject",
+		)
+	})
+}
+
+func TestConnectorsV1ConnectionsListContents(t *testing.T) {
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"connectors:v1:connections", "list-contents",
+			"--id", "id",
+			"--container", "container",
+			"--cursor", "cursor",
+			"--page-size", "1",
+			"--parent", "parent",
+			"--site", "site",
+			"--x-case-connector-subject", "x-case-connector-subject",
+		)
+	})
+}
+
+func TestConnectorsV1ConnectionsResolveLink(t *testing.T) {
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"connectors:v1:connections", "resolve-link",
+			"--id", "id",
+			"--url", "url",
+			"--x-case-connector-subject", "x-case-connector-subject",
+		)
+	})
+}
+
+func TestConnectorsV1ConnectionsSearch(t *testing.T) {
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"connectors:v1:connections", "search",
+			"--id", "id",
+			"--query", "query",
+			"--container", "container",
+			"--cursor", "cursor",
+			"--kind", "file",
+			"--page-size", "1000",
+			"--parent", "parent",
+			"--site", "site",
+			"--x-case-connector-subject", "x-case-connector-subject",
+		)
+	})
+}
+
 func TestConnectorsV1ConnectionsUpdateAll(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(

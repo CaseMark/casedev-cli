@@ -16,7 +16,7 @@ import (
 
 var voiceBoostListExtract = cli.Command{
 	Name:    "extract",
-	Usage:   "Extracts a categorized word boost list from vault documents or raw text using\nLLM entity extraction. The resulting list can be passed as `word_boost` to the\ntranscription endpoint for improved accuracy.",
+	Usage:   "Extracts a categorized word boost list from vault documents or raw text using\nLLM entity extraction. The resulting words can be passed as `keyterms_prompt`\n(or the legacy `word_boost` alias) to the transcription endpoint for improved\naccuracy.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[[]string]{
@@ -46,7 +46,7 @@ var voiceBoostListExtract = cli.Command{
 
 var voiceBoostListGenerate = cli.Command{
 	Name:    "generate",
-	Usage:   "Generates a categorized word boost list from a completed transcription job.\nExtracts entities from the pass-1 transcript for use as `word_boost` in a second\ntranscription pass.",
+	Usage:   "Generates a categorized word boost list from a completed transcription job.\nExtracts entities from the pass-1 transcript for use as `keyterms_prompt` (or\nthe legacy `word_boost` alias) in a second transcription pass.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{

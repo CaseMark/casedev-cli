@@ -14,7 +14,7 @@ import (
 
 var lincV1SessionsCreate = requestflag.WithInnerFlags(cli.Command{
 	Name:    "create",
-	Usage:   "Creates a Daytona-backed native Linc session with scoped Case.dev credentials.\nThis endpoint starts the sandbox actor only; messages and event replay use\nseparate endpoints.",
+	Usage:   "Creates a native Linc session in a sandboxed runtime with scoped Case.dev\ncredentials. This endpoint starts the sandbox actor only; messages and event\nreplay use separate endpoints.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -47,11 +47,6 @@ var lincV1SessionsCreate = requestflag.WithInnerFlags(cli.Command{
 			BodyPath: "includeDocumentTemplates",
 		},
 		&requestflag.Flag[*string]{
-			Name:     "instructions",
-			Usage:    "Privileged C3-only hidden app instructions to append to the sandbox AGENTS.md.",
-			BodyPath: "instructions",
-		},
-		&requestflag.Flag[*string]{
 			Name:     "model",
 			BodyPath: "model",
 		},
@@ -59,6 +54,17 @@ var lincV1SessionsCreate = requestflag.WithInnerFlags(cli.Command{
 			Name:     "model-fallback",
 			Usage:    "Optional ordered availability fallbacks for this session. Requires an explicit model. An empty array disables fallbacks; omission preserves existing runtime behavior. Linc switches within the same session, preserving context.",
 			BodyPath: "modelFallbacks",
+		},
+		&requestflag.Flag[string]{
+			Name:     "runtime-retention",
+			Usage:    "indefinite keeps the runtime and its saved state until the session (or, in workspace mode, its last conversation) is deleted, so a chat can resume after any idle gap. The default in workspace mode; standalone chats opt in with it, one-off runs leave it unset. Raises an existing workspace to indefinite. Mutually exclusive with runtimeRetentionDays.",
+			BodyPath: "runtimeRetention",
+		},
+		&requestflag.Flag[int64]{
+			Name:     "runtime-retention-days",
+			Usage:    "Days the runtime and its saved state are kept after the last activity. Defaults to 1 for standalone sessions; workspace-mode conversations (workspaceKey) and the C3 system key default to indefinite (see runtimeRetention). Once they are deleted, commands to the session answer 410 linc_runtime_expired; its events stay readable. A workspace keeps the value it was created with; a larger value on a later conversation raises it. Applies to Vercel Sandbox runtimes; accepted and stored on Daytona, where it has no effect. Mutually exclusive with runtimeRetention.",
+			Default:  1,
+			BodyPath: "runtimeRetentionDays",
 		},
 		&requestflag.Flag[*string]{
 			Name:     "scoped-api-key",
