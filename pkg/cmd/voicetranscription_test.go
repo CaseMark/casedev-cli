@@ -21,6 +21,7 @@ func TestVoiceTranscriptionCreate(t *testing.T) {
 			"--disfluencies=true",
 			"--format", "json",
 			"--format-text=true",
+			"--keyterms-prompt", "string",
 			"--language-code", "language_code",
 			"--language-detection=true",
 			"--object-id", "object_id",
@@ -43,6 +44,8 @@ func TestVoiceTranscriptionCreate(t *testing.T) {
 			"disfluencies: true\n" +
 			"format: json\n" +
 			"format_text: true\n" +
+			"keyterms_prompt:\n" +
+			"  - string\n" +
 			"language_code: language_code\n" +
 			"language_detection: true\n" +
 			"object_id: object_id\n" +

@@ -32,7 +32,7 @@ var voiceTranscriptionCreate = cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "boost-param",
-			Usage:    "How much to boost custom vocabulary",
+			Usage:    "Deprecated and ignored: current AssemblyAI models do not support boost strength.",
 			BodyPath: "boost_param",
 		},
 		&requestflag.Flag[bool]{
@@ -58,6 +58,11 @@ var voiceTranscriptionCreate = cli.Command{
 			Usage:    "Format text with proper capitalization",
 			Default:  true,
 			BodyPath: "format_text",
+		},
+		&requestflag.Flag[[]string]{
+			Name:     "keyterms-prompt",
+			Usage:    "Domain-specific words or phrases (max 6 words each) to improve recognition accuracy. Up to 1000 on universal-3-5-pro, 200 on universal-2.",
+			BodyPath: "keyterms_prompt",
 		},
 		&requestflag.Flag[string]{
 			Name:     "language-code",
@@ -105,7 +110,7 @@ var voiceTranscriptionCreate = cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "word-boost",
-			Usage:    "Custom vocabulary words to boost (e.g., legal terms)",
+			Usage:    "Legacy alias for `keyterms_prompt`. Entries are merged into `keyterms_prompt` before submission.",
 			BodyPath: "word_boost",
 		},
 	},

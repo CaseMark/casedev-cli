@@ -9,6 +9,34 @@ import (
 	"github.com/CaseMark/casedev-cli/internal/requestflag"
 )
 
+func TestConnectorsV1Fetch(t *testing.T) {
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"connectors:v1", "fetch",
+			"--open-ref", "open_ref",
+			"--upload-url", "upload_url",
+			"--vault-id", "vault_id",
+			"--x-case-connector-subject", "x-case-connector-subject",
+		)
+	})
+
+	t.Run("piping data", func(t *testing.T) {
+		// Test piping YAML data over stdin
+		pipeData := []byte("" +
+			"open_ref: open_ref\n" +
+			"upload_url: upload_url\n" +
+			"vault_id: vault_id\n")
+		mocktest.TestRunMockTestWithPipeAndFlags(
+			t, pipeData,
+			"--api-key", "string",
+			"connectors:v1", "fetch",
+			"--x-case-connector-subject", "x-case-connector-subject",
+		)
+	})
+}
+
 func TestConnectorsV1SyncLink(t *testing.T) {
 	t.Run("regular flags", func(t *testing.T) {
 		mocktest.TestRunMockTestWithFlags(
@@ -21,7 +49,8 @@ func TestConnectorsV1SyncLink(t *testing.T) {
 			"--vault-id", "vault_id",
 			"--export-destination", "{folder_id: folder_id, container_id: container_id, path: path, site_id: site_id}",
 			"--matter-id", "matter_id",
-			"--policy", "{collisions: version, deletes: mirror, filters: {exclude_file_ids: [string], exclude_folder_ids: [string], exclude_mime: [string], max_size_bytes: 0}}",
+			"--policy", "{collisions: version, deletes: mirror, filters: {allow_extensions: [string], exclude_file_ids: [string], exclude_folder_ids: [string], exclude_mime: [string], max_size_bytes: 0}}",
+			"--selection", "{folder: folder, object_ids: [string]}",
 			"--x-case-connector-subject", "x-case-connector-subject",
 		)
 	})
@@ -50,7 +79,9 @@ func TestConnectorsV1SyncLink(t *testing.T) {
 			"--matter-id", "matter_id",
 			"--policy.collisions", "version",
 			"--policy.deletes", "mirror",
-			"--policy.filters", "{exclude_file_ids: [string], exclude_folder_ids: [string], exclude_mime: [string], max_size_bytes: 0}",
+			"--policy.filters", "{allow_extensions: [string], exclude_file_ids: [string], exclude_folder_ids: [string], exclude_mime: [string], max_size_bytes: 0}",
+			"--selection.folder", "folder",
+			"--selection.object-ids", "[string]",
 			"--x-case-connector-subject", "x-case-connector-subject",
 		)
 	})
@@ -77,13 +108,19 @@ func TestConnectorsV1SyncLink(t *testing.T) {
 			"  collisions: version\n" +
 			"  deletes: mirror\n" +
 			"  filters:\n" +
+			"    allow_extensions:\n" +
+			"      - string\n" +
 			"    exclude_file_ids:\n" +
 			"      - string\n" +
 			"    exclude_folder_ids:\n" +
 			"      - string\n" +
 			"    exclude_mime:\n" +
 			"      - string\n" +
-			"    max_size_bytes: 0\n")
+			"    max_size_bytes: 0\n" +
+			"selection:\n" +
+			"  folder: folder\n" +
+			"  object_ids:\n" +
+			"    - string\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",
@@ -105,8 +142,9 @@ func TestConnectorsV1Transfer(t *testing.T) {
 			"--vault-id", "vault_id",
 			"--export-destination", "{folder_id: folder_id, container_id: container_id, path: path, site_id: site_id}",
 			"--matter-id", "matter_id",
-			"--policy", "{collisions: version, deletes: mirror, filters: {exclude_file_ids: [string], exclude_folder_ids: [string], exclude_mime: [string], max_size_bytes: 0}}",
+			"--policy", "{collisions: version, deletes: mirror, filters: {allow_extensions: [string], exclude_file_ids: [string], exclude_folder_ids: [string], exclude_mime: [string], max_size_bytes: 0}}",
 			"--run-mode", "auto",
+			"--selection", "{folder: folder, object_ids: [string]}",
 			"--x-case-connector-subject", "x-case-connector-subject",
 		)
 	})
@@ -135,8 +173,10 @@ func TestConnectorsV1Transfer(t *testing.T) {
 			"--matter-id", "matter_id",
 			"--policy.collisions", "version",
 			"--policy.deletes", "mirror",
-			"--policy.filters", "{exclude_file_ids: [string], exclude_folder_ids: [string], exclude_mime: [string], max_size_bytes: 0}",
+			"--policy.filters", "{allow_extensions: [string], exclude_file_ids: [string], exclude_folder_ids: [string], exclude_mime: [string], max_size_bytes: 0}",
 			"--run-mode", "auto",
+			"--selection.folder", "folder",
+			"--selection.object-ids", "[string]",
 			"--x-case-connector-subject", "x-case-connector-subject",
 		)
 	})
@@ -163,6 +203,8 @@ func TestConnectorsV1Transfer(t *testing.T) {
 			"  collisions: version\n" +
 			"  deletes: mirror\n" +
 			"  filters:\n" +
+			"    allow_extensions:\n" +
+			"      - string\n" +
 			"    exclude_file_ids:\n" +
 			"      - string\n" +
 			"    exclude_folder_ids:\n" +
@@ -170,7 +212,11 @@ func TestConnectorsV1Transfer(t *testing.T) {
 			"    exclude_mime:\n" +
 			"      - string\n" +
 			"    max_size_bytes: 0\n" +
-			"run_mode: auto\n")
+			"run_mode: auto\n" +
+			"selection:\n" +
+			"  folder: folder\n" +
+			"  object_ids:\n" +
+			"    - string\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",

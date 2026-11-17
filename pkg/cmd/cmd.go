@@ -94,6 +94,7 @@ func init() {
 				Category: "API RESOURCE",
 				Suggest:  true,
 				Commands: []*cli.Command{
+					&connectorsV1Fetch,
 					&connectorsV1SyncLink,
 					&connectorsV1Transfer,
 				},
@@ -145,6 +146,11 @@ func init() {
 					&connectorsV1ConnectionsList,
 					&connectorsV1ConnectionsDelete,
 					&connectorsV1ConnectionsBrowse,
+					&connectorsV1ConnectionsCreateFolder,
+					&connectorsV1ConnectionsCreateMicrosoftAdminApproval,
+					&connectorsV1ConnectionsListContents,
+					&connectorsV1ConnectionsResolveLink,
+					&connectorsV1ConnectionsSearch,
 					&connectorsV1ConnectionsUpdateAll,
 				},
 			},
@@ -528,6 +534,15 @@ func init() {
 					&vaultIngest,
 					&vaultSearch,
 					&vaultUpload,
+				},
+			},
+			{
+				Name:     "vault:assemblies",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&vaultAssembliesCreate,
+					&vaultAssembliesRetrieve,
 				},
 			},
 			{
