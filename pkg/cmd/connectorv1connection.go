@@ -21,7 +21,7 @@ var connectorsV1ConnectionsCreate = cli.Command{
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "provider",
-			Usage:    `Allowed values: "box", "clio", "dropbox", "gdrive", "microsoft", "smokeball".`,
+			Usage:    `Allowed values: "box", "clio", "dropbox", "gdrive", "microsoft", "sharefile", "smokeball".`,
 			Required: true,
 			BodyPath: "provider",
 		},
@@ -33,7 +33,7 @@ var connectorsV1ConnectionsCreate = cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "scope-tier",
-			Usage:    "Provider-specific OAuth permission tier. Omit to use the provider's default. Microsoft defaults to organizational OneDrive/SharePoint; use microsoft.personal.read for a personal Microsoft account's own OneDrive. Microsoft write tiers are a separately gated private pilot; exports and paired sync are not yet available.",
+			Usage:    "Provider-specific OAuth permission tier. Omit to use the provider's default. Use microsoft.account.read to let Microsoft choose a personal or work/school account. Existing explicit microsoft.read and microsoft.personal.read tiers remain supported. Microsoft write tiers require the separate write switch and explicit authorization for bounded exports and paired sync.",
 			BodyPath: "scope_tier",
 		},
 		&requestflag.Flag[string]{
@@ -168,6 +168,187 @@ var connectorsV1ConnectionsBrowse = cli.Command{
 	HideHelpCommand: true,
 }
 
+var connectorsV1ConnectionsCreateFolder = cli.Command{
+	Name:    "create-folder",
+	Usage:   "Create one folder at the provider directly under a browse location, then export\ninto it with POST /connectors/v1/transfer. Name the parent with the same site,\ncontainer, and parent fields browse accepts (for Clio and Smokeball, a matter\nroot is the browse_ref the matter returned). A folder of the same name already\nunder the parent is returned with 200 instead of a duplicate; a new folder\nreturns 201. Smokeball creates folders asynchronously: when the new folder is\nnot listed yet the response is 202 with code folder_creation_pending and no\nfolder. Repeat the request after a short wait to get it with 200; a repeat sent\nwhile it is still not listed asks Smokeball again and can leave two folders with\nthat name, so space repeats out. Returns 403 provider_scope_insufficient when\nthe connection was granted read access only; reconnect with write access.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
+		},
+		&requestflag.Flag[string]{
+			Name:     "name",
+			Usage:    "Folder name. Trimmed; 1-255 characters; no '/', '\\', or control characters; not '.' or '..'. Providers may refuse further characters.",
+			Required: true,
+			BodyPath: "name",
+		},
+		&requestflag.Flag[string]{
+			Name:     "container",
+			Usage:    "Container id of the parent, from its browse_ref",
+			BodyPath: "container",
+		},
+		&requestflag.Flag[string]{
+			Name:     "parent",
+			Usage:    "Folder id of the parent, from its browse_ref. Omit for a container root.",
+			BodyPath: "parent",
+		},
+		&requestflag.Flag[string]{
+			Name:     "site",
+			Usage:    "Site id of the parent, from its browse_ref",
+			BodyPath: "site",
+		},
+		&requestflag.Flag[string]{
+			Name:       "x-case-connector-subject",
+			HeaderPath: "x-case-connector-subject",
+		},
+	},
+	Action:          handleConnectorsV1ConnectionsCreateFolder,
+	HideHelpCommand: true,
+}
+
+var connectorsV1ConnectionsCreateMicrosoftAdminApproval = cli.Command{
+	Name:    "create-microsoft-admin-approval",
+	Usage:   "Create a seven-day, replaceable IT approval link for a pending Microsoft\nconnection. Approval does not connect an account. Only delegated document read\nscopes are requested.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
+		},
+		&requestflag.Flag[string]{
+			Name:       "x-case-connector-subject",
+			HeaderPath: "x-case-connector-subject",
+		},
+	},
+	Action:          handleConnectorsV1ConnectionsCreateMicrosoftAdminApproval,
+	HideHelpCommand: true,
+}
+
+var connectorsV1ConnectionsListContents = cli.Command{
+	Name:    "list-contents",
+	Usage:   "List every file under one folder, at any depth, as a flat paginated list, to\npreview what importing that folder would bring in. Pass the browse_ref fields of\na folder or container. Each file carries its path relative to that folder. A\npage returns as soon as it holds files, so it may be shorter than page_size\nwhile cursor is still set; keep requesting until cursor is null. The listing\nstops after 10,000 files and sets truncated. Returns 422 contents_not_supported\nwhen the provider cannot list folder contents, and shares the provider request\nbudget with browsing and background runs.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
+		},
+		&requestflag.Flag[string]{
+			Name:      "container",
+			Usage:     "Container to list, or the container holding parent",
+			QueryPath: "container",
+		},
+		&requestflag.Flag[string]{
+			Name:      "cursor",
+			QueryPath: "cursor",
+		},
+		&requestflag.Flag[int64]{
+			Name:      "page-size",
+			Default:   1000,
+			QueryPath: "page_size",
+		},
+		&requestflag.Flag[string]{
+			Name:      "parent",
+			Usage:     "Folder to list",
+			QueryPath: "parent",
+		},
+		&requestflag.Flag[string]{
+			Name:      "site",
+			Usage:     "Site of the folder",
+			QueryPath: "site",
+		},
+		&requestflag.Flag[string]{
+			Name:       "x-case-connector-subject",
+			HeaderPath: "x-case-connector-subject",
+		},
+	},
+	Action:          handleConnectorsV1ConnectionsListContents,
+	HideHelpCommand: true,
+}
+
+var connectorsV1ConnectionsResolveLink = cli.Command{
+	Name:    "resolve-link",
+	Usage:   "Resolve a pasted provider folder link to that folder's browse item, including\nits browse_ref, name, and path when the provider reports it cheaply. Supports\nGoogle Drive folder and open?id= links, Box folder and shared links, Dropbox\nshared links, and OneDrive/SharePoint sharing links. Returns 400\nlink_not_recognized for links of another provider or form, 422 link_not_folder\nfor file links, 422 link_not_in_account when a Dropbox or Box shared folder is\nnot in the connected account, 404 link_not_accessible when the account cannot\nsee it, and 422 link_resolve_not_supported for providers without folder links.\nShares the provider request budget with browsing.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
+		},
+		&requestflag.Flag[string]{
+			Name:      "url",
+			Usage:     "Folder link copied from the provider, including any query string",
+			Required:  true,
+			QueryPath: "url",
+		},
+		&requestflag.Flag[string]{
+			Name:       "x-case-connector-subject",
+			HeaderPath: "x-case-connector-subject",
+		},
+	},
+	Action:          handleConnectorsV1ConnectionsResolveLink,
+	HideHelpCommand: true,
+}
+
+var connectorsV1ConnectionsSearch = cli.Command{
+	Name:    "search",
+	Usage:   "Search the provider's files by name, and by content where the provider supports\nit; with kind=folder, search folders by name. Without a scope, searches\neverything the connection can see; pass the browse_ref fields of a folder or\ncontainer to search inside it. Folder results carry a browse_ref to open them\nwith browse. Each response states whether its folder scope covers the whole\nsubtree. Returns 422 search_not_supported when the provider has no search and\nsearch_kind_not_supported when it cannot search folders, and shares the provider\nrequest budget with browsing and background runs.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
+		},
+		&requestflag.Flag[string]{
+			Name:      "query",
+			Usage:     "Search text",
+			Required:  true,
+			QueryPath: "query",
+		},
+		&requestflag.Flag[string]{
+			Name:      "container",
+			Usage:     "Container to search in, or the container holding parent",
+			QueryPath: "container",
+		},
+		&requestflag.Flag[string]{
+			Name:      "cursor",
+			QueryPath: "cursor",
+		},
+		&requestflag.Flag[string]{
+			Name:      "kind",
+			Usage:     "What to search for: files, or folders by name",
+			Default:   "file",
+			QueryPath: "kind",
+		},
+		&requestflag.Flag[int64]{
+			Name:      "page-size",
+			QueryPath: "page_size",
+		},
+		&requestflag.Flag[string]{
+			Name:      "parent",
+			Usage:     "Folder to search in",
+			QueryPath: "parent",
+		},
+		&requestflag.Flag[string]{
+			Name:      "site",
+			Usage:     "Site to search in",
+			QueryPath: "site",
+		},
+		&requestflag.Flag[string]{
+			Name:       "x-case-connector-subject",
+			HeaderPath: "x-case-connector-subject",
+		},
+	},
+	Action:          handleConnectorsV1ConnectionsSearch,
+	HideHelpCommand: true,
+}
+
 var connectorsV1ConnectionsUpdateAll = cli.Command{
 	Name:    "update-all",
 	Usage:   "Enable or disable new runs and scheduled syncs for one provider across the\nauthenticated organization or installation. This organization-wide operation\nrequires explicit confirmation. Existing credentials, links, and imported files\nare preserved; active runs are not interrupted.",
@@ -259,12 +440,29 @@ func handleConnectorsV1ConnectionsRetrieve(ctx context.Context, cmd *cli.Command
 
 	params := githubcomcasemarkcasedevgo.ConnectorV1ConnectionGetParams{}
 
-	return client.Connectors.V1.Connections.Get(
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Connectors.V1.Connections.Get(
 		ctx,
 		cmd.Value("id").(string),
 		params,
 		options...,
 	)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "connectors:v1:connections retrieve",
+		Transform:      transform,
+	})
 }
 
 func handleConnectorsV1ConnectionsList(ctx context.Context, cmd *cli.Command) error {
@@ -385,6 +583,234 @@ func handleConnectorsV1ConnectionsBrowse(ctx context.Context, cmd *cli.Command) 
 		Format:         format,
 		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "connectors:v1:connections browse",
+		Transform:      transform,
+	})
+}
+
+func handleConnectorsV1ConnectionsCreateFolder(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
+		cmd.Set("id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	params := githubcomcasemarkcasedevgo.ConnectorV1ConnectionNewFolderParams{}
+
+	return client.Connectors.V1.Connections.NewFolder(
+		ctx,
+		cmd.Value("id").(string),
+		params,
+		options...,
+	)
+}
+
+func handleConnectorsV1ConnectionsCreateMicrosoftAdminApproval(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
+		cmd.Set("id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		EmptyBody,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	params := githubcomcasemarkcasedevgo.ConnectorV1ConnectionNewMicrosoftAdminApprovalParams{}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Connectors.V1.Connections.NewMicrosoftAdminApproval(
+		ctx,
+		cmd.Value("id").(string),
+		params,
+		options...,
+	)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "connectors:v1:connections create-microsoft-admin-approval",
+		Transform:      transform,
+	})
+}
+
+func handleConnectorsV1ConnectionsListContents(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
+		cmd.Set("id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		EmptyBody,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	params := githubcomcasemarkcasedevgo.ConnectorV1ConnectionListContentsParams{}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Connectors.V1.Connections.ListContents(
+		ctx,
+		cmd.Value("id").(string),
+		params,
+		options...,
+	)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "connectors:v1:connections list-contents",
+		Transform:      transform,
+	})
+}
+
+func handleConnectorsV1ConnectionsResolveLink(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
+		cmd.Set("id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		EmptyBody,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	params := githubcomcasemarkcasedevgo.ConnectorV1ConnectionResolveLinkParams{}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Connectors.V1.Connections.ResolveLink(
+		ctx,
+		cmd.Value("id").(string),
+		params,
+		options...,
+	)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "connectors:v1:connections resolve-link",
+		Transform:      transform,
+	})
+}
+
+func handleConnectorsV1ConnectionsSearch(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
+		cmd.Set("id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		EmptyBody,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	params := githubcomcasemarkcasedevgo.ConnectorV1ConnectionSearchParams{}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Connectors.V1.Connections.Search(
+		ctx,
+		cmd.Value("id").(string),
+		params,
+		options...,
+	)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "connectors:v1:connections search",
 		Transform:      transform,
 	})
 }

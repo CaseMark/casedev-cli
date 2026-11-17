@@ -21,9 +21,10 @@ func TestLincV1SessionsCreate(t *testing.T) {
 			"--extension", "[{content: content, path: path}]",
 			"--idle-timeout-ms", "0",
 			"--include-document-templates=true",
-			"--instructions", "instructions",
 			"--model", "model",
 			"--model-fallback", "string",
+			"--runtime-retention", "indefinite",
+			"--runtime-retention-days", "1",
 			"--scoped-api-key", "scopedApiKey",
 			"--service-tier", "default",
 			"--skills-delivery", "local",
@@ -53,9 +54,10 @@ func TestLincV1SessionsCreate(t *testing.T) {
 			"--extension.path", "path",
 			"--idle-timeout-ms", "0",
 			"--include-document-templates=true",
-			"--instructions", "instructions",
 			"--model", "model",
 			"--model-fallback", "string",
+			"--runtime-retention", "indefinite",
+			"--runtime-retention-days", "1",
 			"--scoped-api-key", "scopedApiKey",
 			"--service-tier", "default",
 			"--skills-delivery", "local",
@@ -82,10 +84,11 @@ func TestLincV1SessionsCreate(t *testing.T) {
 			"    path: path\n" +
 			"idleTimeoutMs: 0\n" +
 			"includeDocumentTemplates: true\n" +
-			"instructions: instructions\n" +
 			"model: model\n" +
 			"modelFallbacks:\n" +
 			"  - string\n" +
+			"runtimeRetention: indefinite\n" +
+			"runtimeRetentionDays: 1\n" +
 			"scopedApiKey: scopedApiKey\n" +
 			"serviceTier: default\n" +
 			"skillsDelivery: local\n" +
