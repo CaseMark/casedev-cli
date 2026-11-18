@@ -41,16 +41,21 @@ jobs:
           stable=0
           for _ in $(seq 1 120); do
             sleep 20
-            # gh exits 8 while any check (including this job) is pending; keep its output.
-            checks="$(gh pr checks "$PR" --repo "$GITHUB_REPOSITORY" --json name,bucket \
-              --jq "[.[] | select(.name != \"$GITHUB_JOB\")]" 2>/dev/null || true)"
-            [ -n "$checks" ] || checks='[]'
-            total="$(jq 'length' <<<"$checks")"
-            pending="$(jq '[.[] | select(.bucket == "pending")] | length' <<<"$checks")"
-            failed="$(jq -r '.[] | select(.bucket == "fail" or .bucket == "cancel") | .name' <<<"$checks")"
+            runs="$(gh api "repos/$GITHUB_REPOSITORY/commits/$SHA/check-runs?per_page=100" \
+              --jq "[.check_runs[] | select(.name != \"$GITHUB_JOB\") | {name, status, conclusion}]")"
+            statuses="$(gh api "repos/$GITHUB_REPOSITORY/commits/$SHA/status" \
+              --jq '[.statuses[] | {name: .context, state}]')"
+            total=$(( $(jq 'length' <<<"$runs") + $(jq 'length' <<<"$statuses") ))
+            pending=$(( $(jq '[.[] | select(.status != "completed")] | length' <<<"$runs") \
+              + $(jq '[.[] | select(.state == "pending")] | length' <<<"$statuses") ))
+            failed="$( {
+              jq -r '.[] | select(.status == "completed" and (.conclusion | IN("failure", "cancelled", "timed_out", "action_required", "startup_failure"))) | .name' <<<"$runs"
+              jq -r '.[] | select(.state | IN("failure", "error")) | .name' <<<"$statuses"
+            } | paste -sd, -)"
+            echo "checks=$total pending=$pending failed=${failed:-none}"
 
             if [ -n "$failed" ]; then
-              echo "::error::Not merging; failed checks: $(echo "$failed" | paste -sd, -)"
+              echo "::error::Not merging; failed checks: $failed"
               exit 1
             fi
 
@@ -65,7 +70,7 @@ jobs:
           echo "::error::Timed out waiting for CI."
           exit 1
         env:
-          PR: ${{ github.event.pull_request.number }}
+          SHA: ${{ github.event.pull_request.head.sha }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # A PAT, not GITHUB_TOKEN, so the merge's push triggers downstream
