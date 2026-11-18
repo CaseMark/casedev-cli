@@ -41,8 +41,10 @@ jobs:
           stable=0
           for _ in $(seq 1 120); do
             sleep 20
+            # gh exits 8 while any check (including this job) is pending; keep its output.
             checks="$(gh pr checks "$PR" --repo "$GITHUB_REPOSITORY" --json name,bucket \
-              --jq "[.[] | select(.name != \"$GITHUB_JOB\")]" 2>/dev/null || echo '[]')"
+              --jq "[.[] | select(.name != \"$GITHUB_JOB\")]" 2>/dev/null || true)"
+            [ -n "$checks" ] || checks='[]'
             total="$(jq 'length' <<<"$checks")"
             pending="$(jq '[.[] | select(.bucket == "pending")] | length' <<<"$checks")"
             failed="$(jq -r '.[] | select(.bucket == "fail" or .bucket == "cancel") | .name' <<<"$checks")"
