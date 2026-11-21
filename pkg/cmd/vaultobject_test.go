@@ -165,6 +165,7 @@ func TestVaultObjectsCreatePresignedURL(t *testing.T) {
 			"--expires-in", "60",
 			"--operation", "GET",
 			"--size-bytes", "1",
+			"--variant", "original",
 		)
 	})
 
@@ -174,7 +175,8 @@ func TestVaultObjectsCreatePresignedURL(t *testing.T) {
 			"contentType: contentType\n" +
 			"expiresIn: 60\n" +
 			"operation: GET\n" +
-			"sizeBytes: 1\n")
+			"sizeBytes: 1\n" +
+			"variant: original\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",
@@ -193,6 +195,7 @@ func TestVaultObjectsDownload(t *testing.T) {
 			"vault:objects", "download",
 			"--id", "id",
 			"--object-id", "objectId",
+			"--format", "original",
 			"--output", "/dev/null",
 		)
 	})
@@ -373,6 +376,19 @@ func TestVaultObjectsOrganize(t *testing.T) {
 			"--api-key", "string",
 			"vault:objects", "organize",
 			"--id", "id",
+		)
+	})
+}
+
+func TestVaultObjectsToPdf(t *testing.T) {
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"vault:objects", "to-pdf",
+			"--id", "id",
+			"--object-id", "objectId",
+			"--force=true",
 		)
 	})
 }
