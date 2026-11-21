@@ -265,6 +265,12 @@ var vaultObjectsCreatePresignedURL = cli.Command{
 			Usage:    "File size in bytes (optional, max 5GB for single PUT uploads). When provided for PUT operations, enforces exact file size at S3 level.",
 			BodyPath: "sizeBytes",
 		},
+		&requestflag.Flag[string]{
+			Name:     "variant",
+			Usage:    "Which file to sign for GET and HEAD. 'view' returns the PDF's fast-opening viewing copy when it has one, and the original otherwise. Use it only to display a PDF; downloads and exports should use the original.",
+			Default:  "original",
+			BodyPath: "variant",
+		},
 	},
 	Action:          handleVaultObjectsCreatePresignedURL,
 	HideHelpCommand: true,
@@ -272,7 +278,7 @@ var vaultObjectsCreatePresignedURL = cli.Command{
 
 var vaultObjectsDownload = cli.Command{
 	Name:    "download",
-	Usage:   "Downloads a file from a vault by redirecting to a short-lived presigned S3 URL.\nUseful for retrieving contracts, depositions, case files, and other legal\ndocuments stored in your vault.",
+	Usage:   "Downloads a file from a vault by redirecting to a short-lived presigned S3 URL.\nUseful for retrieving contracts, depositions, case files, and other legal\ndocuments stored in your vault. With format=pdf, a spreadsheet downloads as its\nPDF version (see POST /vault/{id}/objects/{objectId}/pdf); a PDF downloads as\nusual.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -284,6 +290,12 @@ var vaultObjectsDownload = cli.Command{
 			Name:      "object-id",
 			Required:  true,
 			PathParam: "objectId",
+		},
+		&requestflag.Flag[string]{
+			Name:      "format",
+			Usage:     "original (default) returns the file as uploaded. pdf returns a spreadsheet's PDF version, or a PDF as usual.",
+			Default:   "original",
+			QueryPath: "format",
 		},
 		&requestflag.Flag[string]{
 			Name:    "output",
@@ -564,6 +576,32 @@ var vaultObjectsOrganize = requestflag.WithInnerFlags(cli.Command{
 		},
 	},
 })
+
+var vaultObjectsToPdf = cli.Command{
+	Name:    "to-pdf",
+	Usage:   "Starts making the PDF version of a spreadsheet object (.xlsx, .xlsm, .xlsb,\n.xls, .ods, .numbers, .csv, .tsv). Spreadsheets get one automatically when they\nare ingested; call this for objects stored without ingestion, or with force=true\nto make it again. Each visible sheet prints on landscape Letter at 100% scale,\ndown the rows and then across the columns, with no repeated header rows; hidden\nsheets, rows and columns are left out and listed. The PDF is a copy: the object,\nits text and its search index are unchanged. Completion is reported through\nvault.object.pdf.completed or vault.object.pdf.failed; download it with GET\n/vault/{id}/objects/{objectId}/download?format=pdf.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:      "id",
+			Required:  true,
+			PathParam: "id",
+		},
+		&requestflag.Flag[string]{
+			Name:      "object-id",
+			Required:  true,
+			PathParam: "objectId",
+		},
+		&requestflag.Flag[bool]{
+			Name:      "force",
+			Usage:     "Make the PDF version again even when one is ready",
+			Default:   false,
+			QueryPath: "force",
+		},
+	},
+	Action:          handleVaultObjectsToPdf,
+	HideHelpCommand: true,
+}
 
 func handleVaultObjectsRetrieve(ctx context.Context, cmd *cli.Command) error {
 	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
@@ -907,10 +945,13 @@ func handleVaultObjectsDownload(ctx context.Context, cmd *cli.Command) error {
 		return err
 	}
 
+	params := githubcomcasemarkcasedevgo.VaultObjectDownloadParams{}
+
 	response, err := client.Vault.Objects.Download(
 		ctx,
 		cmd.Value("id").(string),
 		cmd.Value("object-id").(string),
+		params,
 		options...,
 	)
 	if err != nil {
@@ -1281,4 +1322,41 @@ func handleVaultObjectsOrganize(ctx context.Context, cmd *cli.Command) error {
 		Title:          "vault:objects organize",
 		Transform:      transform,
 	})
+}
+
+func handleVaultObjectsToPdf(ctx context.Context, cmd *cli.Command) error {
+	client := githubcomcasemarkcasedevgo.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("id") && len(unusedArgs) > 0 {
+		cmd.Set("id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if !cmd.IsSet("object-id") && len(unusedArgs) > 0 {
+		cmd.Set("object-id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		EmptyBody,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	params := githubcomcasemarkcasedevgo.VaultObjectToPdfParams{}
+
+	return client.Vault.Objects.ToPdf(
+		ctx,
+		cmd.Value("id").(string),
+		cmd.Value("object-id").(string),
+		params,
+		options...,
+	)
 }

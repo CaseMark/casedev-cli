@@ -608,6 +608,7 @@ func init() {
 					&vaultObjectsMerge,
 					&vaultObjectsMove,
 					&vaultObjectsOrganize,
+					&vaultObjectsToPdf,
 				},
 			},
 			{
