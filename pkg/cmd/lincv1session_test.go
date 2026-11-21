@@ -248,6 +248,8 @@ func TestLincV1SessionsRetrieveEvents(t *testing.T) {
 			"--cursor", "0",
 			"--exclude-event-type", "string",
 			"--limit", "1",
+			"--order", "asc",
+			"--type", "string",
 		)
 	})
 }

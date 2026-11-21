@@ -26,7 +26,6 @@ var sensitiveHeaders = []string{
 	"x-api-key",
 	"cookie",
 	"set-cookie",
-	"x-vercel-protection-bypass",
 }
 
 // RequestLogger is a middleware that logs HTTP requests and responses.

@@ -26,7 +26,7 @@ var vaultAssembliesCreate = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]map[string]any]{
 			Name:     "source",
-			Usage:    "Source PDFs. Page ranges refer to a source by its index in this list.",
+			Usage:    "Source PDFs, or ingested office files (spreadsheets, CSV/TSV, Word), which are assembled from the PDF version ingestion saved for them. A source can also be a PDF you made, such as a cover or notice letter, sent inline. Page ranges refer to a source by its index in this list.",
 			Required: true,
 			BodyPath: "sources",
 		},
@@ -62,24 +62,13 @@ var vaultAssembliesCreate = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "page-size",
-			Usage:    "Put every page upright on a US Letter portrait sheet: landscape pages turn a quarter turn, other sizes are scaled to fit",
+			Usage:    "Put every page upright on a US Letter sheet: portrait pages on a portrait sheet, landscape pages on a landscape sheet, other sizes scaled to fit",
 			BodyPath: "pageSize",
 		},
 	},
 	Action:          handleVaultAssembliesCreate,
 	HideHelpCommand: true,
 }, map[string][]requestflag.HasOuterFlag{
-	"source": {
-		&requestflag.InnerFlag[string]{
-			Name:       "source.object-id",
-			InnerField: "objectId",
-		},
-		&requestflag.InnerFlag[string]{
-			Name:       "source.rendition",
-			Usage:      `Allowed values: "searchable_pdf", "original".`,
-			InnerField: "rendition",
-		},
-	},
 	"volume": {
 		&requestflag.InnerFlag[string]{
 			Name:       "volume.filename",

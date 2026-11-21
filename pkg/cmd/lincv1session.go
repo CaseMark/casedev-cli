@@ -291,6 +291,17 @@ var lincV1SessionsRetrieveEvents = cli.Command{
 			Usage:     "Maximum number of events to return.",
 			QueryPath: "limit",
 		},
+		&requestflag.Flag[string]{
+			Name:      "order",
+			Usage:     "asc (default) replays oldest first. desc returns the newest events first, still after the cursor, so a small limit reads only the latest events.",
+			Default:   "asc",
+			QueryPath: "order",
+		},
+		&requestflag.Flag[[]string]{
+			Name:      "type",
+			Usage:     "Comma-separated Linc event types to return; other types are omitted.",
+			QueryPath: "types",
+		},
 	},
 	Action:          handleLincV1SessionsRetrieveEvents,
 	HideHelpCommand: true,
